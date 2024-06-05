@@ -1,12 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
 
 @Schema()
 export class Professional {
   @Prop()
-  available: boolean;
+  available: number;
 
   @Prop()
   area: string;
