@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProfessionalsModule } from './professionals/professionals.module';
+import { AreasModule } from './areas/areas.module';
+import { SpecializationsModule } from './specializations/specializations.module';
 
 @Module({
   imports: [
@@ -11,6 +13,8 @@ import { ProfessionalsModule } from './professionals/professionals.module';
       autoCreate: false,
     }),
     ProfessionalsModule,
+    AreasModule,
+    SpecializationsModule,
   ],
   controllers: [],
   providers: [],
