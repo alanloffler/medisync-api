@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ProfessionalsService } from './professionals.service';
-import { ProfessionalsController } from './professionals.controller';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { Professional, ProfessionalSchema } from './schema/professional.schema';
+import { ProfessionalsController } from './professionals.controller';
+import { ProfessionalsService } from './professionals.service';
 
 @Module({
   imports: [
