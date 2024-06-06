@@ -14,7 +14,8 @@ export class ProfessionalsService {
   async create(createProfessionalDto: CreateProfessionalDto) {
     const professional = await this.professionalModel.create(createProfessionalDto);
     if (!professional) throw new HttpException(PROF_CONFIG.errors.notCreated, HttpStatus.BAD_REQUEST);
-    return { statusCode: 200, message: PROF_CONFIG.success.created, data: professional };
+    
+    return { statusCode: 200, message: PROF_CONFIG.success.created, data: ['professional'] };
   }
 
   async findAll() {
