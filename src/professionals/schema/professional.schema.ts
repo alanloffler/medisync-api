@@ -1,5 +1,6 @@
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Specialization } from 'src/specializations/schema/specializations.schema';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
 
@@ -8,11 +9,19 @@ export class Professional {
   @Prop()
   available: number;
 
-  @Prop()
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Area',
+    default: {},
+  })
   area: string;
 
-  @Prop()
-  specialization: string;
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Specialization',
+    default: {},
+  })
+  specialization: Specialization;
 
   @Prop()
   titleAbbreviation: string;
