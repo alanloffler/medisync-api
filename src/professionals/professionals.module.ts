@@ -6,11 +6,7 @@ import { ProfessionalsController } from './professionals.controller';
 import { ProfessionalsService } from './professionals.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: Professional.name, schema: ProfessionalSchema },
-    ]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: Professional.name, schema: ProfessionalSchema }])],
   controllers: [ProfessionalsController],
   providers: [ProfessionalsService],
 })
