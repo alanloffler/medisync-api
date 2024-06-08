@@ -35,6 +35,7 @@ export class Area {
         ref: 'Specialization',
       },
     ],
+    default: [],
   })
   specializations: Specialization[];
 
