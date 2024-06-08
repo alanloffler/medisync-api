@@ -7,7 +7,7 @@ export const SPEC_CONFIG = {
   },
   errors: {
     errorDuplicate: 'La especialidad ya existe en la base de datos.',
-    errorFinding: 'Error al buscar en la base de datos',
+    errorFinding: 'Error al buscar especialidades en la base de datos',
     notCreated: 'La especialidad no se pudo crear en la base de datos',
     notDeleted: 'La especialidad no se pudo eliminar en la base de datos',
     notFound: 'Especialidad no encontrada en la base de datos',
