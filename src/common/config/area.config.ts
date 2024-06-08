@@ -7,7 +7,7 @@ export const AREA_CONFIG = {
   },
   errors: {
     errorDuplicate: 'El área ya existe en la base de datos.',
-    errorFinding: 'Error al buscar en la base de datos',
+    errorFinding: 'Error al buscar áreas en la base de datos',
     notCreated: 'El área no se pudo crear en la base de datos',
     notDeleted: 'El área no se pudo eliminar en la base de datos',
     notFound: 'Área no encontrada en la base de datos',
