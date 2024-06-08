@@ -14,12 +14,17 @@ export class ProfessionalsService {
   async create(createProfessionalDto: CreateProfessionalDto) {
     const professional = await this.professionalModel.create(createProfessionalDto);
     if (!professional) throw new HttpException(PROF_CONFIG.errors.notCreated, HttpStatus.BAD_REQUEST);
-    
-    return { statusCode: 200, message: PROF_CONFIG.success.created, data: ['professional'] };
+
+    return { statusCode: 200, message: PROF_CONFIG.success.created, data: professional };
   }
 
   async findAll() {
-    const professionals = await this.professionalModel.find();
+    const professionals = await this.professionalModel
+      .find()
+      .populate([
+        { path: 'specialization', select: '_id name description', strictPopulate: false },
+        { path: 'area', select: '_id name description', strictPopulate: false },
+      ]);
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     
     return professionals;
