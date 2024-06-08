@@ -24,17 +24,23 @@ export class AreasService {
   }
 
   async findAll(): Promise<Area[]> {
-    const areas = await this.areaModel.find().populate({ path: 'specializations', select: 'name description' });
+    const areas = await this.areaModel
+      .find()
+      .sort({ name: 'asc' })
+      .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
+    
     if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
-
-    console.log(JSON.stringify(areas, null, 2));
 
     return areas;
   }
 
   async findAllActive(): Promise<Area[]> {
-    const areas = await this.areaModel.find({ active: 1 });
+    const areas = await this.areaModel
+      .find({ active: 1 })
+      .sort({ name: 'asc' })
+      .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
+    
     if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
 
@@ -45,9 +51,9 @@ export class AreasService {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(AREA_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
 
-    const area = await this.areaModel.findById(id).populate(['specialization']);
+    const area = await this.areaModel.findById(id).populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
     if (!area) throw new HttpException(AREA_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
-    console.log(area);
+
     return area;
   }
 
