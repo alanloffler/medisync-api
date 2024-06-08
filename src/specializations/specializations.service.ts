@@ -23,7 +23,7 @@ export class SpecializationsService {
   async findAll() {
     // return await this.specializationModel.find();
     // return this.specializationModel.find().populate('area');ok
-    return this.specializationModel.find();
+    return await this.specializationModel.find();
   }
 
   findOne(id: string) {
