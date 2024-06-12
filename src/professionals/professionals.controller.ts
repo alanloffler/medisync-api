@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 
 import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { IResponse } from '../common/interfaces/response.interface';
@@ -16,8 +16,14 @@ export class ProfessionalsController {
   }
 
   @Get()
-  findAll(): Promise<Professional[]> {
-    return this.professionalsService.findAll();
+  findAll(
+    @Query('search') search: string,
+    @Query('limit') limit: string,
+    @Query('skip') skip: string,
+    @Query('sk') sortingKey: string,
+    @Query('sv') sortingValue: string,
+  ) {// volver a typear con interfaz nueva por el tema de la paginación
+    return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get(':id')
