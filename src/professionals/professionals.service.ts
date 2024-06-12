@@ -20,11 +20,10 @@ export class ProfessionalsService {
 
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
     console.log(sortingKey, sortingValue);
-    let sortingVal: number = 0;
-    (sortingValue === 'asc') ? sortingVal = 1 : sortingVal = -1;
-    const obj =  {};
-    obj[sortingKey] = sortingVal;
-    console.log(obj)
+    if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
+    let obj = {};
+    if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
+    if (sortingValue === 'desc') obj = { [sortingKey]: -1 };
     // const professionals = await this.professionalModel
     //   .find({
     //     $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
@@ -34,59 +33,50 @@ export class ProfessionalsService {
     //   .skip(parseInt(skip))
     //   .limit(parseInt(limit))
     //   .exec();
-    const professionals = await this.professionalModel.aggregate([
-      {
-        $match: {
-          $or: [
-            { firstName: { $regex: search, $options: 'i' } },
-            { lastName: { $regex: search, $options: 'i' } },
-            { email: { $regex: search, $options: 'i' } },
-          ],
+    const professionals = await this.professionalModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'specializations',
+            localField: 'specialization',
+            foreignField: '_id',
+            as: 'specialization',
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'specializations',
-          localField: 'specialization',
-          foreignField: '_id',
-          as: 'specialization',
+        { $unwind: '$specialization' },
+        {
+          $lookup: {
+            from: 'areas',
+            localField: 'area',
+            foreignField: '_id',
+            as: 'area',
+          },
         },
-      },
-      { $unwind: '$specialization' },
-      {
-        $lookup: {
-          from: 'areas',
-          localField: 'area',
-          foreignField: '_id',
-          as: 'area',
+        { $unwind: '$area' },
+        {
+          $match: {
+            $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }, { 'specialization.name': { $regex: search, $options: 'i' } }],
+          },
         },
-      },
-      { $unwind: '$area' },
-      {
-        $sort: { 'specialization.name': 1 }, // Sort by area name
-      },
-      {
-        $skip: parseInt(skip),
-      },
-      {
-        $limit: parseInt(limit),
-      },
-      {
-        $project: {
-          _id: 1,
-          available: 1,
-          area: { _id: 1, name: 1, description: 1 },
-          specialization: { _id: 1, name: 1, description: 1 },
-          titleAbbreviation: 1,
-          firstName: 1,
-          lastName: 1,
-          email: 1,
-          phone: 1,
-          __v: 1,
+        { $sort: obj },
+        { $skip: parseInt(skip) },
+        { $limit: parseInt(limit) },
+        {
+          $project: {
+            _id: 1,
+            available: 1,
+            area: { _id: 1, name: 1 },
+            specialization: { _id: 1, name: 1 },
+            titleAbbreviation: 1,
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            phone: 1,
+            __v: 1,
+          },
         },
-      },
-    ]).exec();
-  
+      ])
+      .exec();
 
     // Here do the search for the count and pageTotal
     const count = await this.professionalModel
@@ -96,7 +86,7 @@ export class ProfessionalsService {
       .countDocuments();
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
 
-    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.searchNotFound, HttpStatus.NOT_FOUND);
 
     return { total: pageTotal, count: count, data: professionals };
   }
@@ -104,8 +94,13 @@ export class ProfessionalsService {
   async findOne(id: string): Promise<Professional> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
+    // prettier-ignore
+    const professional = await this.professionalModel
+      .findById(id)
+      .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+      .exec();
 
-    const professional = await this.professionalModel.findById(id);
     if (!professional) throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
 
     return professional;
