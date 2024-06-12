@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 
 import { CreateProfessionalDto } from './dto/create-professional.dto';
+import { PROF_CONFIG } from '../common/config/professionals.config';
 import { Professional } from './schema/professional.schema';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
-import { PROF_CONFIG } from 'src/common/config/professionals.config';
 
 @Injectable()
 export class ProfessionalsService {
@@ -18,16 +18,87 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.success.created, data: professional };
   }
 
-  async findAll() {
-    const professionals = await this.professionalModel
-      .find()
-      .populate([
-        { path: 'specialization', select: '_id name description', strictPopulate: false },
-        { path: 'area', select: '_id name description', strictPopulate: false },
-      ]);
+  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
+    console.log(sortingKey, sortingValue);
+    let sortingVal: number = 0;
+    (sortingValue === 'asc') ? sortingVal = 1 : sortingVal = -1;
+    const obj =  {};
+    obj[sortingKey] = sortingVal;
+    console.log(obj)
+    // const professionals = await this.professionalModel
+    //   .find({
+    //     $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+    //   })
+    //   .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
+    //   .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+    //   .skip(parseInt(skip))
+    //   .limit(parseInt(limit))
+    //   .exec();
+    const professionals = await this.professionalModel.aggregate([
+      {
+        $match: {
+          $or: [
+            { firstName: { $regex: search, $options: 'i' } },
+            { lastName: { $regex: search, $options: 'i' } },
+            { email: { $regex: search, $options: 'i' } },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: 'specializations',
+          localField: 'specialization',
+          foreignField: '_id',
+          as: 'specialization',
+        },
+      },
+      { $unwind: '$specialization' },
+      {
+        $lookup: {
+          from: 'areas',
+          localField: 'area',
+          foreignField: '_id',
+          as: 'area',
+        },
+      },
+      { $unwind: '$area' },
+      {
+        $sort: { 'specialization.name': 1 }, // Sort by area name
+      },
+      {
+        $skip: parseInt(skip),
+      },
+      {
+        $limit: parseInt(limit),
+      },
+      {
+        $project: {
+          _id: 1,
+          available: 1,
+          area: { _id: 1, name: 1, description: 1 },
+          specialization: { _id: 1, name: 1, description: 1 },
+          titleAbbreviation: 1,
+          firstName: 1,
+          lastName: 1,
+          email: 1,
+          phone: 1,
+          __v: 1,
+        },
+      },
+    ]).exec();
+  
+
+    // Here do the search for the count and pageTotal
+    const count = await this.professionalModel
+      .find({
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+      })
+      .countDocuments();
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
-    
-    return professionals;
+
+    return { total: pageTotal, count: count, data: professionals };
   }
 
   async findOne(id: string): Promise<Professional> {
