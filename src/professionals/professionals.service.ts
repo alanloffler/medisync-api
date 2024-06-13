@@ -6,6 +6,7 @@ import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { PROF_CONFIG } from '../common/config/professionals.config';
 import { Professional } from './schema/professional.schema';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
+import { IResponse } from 'src/common/interfaces/response.interface';
 
 @Injectable()
 export class ProfessionalsService {
@@ -106,10 +107,14 @@ export class ProfessionalsService {
     return professional;
   }
 
-  async update(id: string, updateProfessionalDto: UpdateProfessionalDto) {
+  async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
+    const isValid = isValidObjectId(id);
+    if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
+
     const update = await this.professionalModel.findByIdAndUpdate(id, updateProfessionalDto, { new: true });
-    console.log(update);
-    return update;
+    if(!update) throw new HttpException(PROF_CONFIG.errors.notUpdated, HttpStatus.BAD_REQUEST);
+    
+    return { statusCode: 200, message: PROF_CONFIG.success.updated, data: update };
   }
 
   async remove(id: string) {
