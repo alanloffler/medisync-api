@@ -1,10 +1,10 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateProfessionalDto {
   @IsNotEmpty()
-  @IsNumber()
-  available: number;
+  @IsBoolean()
+  available: boolean;
 
   @IsNotEmpty()
   @IsString()

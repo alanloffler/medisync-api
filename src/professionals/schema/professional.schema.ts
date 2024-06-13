@@ -7,7 +7,7 @@ export type ProfessionalDocument = HydratedDocument<Professional>;
 @Schema()
 export class Professional {
   @Prop()
-  available: number;
+  available: boolean;
 
   @Prop({
     type: MongooseSchema.Types.ObjectId,
