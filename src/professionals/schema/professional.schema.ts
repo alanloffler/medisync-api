@@ -1,12 +1,15 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Specialization } from 'src/specializations/schema/specializations.schema';
+
+import { Specialization } from '../../specializations/schema/specializations.schema';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+})
 export class Professional {
-  @Prop()
+  @Prop({ default: true })
   available: boolean;
 
   @Prop({
@@ -23,16 +26,16 @@ export class Professional {
   })
   specialization: Specialization;
 
-  @Prop()
+  @Prop({ lowercase: true, trim: true })
   titleAbbreviation: string;
 
-  @Prop()
+  @Prop({ lowercase: true, trim: true })
   firstName: string;
 
-  @Prop()
+  @Prop({ lowercase: true, trim: true })
   lastName: string;
 
-  @Prop({ unique: true })
+  @Prop({ unique: true, lowercase: true })
   email: string;
 
   @Prop()
