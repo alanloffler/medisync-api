@@ -44,16 +44,10 @@ export class Professional {
 
   @Prop({
     type: {
-      scheduleTimeInit: { type: String, default: '08:00:00', trim: true },
-      scheduleTimeEnd: { type: String, default: '18:00:00', trim: true },
-      timeSlotUnavailableInit: { type: String, default: '12:00:00', trim: true },
-      timeSlotUnavailableEnd: { type: String, default: '14:00:00', trim: true },
-    },
-    default: {
-      scheduleTimeInit: '08:00:00',
-      scheduleTimeEnd: '18:00:00',
-      timeSlotUnavailableInit: '12:00:00',
-      timeSlotUnavailableEnd: '14:00:00',
+      scheduleTimeInit: { type: String, trim: true, required: true },
+      scheduleTimeEnd: { type: String, trim: true, required: true },
+      timeSlotUnavailableInit: { type: String, trim: true, required: true },
+      timeSlotUnavailableEnd: { type: String, trim: true, required: true },
     },
   })
   configuration: IConfiguration;
