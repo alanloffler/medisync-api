@@ -112,8 +112,8 @@ export class ProfessionalsService {
     if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
 
     const update = await this.professionalModel.findByIdAndUpdate(id, updateProfessionalDto, { new: true });
-    if(!update) throw new HttpException(PROF_CONFIG.errors.notUpdated, HttpStatus.BAD_REQUEST);
-    
+    if (!update) throw new HttpException(PROF_CONFIG.errors.notUpdated, HttpStatus.BAD_REQUEST);
+
     return { statusCode: 200, message: PROF_CONFIG.success.updated, data: update };
   }
 
