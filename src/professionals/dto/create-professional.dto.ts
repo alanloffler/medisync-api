@@ -1,10 +1,10 @@
 import { IsBoolean, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsString, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-
+// TODO dynamic error validation messages by config file
 class Configuration {
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
+  @IsString({ message: 'La hora de inicio de agenda debe ser hh:mm' })
+  @IsNotEmpty({ message: 'La hora de inicio de agenda es obligatoria' })
+  @MinLength(5, { message: 'La hora de inicio de agenda debe poseer 5 caracteres' })
   scheduleTimeInit: string;
 
   @IsString()
