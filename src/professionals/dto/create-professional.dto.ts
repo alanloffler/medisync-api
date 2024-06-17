@@ -4,22 +4,22 @@ import { Type } from 'class-transformer';
 class Configuration {
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
+  @MinLength(5)
   scheduleTimeInit: string;
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
+  @MinLength(5)
   scheduleTimeEnd: string;
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
+  @MinLength(5)
   timeSlotUnavailableInit: string;
   
   @IsString()
   @IsNotEmpty()
-  @MinLength(8)
+  @MinLength(5)
   timeSlotUnavailableEnd: string;
 }
 
@@ -55,15 +55,6 @@ export class CreateProfessionalDto {
   @IsNotEmpty()
   @IsNumber()
   phone: number;
-
-  @IsString()
-  scheduleTimeInit: string;
-
-  @IsString()
-  scheduleTimeEnd: string;
-
-  @IsString()
-  timeSlotUnavailableInit: string;
 
   @IsNotEmptyObject()
   @IsObject()
