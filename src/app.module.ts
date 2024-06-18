@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProfessionalsModule } from './professionals/professionals.module';
 import { AreasModule } from './areas/areas.module';
 import { SpecializationsModule } from './specializations/specializations.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { SpecializationsModule } from './specializations/specializations.module'
       autoCreate: false,
     }),
     ProfessionalsModule,
+    AppointmentsModule,
     AreasModule,
     SpecializationsModule,
   ],
