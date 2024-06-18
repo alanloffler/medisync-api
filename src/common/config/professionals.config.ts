@@ -7,7 +7,8 @@ export const PROF_CONFIG = {
   },
   errors: {
     notCreated: 'El profesional no se pudo crear en la base de datos',
-    notFound: 'Profesional no encontrado en la base de datos',
+    notFound: 'Profesionales no encontrados en la base de datos',
+    notFoundOne: 'Profesional no encontrado en la base de datos',
     notValid: 'ID inválido. La estructura del ID es incorrecta',
     notUpdated: 'El profesional no se pudo actualizar en la base de datos',
   }
