@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
@@ -19,9 +19,12 @@ export class AppointmentsController {
     return this.appointmentsService.findAll();
   }
 
-  @Get('byProfessional/:id')
-  findAllByProfessional(@Param('id') id: string): Promise<Appointment[]> {
-    return this.appointmentsService.findAllByProfessional(id);
+  @Get('byProfessional')
+  findAllByProfessional(
+    @Query('id') id: string,
+    @Query('day') day: string
+  ): Promise<Appointment[]> {
+    return this.appointmentsService.findAllByProfessional(id, day);
   }
 
   @Get(':id')
