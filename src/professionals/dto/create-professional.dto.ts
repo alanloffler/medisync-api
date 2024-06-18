@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsString, MinLength, ValidateNested } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 // TODO dynamic error validation messages by config file
 class Configuration {
@@ -11,6 +11,10 @@ class Configuration {
   @IsNotEmpty()
   @MinLength(5)
   scheduleTimeEnd: string;
+
+  @IsInt()
+  @IsPositive()
+  slotDuration: number;
 
   @IsString()
   @IsNotEmpty()

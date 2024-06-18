@@ -46,6 +46,7 @@ export class Professional {
     type: {
       scheduleTimeInit: { type: String, trim: true, required: true },
       scheduleTimeEnd: { type: String, trim: true, required: true },
+      slotDuration: { type: Number, required: true },
       timeSlotUnavailableInit: { type: String, trim: true, required: true },
       timeSlotUnavailableEnd: { type: String, trim: true, required: true },
     },
