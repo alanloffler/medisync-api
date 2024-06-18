@@ -34,10 +34,13 @@ export class AppointmentsService {
     return appointments;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} appointment`;
-  }
+  async findOne(id: string): Promise<Appointment> {
+    const appointment = await this.appointmentModel.findById(id);
+    if (!appointment) throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
 
+    return appointment;
+  }
+   
   update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
     return `This action updates a #${id} appointment`;
   }
