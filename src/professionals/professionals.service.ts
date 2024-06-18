@@ -92,6 +92,21 @@ export class ProfessionalsService {
     return { total: pageTotal, count: count, data: professionals };
   }
 
+  async findAllActive(): Promise<Professional[]> {
+    // prettier-ignore
+    const professionals = await this.professionalModel
+      .find({ available: true })
+      .sort({ lastName: 'asc' })
+      .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+      .exec();
+
+    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
+    if (!professionals) throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
+
+    return professionals;
+  }
+
   async findOne(id: string): Promise<Professional> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
@@ -102,7 +117,7 @@ export class ProfessionalsService {
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
       .exec();
 
-    if (!professional) throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
+    if (!professional) throw new HttpException(PROF_CONFIG.errors.notFoundOne, HttpStatus.NOT_FOUND);
 
     return professional;
   }

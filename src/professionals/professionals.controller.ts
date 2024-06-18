@@ -26,6 +26,11 @@ export class ProfessionalsController {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
+  @Get('active')
+  findAllActive(): Promise<Professional[]> {
+    return this.professionalsService.findAllActive();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Professional> {
     return this.professionalsService.findOne(id);
