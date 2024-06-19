@@ -28,7 +28,7 @@ export class AppointmentsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Appointment> {
     return this.appointmentsService.findOne(id);
   }
 
@@ -38,7 +38,7 @@ export class AppointmentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.appointmentsService.remove(+id);
+  remove(@Param('id') id: string): Promise<IResponse> {
+    return this.appointmentsService.remove(id);
   }
 }

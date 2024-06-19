@@ -47,7 +47,10 @@ export class AppointmentsService {
     return `This action updates a #${id} appointment`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} appointment`;
+  async remove(id: string): Promise<IResponse> {
+    const appointment = await this.appointmentModel.findByIdAndDelete(id);
+    if (!appointment) throw new HttpException('Appointment not deleted', HttpStatus.NOT_FOUND);
+
+    return { statusCode: 200, message: 'Appointment deleted', data: appointment };
   }
 }

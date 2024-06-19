@@ -18,6 +18,5 @@ export class CreateAppointmentDto {
   hour: string;
 
   @IsInt()
-  @IsPositive()
   slot: number;
 }
