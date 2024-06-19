@@ -35,7 +35,9 @@ export class AppointmentsService {
   }
 
   async findOne(id: string): Promise<Appointment> {
-    const appointment = await this.appointmentModel.findById(id);
+    const appointment = await this.appointmentModel
+      .findById(id)
+      .populate({ path: 'professional', select: '_id firstName lastName titleAbbreviation' });
     if (!appointment) throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
 
     return appointment;
