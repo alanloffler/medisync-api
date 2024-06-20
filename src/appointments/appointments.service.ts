@@ -27,10 +27,11 @@ export class AppointmentsService {
   }
 
   async findAllByProfessional(id: string, day: string): Promise<Appointment[]> {
+    console.log(day, id)
     const appointments = await this.appointmentModel.find({ professional: id, day: day });
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-
+    console.log(appointments);
     return appointments;
   }
 
