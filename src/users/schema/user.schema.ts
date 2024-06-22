@@ -12,12 +12,12 @@ export class User {
   lastName: string;
 
   @Prop({ unique: true, required: true })
-  dni: number;
+  dni: string;
 
   @Prop({ required: true })
-  phone: number;
+  phone: string;
 
-  @Prop({ unique: true , required: true })
+  @Prop({ required: true })
   email: string;
 }
 
