@@ -42,7 +42,7 @@ export class UsersService {
 
     if (!users) throw new HttpException(USER_CONFIG.service.error.userFoundMany, HttpStatus.NOT_FOUND);
     if (users.length === 0) throw new HttpException(USER_CONFIG.service.success.userFoundManyEmpty, HttpStatus.NOT_FOUND);
-      // Data for pagination
+    // Data for pagination
     const count = await this.userModel
       .find({
         // prettier-ignore
@@ -52,7 +52,46 @@ export class UsersService {
         ],
       })
       .countDocuments();
-    
+
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    const data = { total: pageTotal, count: count, data: users };
+
+    return { statusCode: 200, message: USER_CONFIG.service.success.userFoundMany, data: data };
+  }
+  // Find all users by DNI (partial search of DNI => many results)
+  async findAllByDNI(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+    let sorting = {};
+    if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
+    if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
+
+    const users = await this.userModel
+      .find({
+        $expr: {
+          $regexMatch: {
+            input: { $toString: { $toLong: '$dni' } },
+            regex: search,
+          },
+        },
+      })
+      .sort(sorting)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .exec();
+
+    if (!users) throw new HttpException(USER_CONFIG.service.error.userFoundMany, HttpStatus.NOT_FOUND);
+    if (users.length === 0) throw new HttpException(USER_CONFIG.service.success.userFoundManyEmpty, HttpStatus.NOT_FOUND);
+    // Data for pagination
+    const count = await this.userModel
+      .find({
+        $expr: {
+          $regexMatch: {
+            input: { $toString: { $toLong: '$dni' } },
+            regex: search,
+          },
+        },
+      })
+      .countDocuments();
+
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data = { total: pageTotal, count: count, data: users };
 
