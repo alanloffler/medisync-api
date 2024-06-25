@@ -32,8 +32,7 @@ export class UsersService {
         // prettier-ignore
         $or: [
           { firstName: { $regex: search, $options: 'i' } }, 
-          { lastName: { $regex: search, $options: 'i' } }, 
-          { email: { $regex: search, $options: 'i' } }
+          { lastName: { $regex: search, $options: 'i' } }
         ],
       })
       .sort(sorting)
@@ -49,8 +48,7 @@ export class UsersService {
         // prettier-ignore
         $or: [
           { firstName: { $regex: search, $options: 'i' } }, 
-          { lastName: { $regex: search, $options: 'i' } }, 
-          { email: { $regex: search, $options: 'i' } }
+          { lastName: { $regex: search, $options: 'i' } }
         ],
       })
       .countDocuments();
