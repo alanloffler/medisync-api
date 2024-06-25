@@ -20,7 +20,6 @@ export class ProfessionalsService {
   }
 
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
-    console.log(sortingKey, sortingValue);
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
