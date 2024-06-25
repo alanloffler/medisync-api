@@ -24,6 +24,17 @@ export class UsersController {
     return this.usersService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
+  @Get('byDNI')
+  findAllByDNI(
+    @Query('search') search: string, 
+    @Query('limit') limit: string, 
+    @Query('skip') skip: string, 
+    @Query('sk') sortingKey: string, 
+    @Query('sv') sortingValue: string
+  ): Promise<IResponse> {
+    return this.usersService.findAllByDNI(search, limit, skip, sortingKey, sortingValue);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse> {
     return this.usersService.findOne(id);
