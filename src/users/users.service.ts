@@ -21,7 +21,7 @@ export class UsersService {
 
     return { statusCode: 200, message: USER_CONFIG.service.success.userCreation, data: user };
   }
-
+  // Find all users by firstName and lastName
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
