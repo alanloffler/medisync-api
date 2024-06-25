@@ -22,12 +22,43 @@ export class UsersService {
     return { statusCode: 200, message: USER_CONFIG.service.success.userCreation, data: user };
   }
 
-  async findAll(): Promise<IResponse> {
-    const users = await this.userModel.find();
+  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+    let sorting = {};
+    if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
+    if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
+
+    const users = await this.userModel
+      .find({
+        // prettier-ignore
+        $or: [
+          { firstName: { $regex: search, $options: 'i' } }, 
+          { lastName: { $regex: search, $options: 'i' } }, 
+          { email: { $regex: search, $options: 'i' } }
+        ],
+      })
+      .sort(sorting)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .exec();
+
     if (!users) throw new HttpException(USER_CONFIG.service.error.userFoundMany, HttpStatus.NOT_FOUND);
     if (users.length === 0) throw new HttpException(USER_CONFIG.service.success.userFoundManyEmpty, HttpStatus.NOT_FOUND);
+      // Data for pagination
+    const count = await this.userModel
+      .find({
+        // prettier-ignore
+        $or: [
+          { firstName: { $regex: search, $options: 'i' } }, 
+          { lastName: { $regex: search, $options: 'i' } }, 
+          { email: { $regex: search, $options: 'i' } }
+        ],
+      })
+      .countDocuments();
+    
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    const data = { total: pageTotal, count: count, data: users };
 
-    return { statusCode: 200, message: USER_CONFIG.service.success.userFoundMany, data: users };
+    return { statusCode: 200, message: USER_CONFIG.service.success.userFoundMany, data: data };
   }
 
   async findOne(id: string): Promise<IResponse> {
@@ -40,7 +71,7 @@ export class UsersService {
     return { statusCode: 200, message: USER_CONFIG.service.success.userFound, data: user };
   }
 
-  async findOneByDni(dni: string): Promise<IResponse> {
+  async findOneByDni(dni: number): Promise<IResponse> {
     const user = await this.userModel.findOne({ dni });
     if (user) throw new HttpException(USER_CONFIG.service.error.userExistence, HttpStatus.NOT_FOUND);
 
