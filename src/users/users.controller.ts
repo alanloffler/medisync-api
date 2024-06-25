@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,8 +14,14 @@ export class UsersController {
   }
 
   @Get()
-  findAll(): Promise<IResponse> {
-    return this.usersService.findAll();
+  findAll(
+    @Query('search') search: string, 
+    @Query('limit') limit: string, 
+    @Query('skip') skip: string, 
+    @Query('sk') sortingKey: string, 
+    @Query('sv') sortingValue: string
+  ): Promise<IResponse> {
+    return this.usersService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get(':id')
