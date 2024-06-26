@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { Appointment } from './schema/appointment.schema';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+// import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { IResponse } from 'src/common/interfaces/response.interface';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AppointmentsService {
   async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
     const appointment = await this.appointmentModel.create(createAppointmentDto);
     if (!appointment) throw new HttpException('Appointment not created', HttpStatus.BAD_REQUEST);
-
+    
     return { statusCode: 200, message: 'Appointment created', data: appointment };
   }
 
@@ -27,14 +27,17 @@ export class AppointmentsService {
   }
 
   async findAllByProfessional(id: string, day: string): Promise<Appointment[]> {
-    console.log(day, id)
-    const appointments = await this.appointmentModel.find({ professional: id, day: day });
+    // console.log(day, id)
+    const appointments = await this.appointmentModel
+    .find({ professional: id, day: day })
+    .populate({ path: 'user', select: '_id firstName lastName dni' });
+
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-    console.log(appointments);
+    // console.log(appointments);
     return appointments;
   }
-
+  // TODO HERE POPULATE FOR USER PROP
   async findOne(id: string): Promise<Appointment> {
     const appointment = await this.appointmentModel
       .findById(id)
@@ -44,9 +47,9 @@ export class AppointmentsService {
     return appointment;
   }
    
-  update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
-    return `This action updates a #${id} appointment`;
-  }
+  // update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+  //   return `This action updates a #${id} appointment`;
+  // }
 
   async remove(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
