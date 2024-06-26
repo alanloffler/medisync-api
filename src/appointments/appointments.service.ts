@@ -37,16 +37,18 @@ export class AppointmentsService {
     // console.log(appointments);
     return appointments;
   }
-  // TODO HERE POPULATE FOR USER PROP
+  
   async findOne(id: string): Promise<Appointment> {
     const appointment = await this.appointmentModel
       .findById(id)
-      .populate({ path: 'professional', select: '_id firstName lastName titleAbbreviation' });
+      .populate({ path: 'professional', select: '_id firstName lastName titleAbbreviation' })
+      .populate({ path: 'user', select: '_id firstName lastName dni' });
+
     if (!appointment) throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
 
     return appointment;
   }
-   
+  
   // update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
   //   return `This action updates a #${id} appointment`;
   // }
