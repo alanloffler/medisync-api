@@ -2,6 +2,7 @@ import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Professional } from '../../professionals/schema/professional.schema';
+import { User } from '../../users/schema/user.schema';
 
 export type AppointmentDocument = HydratedDocument<Appointment>;
 
@@ -9,13 +10,16 @@ export type AppointmentDocument = HydratedDocument<Appointment>;
 export class Appointment {
   @Prop({
     type: MongooseSchema.Types.ObjectId,
-    ref: 'Professional',
-    default: {},
+    ref: 'Professional'
   })
   professional: Professional;
 
-  @Prop()
-  user: string;
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'User',
+    sparse: true
+  })
+  user: User;
 
   @Prop()
   day: string;
