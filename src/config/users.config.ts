@@ -13,7 +13,7 @@ export const USER_CONFIG = {
       userCreation: 'paciente creado con éxito',
       userFound: 'paciente encontrado',
       userFoundMany: 'pacientes encontrados',
-      userFoundManyEmpty: 'No hay pacientes en la base de datos',
+      userFoundManyEmpty: 'No hay pacientes que coincidan con la búsqueda',
       userRemove: 'paciente eliminado con éxito',
       userUpdate: 'paciente actualizado con éxito',
     },
