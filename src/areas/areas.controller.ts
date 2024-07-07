@@ -16,12 +16,12 @@ export class AreasController {
   }
 
   @Get()
-  findAll(): Promise<Area[]> {
+  findAll(): Promise<IResponse> {
     return this.areasService.findAll();
   }
 
   @Get('/active')
-  findAllActive(): Promise<Area[]> {
+  findAllActive(): Promise<IResponse> {
     return this.areasService.findAllActive();
   }
 

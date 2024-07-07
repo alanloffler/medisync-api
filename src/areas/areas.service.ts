@@ -23,7 +23,7 @@ export class AreasService {
     return { statusCode: 200, message: AREA_CONFIG.success.created, data: createdArea };
   }
 
-  async findAll(): Promise<Area[]> {
+  async findAll(): Promise<IResponse> {
     const areas = await this.areaModel
       .find()
       .sort({ name: 'asc' })
@@ -32,10 +32,10 @@ export class AreasService {
     if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
 
-    return areas;
+    return { statusCode: 200, message: AREA_CONFIG.success.found, data: areas };
   }
 
-  async findAllActive(): Promise<Area[]> {
+  async findAllActive(): Promise<IResponse> {
     const areas = await this.areaModel
       .find({ active: 1 })
       .sort({ name: 'asc' })
@@ -44,7 +44,7 @@ export class AreasService {
     if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
 
-    return areas;
+    return { statusCode: 200, message: AREA_CONFIG.success.found, data: areas };
   }
 
   async findOne(id: string): Promise<Area> {
