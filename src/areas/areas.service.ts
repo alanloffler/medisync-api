@@ -53,7 +53,7 @@ export class AreasService {
 
     const area = await this.areaModel.findById(id).populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
     if (!area) throw new HttpException(AREA_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
-
+    // TODO: here add IResponse, also in controller
     return area;
   }
 
