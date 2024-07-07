@@ -3,6 +3,7 @@ export const AREA_CONFIG = {
     created: 'Área creada con éxito',
     deleted: 'Área eliminada con éxito',
     empty: 'No hay áreas en la base de datos',
+    found: 'Áreas encontradas en la base de datos',
     updated: 'Área actualizada con éxito',
   },
   errors: {
