@@ -24,37 +24,42 @@ export class AreasService {
   }
 
   async findAll(): Promise<IResponse> {
+    // prettier-ignore
     const areas = await this.areaModel
       .find()
       .sort({ name: 'asc' })
       .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
-    
-    if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
-    if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: AREA_CONFIG.success.found, data: areas };
+    if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.emptyMany, HttpStatus.NOT_FOUND);
+    if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFindingMany, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: AREA_CONFIG.success.foundMany, data: areas };
   }
 
   async findAllActive(): Promise<IResponse> {
+    // prettier-ignore
     const areas = await this.areaModel
       .find({ active: 1 })
       .sort({ name: 'asc' })
       .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
-    
-    if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.empty, HttpStatus.NOT_FOUND);
-    if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFinding, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: AREA_CONFIG.success.found, data: areas };
+    if (areas.length === 0) throw new HttpException(AREA_CONFIG.success.emptyMany, HttpStatus.NOT_FOUND);
+    if (!areas) throw new HttpException(AREA_CONFIG.errors.errorFindingMany, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: AREA_CONFIG.success.foundMany, data: areas };
   }
 
-  async findOne(id: string): Promise<Area> {
+  async findOne(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(AREA_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
-
-    const area = await this.areaModel.findById(id).populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
+    // prettier-ignore
+    const area = await this.areaModel
+      .findById(id)
+      .populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
+      
     if (!area) throw new HttpException(AREA_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
-    // TODO: here add IResponse, also in controller
-    return area;
+
+    return { statusCode: 200, message: AREA_CONFIG.success.found, data: area };
   }
 
   async update(id: string, updateAreaDto: UpdateAreaDto): Promise<IResponse> {
