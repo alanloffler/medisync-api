@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 
-import { Area } from './schema/areas.schema';
 import { AreasService } from './areas.service';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { IResponse } from '../common/interfaces/response.interface';
@@ -26,7 +25,7 @@ export class AreasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Area> {
+  findOne(@Param('id') id: string): Promise<IResponse> {
     return this.areasService.findOne(id);
   }
 
