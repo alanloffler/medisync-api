@@ -3,10 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 
 import { CreateProfessionalDto } from './dto/create-professional.dto';
+import { IResponse } from 'src/common/interfaces/response.interface';
 import { PROF_CONFIG } from '../common/config/professionals.config';
 import { Professional } from './schema/professional.schema';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
-import { IResponse } from 'src/common/interfaces/response.interface';
 
 @Injectable()
 export class ProfessionalsService {
@@ -92,6 +92,7 @@ export class ProfessionalsService {
   }
 
   async findAllActive(): Promise<IResponse> {
+    // throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
     // prettier-ignore
     const professionals = await this.professionalModel
       .find({ available: true })
