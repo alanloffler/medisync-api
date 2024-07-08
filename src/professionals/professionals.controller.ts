@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 
 import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { IResponse } from '../common/interfaces/response.interface';
-import { Professional } from './schema/professional.schema';
 import { ProfessionalsService } from './professionals.service';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
 
@@ -32,7 +31,7 @@ export class ProfessionalsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Professional> {
+  findOne(@Param('id') id: string): Promise<IResponse> {
     return this.professionalsService.findOne(id);
   }
 

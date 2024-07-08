@@ -106,7 +106,7 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.success.foundMany, data: professionals };
   }
 
-  async findOne(id: string): Promise<Professional> {
+  async findOne(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
     // prettier-ignore
@@ -118,7 +118,7 @@ export class ProfessionalsService {
 
     if (!professional) throw new HttpException(PROF_CONFIG.errors.notFoundOne, HttpStatus.NOT_FOUND);
 
-    return professional;
+    return { statusCode: 200, message: PROF_CONFIG.success.found, data: professional };
   }
 
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
