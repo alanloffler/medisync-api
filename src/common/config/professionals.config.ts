@@ -2,6 +2,7 @@ export const PROF_CONFIG = {
   success: {
     created: 'Profesional creado con éxito',
     empty: 'No hay profesionales en la base de datos',
+    found: 'Profesional encontrado en la base de datos',
     foundMany: 'Profesionales encontrados en la base de datos',
     searchNotFound: 'La búsqueda no ha arrojado resultados',
     updated: 'Profesional actualizado con éxito',
