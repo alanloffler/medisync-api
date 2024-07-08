@@ -116,6 +116,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse> {
+    // throw new HttpException(USER_CONFIG.service.error.userUpdate, HttpStatus.BAD_REQUEST);
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(USER_CONFIG.service.error.userInvalidId, HttpStatus.BAD_REQUEST);
 
