@@ -92,7 +92,6 @@ export class ProfessionalsService {
   }
 
   async findAllActive(): Promise<IResponse> {
-    // throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
     // prettier-ignore
     const professionals = await this.professionalModel
       .find({ available: true })
