@@ -27,7 +27,7 @@ export class ProfessionalsController {
   }
 
   @Get('active')
-  findAllActive(): Promise<Professional[]> {
+  findAllActive(): Promise<IResponse> {
     return this.professionalsService.findAllActive();
   }
 
