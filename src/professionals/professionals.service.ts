@@ -91,7 +91,7 @@ export class ProfessionalsService {
     return { total: pageTotal, count: count, data: professionals };
   }
 
-  async findAllActive(): Promise<Professional[]> {
+  async findAllActive(): Promise<IResponse> {
     // prettier-ignore
     const professionals = await this.professionalModel
       .find({ available: true })
@@ -103,7 +103,7 @@ export class ProfessionalsService {
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
     if (!professionals) throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
 
-    return professionals;
+    return { statusCode: 200, message: PROF_CONFIG.success.foundMany, data: professionals };
   }
 
   async findOne(id: string): Promise<Professional> {
