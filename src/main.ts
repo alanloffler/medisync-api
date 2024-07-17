@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { AppModule } from './app.module';
+import { formatValidationError } from './common/validators/format-error';
 
 async function bootstrap() {
   const PORT: number = parseInt(process.env.PORT) || 3000;
@@ -9,7 +10,11 @@ async function bootstrap() {
   app.enableCors({
     origin: process.env.FRONTEND_URL,
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: formatValidationError,
+    }),
+  );
 
   await app.listen(PORT);
 }
