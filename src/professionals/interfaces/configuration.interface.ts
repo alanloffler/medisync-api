@@ -4,4 +4,10 @@ export interface IConfiguration {
   slotDuration: number;
   timeSlotUnavailableInit: string;
   timeSlotUnavailableEnd: string;
+  workingDays: IWorkingDay[];
+}
+
+export interface IWorkingDay {
+  day: number;
+  value: boolean;
 }
