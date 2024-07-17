@@ -49,6 +49,7 @@ export class Professional {
       slotDuration: { type: Number, required: true },
       timeSlotUnavailableInit: { type: String, trim: true, required: true },
       timeSlotUnavailableEnd: { type: String, trim: true, required: true },
+      workingDays: { type: [{ day: Number, value: Boolean }], required: true },
     },
   })
   configuration: IConfiguration;
