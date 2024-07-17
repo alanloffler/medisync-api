@@ -1,5 +1,6 @@
 import { IsBoolean, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IWorkingDay } from '../interfaces/configuration.interface';
 // TODO dynamic error validation messages by config file
 class Configuration {
   @IsString({ message: 'La hora de inicio de agenda debe ser hh:mm' })
@@ -25,6 +26,8 @@ class Configuration {
   @IsNotEmpty()
   @MinLength(5)
   timeSlotUnavailableEnd: string;
+
+  workingDays: IWorkingDay[];
 }
 
 export class CreateProfessionalDto {
