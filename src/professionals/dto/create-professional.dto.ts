@@ -1,17 +1,18 @@
-import { ArrayNotEmpty, IsBoolean, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IWorkingDay } from '../interfaces/configuration.interface';
+import { PROFESSIONAL_CONFIG } from 'src/config/professional.config';
 
 class WorkingDayDto {
-  @IsInt()
-  @Min(0)
-  @Max(5)
+  @IsInt({ message: PROFESSIONAL_CONFIG.validation.day.message })
+  @Min(0, { message: PROFESSIONAL_CONFIG.validation.day.min })
+  @Max(5, { message: PROFESSIONAL_CONFIG.validation.day.max })
   day: number;
 
-  @IsBoolean()
+  @IsBoolean({ message: PROFESSIONAL_CONFIG.validation.value.message })
   value: boolean;
 }
-// TODO dynamic error validation messages by config file
+
 class Configuration {
   @IsString({ message: 'La hora de inicio de agenda debe ser hh:mm' })
   @IsNotEmpty({ message: 'La hora de inicio de agenda es obligatoria' })
@@ -31,14 +32,16 @@ class Configuration {
   @IsNotEmpty()
   @MinLength(5)
   timeSlotUnavailableInit: string;
-  
+
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
   timeSlotUnavailableEnd: string;
 
-  @ArrayNotEmpty()
-  @ValidateNested({ each: true })
+  @ArrayNotEmpty({ message: PROFESSIONAL_CONFIG.validation.workingDays.notEmptyArray })
+  // @ValidateNested({ each: true })
+  @ArrayMaxSize(6, { message: PROFESSIONAL_CONFIG.validation.workingDays.minLength })
+  // @Length(6, 6, { message: PROFESSIONAL_CONFIG.validation.workingDays.minLength})
   @Type(() => WorkingDayDto)
   workingDays: IWorkingDay[];
 }
