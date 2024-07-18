@@ -1,7 +1,7 @@
-import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IWorkingDay } from '../interfaces/configuration.interface';
-import { PROFESSIONAL_CONFIG } from 'src/config/professional.config';
+import { PROFESSIONAL_CONFIG } from '../../config/professional.config';
 
 class WorkingDayDto {
   @IsInt({ message: PROFESSIONAL_CONFIG.validation.workingDays.day.isInt })
@@ -46,13 +46,36 @@ class Configuration {
 }
 
 export class CreateProfessionalDto {
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isString })
+  area: string;
+
   @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.available.isNotEmpty })
   @IsBoolean({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.available.isBoolean })
   available: boolean;
 
-  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isNotEmpty })
-  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isString })
-  area: string;
+  @IsNotEmptyObject({}, { message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.configuration.isNotEmptyObject })
+  @IsObject({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.configuration.isObject })
+  @ValidateNested()
+  @Type(() => Configuration)
+  configuration: Configuration;
+
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.email.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.email.isString })
+  @IsEmail({}, { message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.email.isEmail })
+  email: string;
+
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.firstName.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.firstName.isString })
+  firstName: string;
+
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.lastName.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.lastName.isString })
+  lastName: string;
+
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.phone.isNotEmpty })
+  @IsNumber({}, { message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.phone.isNumber })
+  phone: number;
 
   @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.specialization.isNotEmpty })
   @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.specialization.isString })
@@ -61,26 +84,4 @@ export class CreateProfessionalDto {
   @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isNotEmpty })
   @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isString })
   titleAbbreviation: string;
-
-  @IsNotEmpty()
-  @IsString()
-  firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  email: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  phone: number;
-
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => Configuration)
-  configuration: Configuration;
 }
