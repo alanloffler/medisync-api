@@ -24,12 +24,24 @@ export const PROFESSIONAL_CONFIG = {
         isNotEmpty: 'El fin de los turnos no disponibles es obligatorio',
         isString: 'El fin de los turnos no disponibles debe ser hh:mm',
         minLength: 'El fin de los turnos no disponibles debe poseer 5 caracteres (hh:mm)',
-      },    
+      },
     },
     createProfessionalDto: {
+      area: {
+        isNotEmpty: 'El área es obligatoria',
+        isString: 'El área debe ser una cadena de texto',
+      },
       available: {
         isBoolean: 'El estado de disponibilidad debe ser un booleano',
         isNotEmpty: 'El estado de disponibilidad es obligatorio',
+      },
+      specialization: {
+        isNotEmpty: 'La especialidad es obligatoria',
+        isString: 'La especialidad debe ser una cadena de texto',
+      },
+      titleAbbreviation: {
+        isNotEmpty: 'La abreviatura del título es obligatoria',
+        isString: 'La abreviatura del título debe ser una cadena de texto',
       }
     },
     workingDays: {
