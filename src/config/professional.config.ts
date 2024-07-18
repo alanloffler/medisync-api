@@ -35,6 +35,27 @@ export const PROFESSIONAL_CONFIG = {
         isBoolean: 'El estado de disponibilidad debe ser un booleano',
         isNotEmpty: 'El estado de disponibilidad es obligatorio',
       },
+      configuration: {
+        isNotEmptyObject: 'La configuración es obligatoria',
+        isObject: 'La configuración debe ser un objeto',
+      },
+      email: {
+        isEmail: 'El email debe ser un email válido',
+        isNotEmpty: 'El email es obligatorio',
+        isString: 'El email debe ser una cadena de texto',
+      },
+      firstName: {
+        isNotEmpty: 'El nombre es obligatorio',
+        isString: 'El nombre debe ser una cadena de texto',
+      },
+      lastName: {
+        isNotEmpty: 'El apellido es obligatorio',
+        isString: 'El apellido debe ser una cadena de texto',
+      },
+      phone: {
+        isNotEmpty: 'El teléfono es obligatorio',
+        isNumber: 'El teléfono debe ser un número',
+      },
       specialization: {
         isNotEmpty: 'La especialidad es obligatoria',
         isString: 'La especialidad debe ser una cadena de texto',
