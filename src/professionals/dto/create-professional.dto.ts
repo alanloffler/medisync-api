@@ -50,16 +50,16 @@ export class CreateProfessionalDto {
   @IsBoolean({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.available.isBoolean })
   available: boolean;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.area.isString })
   area: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.specialization.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.specialization.isString })
   specialization: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isNotEmpty })
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isString })
   titleAbbreviation: string;
 
   @IsNotEmpty()
