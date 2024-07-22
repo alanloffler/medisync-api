@@ -1,8 +1,7 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-import { Specialization } from '../../specializations/schema/specializations.schema';
 import { IConfiguration } from '../interfaces/configuration.interface';
+import { Specialization } from '../../specializations/schema/specializations.schema';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
 
@@ -11,9 +10,10 @@ export type ProfessionalDocument = HydratedDocument<Professional>;
 })
 export class Professional {
   @Prop({
-    type: MongooseSchema.Types.ObjectId,
-    ref: 'Area',
     default: {},
+    ref: 'Area',
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
   })
   area: string;
 
@@ -22,39 +22,43 @@ export class Professional {
 
   @Prop({
     type: {
-      scheduleTimeInit: { type: String, trim: true, required: true },
-      scheduleTimeEnd: { type: String, trim: true, required: true },
-      slotDuration: { type: Number, required: true },
-      timeSlotUnavailableInit: { type: String, trim: true, required: true },
-      timeSlotUnavailableEnd: { type: String, trim: true, required: true },
-      workingDays: { type: [{ day: Number, value: Boolean }], required: true },
+      scheduleTimeInit: { required: true, trim: true, type: String },
+      scheduleTimeEnd: { required: true, trim: true, type: String },
+      slotDuration: { required: true, type: Number },
+      timeSlotUnavailableInit: { required: true, trim: true, type: String },
+      timeSlotUnavailableEnd: { required: true, trim: true, type: String },
+      workingDays: { required: true, type: [{ day: Number, value: Boolean }] },
     },
   })
   configuration: IConfiguration;
 
-  @Prop()
+  @Prop({ required: false })
   description: string;
 
-  @Prop({ unique: true, lowercase: true })
+  @Prop({ required: true, unique: true })
+  dni: number;
+
+  @Prop({ lowercase: true, required: true, unique: true })
   email: string;
 
-  @Prop({ lowercase: true, trim: true })
+  @Prop({ lowercase: true, required: true, trim: true })
   firstName: string;
 
-  @Prop({ lowercase: true, trim: true })
+  @Prop({ lowercase: true, required: true, trim: true })
   lastName: string;
 
-  @Prop()
+  @Prop({ required: true })
   phone: number;
 
   @Prop({
-    type: MongooseSchema.Types.ObjectId,
-    ref: 'Specialization',
     default: {},
+    ref: 'Specialization',
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
   })
   specialization: Specialization;
 
-  @Prop({ lowercase: true, trim: true })
+  @Prop({ lowercase: true, required: true, trim: true })
   titleAbbreviation: string;
 }
 
