@@ -39,6 +39,13 @@ export const PROFESSIONAL_CONFIG = {
         isNotEmptyObject: 'La configuración es obligatoria',
         isObject: 'La configuración debe ser un objeto',
       },
+      description: {
+        isString: 'La descripción debe ser una cadena de texto',
+      },
+      dni: {
+        isNotEmpty: 'El DNI es obligatorio',
+        isNumber: 'El DNI debe ser un número',
+      },
       email: {
         isEmail: 'El email debe ser un email válido',
         isNotEmpty: 'El email es obligatorio',
