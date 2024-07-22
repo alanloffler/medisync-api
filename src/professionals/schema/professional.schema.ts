@@ -10,9 +10,6 @@ export type ProfessionalDocument = HydratedDocument<Professional>;
   timestamps: true,
 })
 export class Professional {
-  @Prop({ default: true })
-  available: boolean;
-
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     ref: 'Area',
@@ -20,27 +17,8 @@ export class Professional {
   })
   area: string;
 
-  @Prop({
-    type: MongooseSchema.Types.ObjectId,
-    ref: 'Specialization',
-    default: {},
-  })
-  specialization: Specialization;
-
-  @Prop({ lowercase: true, trim: true })
-  titleAbbreviation: string;
-
-  @Prop({ lowercase: true, trim: true })
-  firstName: string;
-
-  @Prop({ lowercase: true, trim: true })
-  lastName: string;
-
-  @Prop({ unique: true, lowercase: true })
-  email: string;
-
-  @Prop()
-  phone: number;
+  @Prop({ default: true })
+  available: boolean;
 
   @Prop({
     type: {
@@ -53,6 +31,28 @@ export class Professional {
     },
   })
   configuration: IConfiguration;
+
+  @Prop({ unique: true, lowercase: true })
+  email: string;
+
+  @Prop({ lowercase: true, trim: true })
+  firstName: string;
+
+  @Prop({ lowercase: true, trim: true })
+  lastName: string;
+
+  @Prop()
+  phone: number;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Specialization',
+    default: {},
+  })
+  specialization: Specialization;
+
+  @Prop({ lowercase: true, trim: true })
+  titleAbbreviation: string;
 }
 
 export const ProfessionalSchema = SchemaFactory.createForClass(Professional);
