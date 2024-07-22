@@ -32,6 +32,9 @@ export class Professional {
   })
   configuration: IConfiguration;
 
+  @Prop()
+  description: string;
+
   @Prop({ unique: true, lowercase: true })
   email: string;
 
