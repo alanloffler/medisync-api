@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IWorkingDay } from '../interfaces/configuration.interface';
 import { PROFESSIONAL_CONFIG } from '../../config/professional.config';
@@ -59,6 +59,14 @@ export class CreateProfessionalDto {
   @ValidateNested()
   @Type(() => Configuration)
   configuration: Configuration;
+
+  @IsOptional()
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.description.isString })
+  description: string;
+
+  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.dni.isNotEmpty })
+  @IsNumber({}, { message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.dni.isNumber })
+  dni: number;
 
   @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.email.isNotEmpty })
   @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.email.isString })
