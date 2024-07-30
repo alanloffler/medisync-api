@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ProfessionalsModule } from './professionals/professionals.module';
-import { AreasModule } from './areas/areas.module';
-import { SpecializationsModule } from './specializations/specializations.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { AreasModule } from './areas/areas.module';
+import { ProfessionalsModule } from './professionals/professionals.module';
+import { SpecializationsModule } from './specializations/specializations.module';
+import { TitlesModule } from './titles/titles.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -14,10 +15,11 @@ import { UsersModule } from './users/users.module';
       dbName: 'medisync',
       autoCreate: false,
     }),
-    ProfessionalsModule,
     AppointmentsModule,
     AreasModule,
+    ProfessionalsModule,
     SpecializationsModule,
+    TitlesModule,
     UsersModule,
   ],
   controllers: [],
