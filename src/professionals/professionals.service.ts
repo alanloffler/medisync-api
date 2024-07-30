@@ -54,6 +54,15 @@ export class ProfessionalsService {
         },
         { $unwind: '$area' },
         {
+          $lookup: {
+            from: 'titles',
+            localField: 'title',
+            foreignField: '_id',
+            as: 'title',
+          },
+        },
+        { $unwind: '$titleAbbreviation' },
+        {
           $match: {
             $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }, { 'specialization.name': { $regex: search, $options: 'i' } }],
           },
