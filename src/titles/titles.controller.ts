@@ -25,11 +25,11 @@ export class TitlesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTitleDto: UpdateTitleDto) {
-    return this.titlesService.update(+id, updateTitleDto);
+    return this.titlesService.update(id, updateTitleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.titlesService.remove(+id);
+    return this.titlesService.remove(id);
   }
 }
