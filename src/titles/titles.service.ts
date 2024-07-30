@@ -26,11 +26,11 @@ export class TitlesService {
     return { statusCode: 200, message: 'Title found', data: title };
   }
 
-  update(id: number, updateTitleDto: UpdateTitleDto) {
+  update(id: string, updateTitleDto: UpdateTitleDto) {
     return `This action updates a #${id} title`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} title`;
   }
 }
