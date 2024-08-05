@@ -141,6 +141,12 @@ export class ProfessionalsService {
   }
 
   async remove(id: string) {
-    return await this.professionalModel.findByIdAndDelete(id);
+    const isValid = isValidObjectId(id);
+    if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
+
+    const remove = await this.professionalModel.findByIdAndDelete(id);
+    if (!remove) throw new HttpException(PROF_CONFIG.errors.notRemoved, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: PROF_CONFIG.success.removed, data: remove };
   }
 }
