@@ -123,6 +123,7 @@ export class ProfessionalsService {
       .findById(id)
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
     if (!professional) throw new HttpException(PROF_CONFIG.errors.notFoundOne, HttpStatus.NOT_FOUND);
