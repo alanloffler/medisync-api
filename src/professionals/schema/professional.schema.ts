@@ -64,7 +64,7 @@ export class Professional {
     required: true,
     type: MongooseSchema.Types.ObjectId,
   })
-  titleAbbreviation: string;
+  title: string;
 }
 
 export const ProfessionalSchema = SchemaFactory.createForClass(Professional);
