@@ -58,7 +58,12 @@ export class Professional {
   })
   specialization: Specialization;
 
-  @Prop({ lowercase: true, required: true, trim: true })
+  @Prop({
+    default: {},
+    ref: 'Title',
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+  })
   titleAbbreviation: string;
 }
 
