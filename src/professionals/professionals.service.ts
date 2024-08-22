@@ -107,6 +107,7 @@ export class ProfessionalsService {
       .sort({ lastName: 'asc' })
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
