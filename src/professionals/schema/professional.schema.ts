@@ -25,8 +25,8 @@ export class Professional {
       scheduleTimeInit: { required: true, trim: true, type: String },
       scheduleTimeEnd: { required: true, trim: true, type: String },
       slotDuration: { required: true, type: Number },
-      timeSlotUnavailableInit: { required: true, trim: true, type: String },
-      timeSlotUnavailableEnd: { required: true, trim: true, type: String },
+      timeSlotUnavailableInit: { required: false, trim: true, type: String },
+      timeSlotUnavailableEnd: { required: false, trim: true, type: String },
       workingDays: { required: true, type: [{ day: Number, value: Boolean }] },
     },
   })
