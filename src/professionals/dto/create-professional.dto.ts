@@ -29,14 +29,14 @@ class Configuration {
   slotDuration: number;
 
   @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.isString })
-  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.isNotEmpty })
-  @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.minLength })
-  timeSlotUnavailableInit: string;
+  // @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.minLength })
+  @IsOptional()
+  timeSlotUnavailableInit?: string;
 
   @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.isString })
-  @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.isNotEmpty })
-  @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.minLength })
-  timeSlotUnavailableEnd: string;
+  // @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.minLength })
+  @IsOptional()
+  timeSlotUnavailableEnd?: string;
 
   @ArrayNotEmpty({ message: PROFESSIONAL_CONFIG.validation.workingDays.arrayNotEmpty })
   @ValidateNested({ each: true })
@@ -91,5 +91,5 @@ export class CreateProfessionalDto {
 
   @IsNotEmpty({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isNotEmpty })
   @IsString({ message: PROFESSIONAL_CONFIG.validation.createProfessionalDto.titleAbbreviation.isString })
-  titleAbbreviation: string;
+  title: string;
 }
