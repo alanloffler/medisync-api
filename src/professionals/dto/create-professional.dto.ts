@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { IWorkingDay } from '../interfaces/configuration.interface';
 import { PROFESSIONAL_CONFIG } from '../../config/professional.config';
@@ -28,14 +28,16 @@ class Configuration {
   @IsPositive({ message: PROFESSIONAL_CONFIG.validation.configuration.slotDuration.isPositive })
   slotDuration: number;
 
-  @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.isString })
-  // @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.minLength })
   @IsOptional()
+  @ValidateIf((object, value) => value !== null)
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.isString })
+  @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableInit.minLength })
   timeSlotUnavailableInit?: string;
 
-  @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.isString })
-  // @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.minLength })
   @IsOptional()
+  @ValidateIf((object, value) => value !== null)
+  @IsString({ message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.isString })
+  @MinLength(5, { message: PROFESSIONAL_CONFIG.validation.configuration.timeSlotUnavailableEnd.minLength })
   timeSlotUnavailableEnd?: string;
 
   @ArrayNotEmpty({ message: PROFESSIONAL_CONFIG.validation.workingDays.arrayNotEmpty })
