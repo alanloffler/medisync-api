@@ -35,7 +35,7 @@ export class AppointmentsService {
     return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
   
-  async findOne(id: string): Promise<Appointment> {
+  async findOne(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel
       .findById(id)
       .populate({ path: 'professional', select: '_id firstName lastName titleAbbreviation' })
@@ -43,7 +43,7 @@ export class AppointmentsService {
 
     if (!appointment) throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
 
-    return appointment;
+    return { statusCode: 200, message: 'Appointment found', data: appointment };
   }
   
   // update(id: number, updateAppointmentDto: UpdateAppointmentDto) {

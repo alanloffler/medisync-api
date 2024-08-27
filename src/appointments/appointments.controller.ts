@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
-import { Appointment } from './schema/appointment.schema';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { IResponse } from '../common/interfaces/response.interface';
@@ -27,7 +26,7 @@ export class AppointmentsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Appointment> {
+  findOne(@Param('id') id: string): Promise<IResponse> {
     return this.appointmentsService.findOne(id);
   }
 
