@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
+import { Appointment } from './schema/appointment.schema';
 import { AppointmentsService } from './appointments.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-// import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { IResponse } from '../common/interfaces/response.interface';
-import { Appointment } from './schema/appointment.schema';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -23,7 +22,7 @@ export class AppointmentsController {
   findAllByProfessional(
     @Query('id') id: string,
     @Query('day') day: string
-  ): Promise<Appointment[]> {
+  ): Promise<IResponse> {
     return this.appointmentsService.findAllByProfessional(id, day);
   }
 

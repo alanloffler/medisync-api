@@ -1,11 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
 import { Appointment } from './schema/appointment.schema';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-// import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { IResponse } from 'src/common/interfaces/response.interface';
+import { IResponse } from '../common/interfaces/response.interface';
 
 @Injectable()
 export class AppointmentsService {
@@ -26,16 +24,15 @@ export class AppointmentsService {
     return appointments;
   }
 
-  async findAllByProfessional(id: string, day: string): Promise<Appointment[]> {
-    // console.log(day, id)
+  async findAllByProfessional(id: string, day: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
     .find({ professional: id, day: day })
     .populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-    // console.log(appointments);
-    return appointments;
+    
+    return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
   
   async findOne(id: string): Promise<Appointment> {
