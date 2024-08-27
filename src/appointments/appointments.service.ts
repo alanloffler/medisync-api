@@ -12,7 +12,7 @@ export class AppointmentsService {
   async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
     const appointment = await this.appointmentModel.create(createAppointmentDto);
     if (!appointment) throw new HttpException('Appointment not created', HttpStatus.BAD_REQUEST);
-    
+
     return { statusCode: 200, message: 'Appointment created', data: appointment };
   }
 
@@ -25,27 +25,25 @@ export class AppointmentsService {
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {
-    const appointments = await this.appointmentModel
-    .find({ professional: id, day: day })
-    .populate({ path: 'user', select: '_id firstName lastName dni' });
+    const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-    
+
     return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
-  
+
   async findOne(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel
       .findById(id)
-      .populate({ path: 'professional', select: '_id firstName lastName titleAbbreviation' })
+      .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointment) throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: 'Appointment found', data: appointment };
   }
-  
+
   // update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
   //   return `This action updates a #${id} appointment`;
   // }
