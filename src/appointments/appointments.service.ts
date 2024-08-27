@@ -16,12 +16,12 @@ export class AppointmentsService {
     return { statusCode: 200, message: 'Appointment created', data: appointment };
   }
 
-  async findAll(): Promise<Appointment[]> {
+  async findAll(): Promise<IResponse> {
     const appointments = await this.appointmentModel.find();
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
 
-    return appointments;
+    return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {

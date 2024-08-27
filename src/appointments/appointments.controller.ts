@@ -14,7 +14,7 @@ export class AppointmentsController {
   }
 
   @Get()
-  findAll(): Promise<Appointment[]> {
+  findAll(): Promise<IResponse> {
     return this.appointmentsService.findAll();
   }
 
