@@ -6,7 +6,7 @@ import { PROFESSIONAL_CONFIG } from '../../config/professional.config';
 class WorkingDayDto {
   @IsInt({ message: PROFESSIONAL_CONFIG.validation.workingDays.day.isInt })
   @Min(0, { message: PROFESSIONAL_CONFIG.validation.workingDays.day.min })
-  @Max(5, { message: PROFESSIONAL_CONFIG.validation.workingDays.day.max })
+  @Max(6, { message: PROFESSIONAL_CONFIG.validation.workingDays.day.max })
   day: number;
 
   @IsBoolean({ message: PROFESSIONAL_CONFIG.validation.workingDays.value.isBoolean })
@@ -42,7 +42,7 @@ class Configuration {
 
   @ArrayNotEmpty({ message: PROFESSIONAL_CONFIG.validation.workingDays.arrayNotEmpty })
   @ValidateNested({ each: true })
-  @ArrayMaxSize(6, { message: PROFESSIONAL_CONFIG.validation.workingDays.minLength })
+  @ArrayMaxSize(7, { message: PROFESSIONAL_CONFIG.validation.workingDays.minLength })
   @Type(() => WorkingDayDto)
   workingDays: IWorkingDay[];
 }
