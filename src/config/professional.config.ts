@@ -76,10 +76,10 @@ export const PROFESSIONAL_CONFIG = {
       arrayNotEmpty: 'Los días laborales son obligatorios',
       day: {
         isInt: 'El día debe ser un número entero',
-        max: 'El día debe ser menor o igual a 5',
+        max: 'El día debe ser menor o igual a 6',
         min: 'El día debe ser mayor o igual a 0',
       },
-      minLength: 'Los día laborables deben ser 6',
+      minLength: 'Los día laborables deben ser 7',
       value: {
         isBoolean: 'El valor debe ser un booleano',
       },
