@@ -29,7 +29,7 @@ export class AppointmentsService {
 
     if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-
+    
     return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
 
