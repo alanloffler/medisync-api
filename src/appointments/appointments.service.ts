@@ -25,11 +25,12 @@ export class AppointmentsService {
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {
-    const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
+    const appointments = await this.appointmentModel
+      .find({ professional: id, day: day })
+      .populate({ path: 'user', select: '_id firstName lastName dni' });
 
-    if (!appointments) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-    if (appointments.length === 0) throw new HttpException('Appointments not found', HttpStatus.NOT_FOUND);
-    
+    if (!appointments || appointments.length === 0) return { statusCode: 404, message: 'Appointments not found', data: [] };
+
     return { statusCode: 200, message: 'Appointments found', data: appointments };
   }
 
@@ -43,10 +44,6 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: 'Appointment found', data: appointment };
   }
-
-  // update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
-  //   return `This action updates a #${id} appointment`;
-  // }
 
   async remove(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
