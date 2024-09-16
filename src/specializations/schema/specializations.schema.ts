@@ -28,8 +28,8 @@ export class Specialization {
 
   @Prop({
     required: true,
-    type: MongooseSchema.Types.ObjectId, 
-    ref: 'Area'
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Area',
   })
   area: Types.ObjectId;
 
