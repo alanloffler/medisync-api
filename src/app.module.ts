@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppointmentsModule } from './appointments/appointments.module';
-import { AreasModule } from './areas/areas.module';
-import { ProfessionalsModule } from './professionals/professionals.module';
-import { SpecializationsModule } from './specializations/specializations.module';
-import { TitlesModule } from './titles/titles.module';
-import { UsersModule } from './users/users.module';
+import { AppointmentsModule } from '@appointments/appointments.module';
+import { AreasModule } from '@areas/areas.module';
+import { ProfessionalsModule } from '@professionals/professionals.module';
+import { SpecializationsModule } from '@specializations/specializations.module';
+import { TitlesModule } from '@titles/titles.module';
+import { UsersModule } from '@users/users.module';
 
 @Module({
   imports: [
