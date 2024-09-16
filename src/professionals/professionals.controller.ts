@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-
-import { CreateProfessionalDto } from './dto/create-professional.dto';
-import { IResponse } from '../common/interfaces/response.interface';
-import { ProfessionalsService } from './professionals.service';
-import { UpdateProfessionalDto } from './dto/update-professional.dto';
+import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
+import { IResponse } from '@common/interfaces/response.interface';
+import { ProfessionalsService } from '@professionals/professionals.service';
+import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
 @Controller('professionals')
 export class ProfessionalsController {

@@ -1,7 +1,7 @@
 import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IWorkingDay } from '../interfaces/configuration.interface';
-import { PROFESSIONAL_CONFIG } from '../../config/professional.config';
+import { IWorkingDay } from '@professionals/interfaces/configuration.interface';
+import { PROFESSIONAL_CONFIG } from '@config/professional.config';
 
 class WorkingDayDto {
   @IsInt({ message: PROFESSIONAL_CONFIG.validation.workingDays.day.isInt })

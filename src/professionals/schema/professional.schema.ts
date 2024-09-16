@@ -1,7 +1,7 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IConfiguration } from '../interfaces/configuration.interface';
-import { Specialization } from '../../specializations/schema/specializations.schema';
+import { IConfiguration } from '@professionals/interfaces/configuration.interface';
+import { Specialization } from '@specializations/schema/specializations.schema';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
 

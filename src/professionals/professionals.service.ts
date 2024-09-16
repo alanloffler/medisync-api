@@ -1,12 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
-
-import { CreateProfessionalDto } from './dto/create-professional.dto';
-import { IResponse } from 'src/common/interfaces/response.interface';
-import { PROF_CONFIG } from '../common/config/professionals.config';
-import { Professional } from './schema/professional.schema';
-import { UpdateProfessionalDto } from './dto/update-professional.dto';
+import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
+import { IResponse } from '@common/interfaces/response.interface';
+import { PROF_CONFIG } from '@common/config/professionals.config';
+import { Professional } from '@professionals/schema/professional.schema';
+import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
 @Injectable()
 export class ProfessionalsService {
