@@ -19,21 +19,23 @@ export class SpecializationsService {
     return { statusCode: 200, message: SPEC_CONFIG.response.success.created, data: createSpecialization };
   }
 
-  async findAll() {
-    // return await this.specializationModel.find();
+  async findAll(): Promise<IResponse> {
     // return this.specializationModel.find().populate('area');ok
-    return await this.specializationModel.find();
+    const specializations = await this.specializationModel.find();
+    if (!specializations) throw new HttpException(SPEC_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.foundPlural, data: specializations };
+  }
+  // TODO: add functionality on methods
+  async findOne(id: string): Promise<IResponse> {
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.foundSingular, data: id };
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} specialization`;
+  async update(id: string, updateSpecializationDto: UpdateSpecializationDto): Promise<IResponse> {
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.updated, data: [id, updateSpecializationDto] };
   }
 
-  update(id: string, updateSpecializationDto: UpdateSpecializationDto) {
-    return `This action updates a #${id} specialization`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} specialization`;
+  async remove(id: string): Promise<IResponse> {
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.removed, data: id };
   }
 }
