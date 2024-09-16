@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CreateTitleDto } from './dto/create-title.dto';
-import { IResponse } from '../common/interfaces/response.interface';
-import { TitlesService } from './titles.service';
-import { UpdateTitleDto } from './dto/update-title.dto';
+import { CreateTitleDto } from '@titles/dto/create-title.dto';
+import { IResponse } from '@common/interfaces/response.interface';
+import { TitlesService } from '@titles/titles.service';
+import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
 @Controller('titles')
 export class TitlesController {

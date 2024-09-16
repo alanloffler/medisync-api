@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateTitleDto } from './dto/create-title.dto';
-import { UpdateTitleDto } from './dto/update-title.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Title } from './schema/title.schema';
 import { Model } from 'mongoose';
+import { CreateTitleDto } from '@titles/dto/create-title.dto';
+import { Title } from '@titles/schema/title.schema';
+import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
 @Injectable()
 export class TitlesService {
