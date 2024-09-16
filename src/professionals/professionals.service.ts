@@ -11,27 +11,19 @@ import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dt
 export class ProfessionalsService {
   constructor(@InjectModel(Professional.name) private readonly professionalModel: Model<Professional>) {}
 
-  async create(createProfessionalDto: CreateProfessionalDto) {
+  async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
     const professional = await this.professionalModel.create(createProfessionalDto);
     if (!professional) throw new HttpException(PROF_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
-
+  // TODO: apply IResponse on this method
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
     if (sortingValue === 'desc') obj = { [sortingKey]: -1 };
-    // const professionals = await this.professionalModel
-    //   .find({
-    //     $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
-    //   })
-    //   .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
-    //   .populate({ path: 'area', select: '_id name description', strictPopulate: false })
-    //   .skip(parseInt(skip))
-    //   .limit(parseInt(limit))
-    //   .exec();
+
     const professionals = await this.professionalModel
       .aggregate([
         {
@@ -140,7 +132,7 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.updated, data: update };
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
 

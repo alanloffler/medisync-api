@@ -12,7 +12,7 @@ export class ProfessionalsController {
   create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
     return this.professionalsService.create(createProfessionalDto);
   }
-
+  // TODO: apply IResponse on this method, also on service
   @Get()
   findAll(
     @Query('search') search: string,
@@ -20,7 +20,7 @@ export class ProfessionalsController {
     @Query('skip') skip: string,
     @Query('sk') sortingKey: string,
     @Query('sv') sortingValue: string,
-  ) {// volver a typear con interfaz nueva por el tema de la paginación
+  ) {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
@@ -35,12 +35,12 @@ export class ProfessionalsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfessionalDto: UpdateProfessionalDto) {
+  update(@Param('id') id: string, @Body() updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
     return this.professionalsService.update(id, updateProfessionalDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<IResponse> {
     return this.professionalsService.remove(id);
   }
 }
