@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTitleDto } from '@titles/dto/create-title.dto';
+import { IResponse } from '@common/interfaces/response.interface';
 import { Title } from '@titles/schema/title.schema';
 import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
@@ -29,12 +30,12 @@ export class TitlesService {
 
     return { statusCode: 200, message: 'Title found', data: title };
   }
-
-  update(id: string, updateTitleDto: UpdateTitleDto) {
-    return `This action updates a #${id} title`;
+  // TODO: add functionality to update title
+  async update(id: string, updateTitleDto: UpdateTitleDto): Promise<IResponse> {
+    return { statusCode: 200, message: 'Title updated', data: [id, updateTitleDto] };
   }
-
-  remove(id: string) {
-    return `This action removes a #${id} title`;
+  // TODO: add functionality to remove title
+  async remove(id: string): Promise<IResponse> {
+    return { statusCode: 200, message: 'Title removed', data: id };
   }
 }

@@ -24,12 +24,12 @@ export class TitlesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTitleDto: UpdateTitleDto) {
+  update(@Param('id') id: string, @Body() updateTitleDto: UpdateTitleDto): Promise<IResponse> {
     return this.titlesService.update(id, updateTitleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<IResponse> {
     return this.titlesService.remove(id);
   }
 }
