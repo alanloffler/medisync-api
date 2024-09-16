@@ -18,7 +18,7 @@ export class UsersService {
     const user = await this.userModel.create(createUserDto);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userCreation, data: user };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.created, data: user };
   }
   // Find all users by firstName and lastName
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
@@ -40,7 +40,7 @@ export class UsersService {
       .exec();
 
     if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.userFoundManyEmpty, HttpStatus.NOT_FOUND);
+    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
     // Data for pagination
     const count = await this.userModel
       .find({
@@ -55,7 +55,7 @@ export class UsersService {
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data = { total: pageTotal, count: count, data: users };
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userFoundMany, data: data };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
   // Find all users by DNI (partial search of DNI => many results)
   async findAllByDNI(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
@@ -78,8 +78,8 @@ export class UsersService {
       .exec();
 
     if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.userFoundManyEmpty, HttpStatus.NOT_FOUND);
-    // Data for pagination
+    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
+    
     const count = await this.userModel
       .find({
         $expr: {
@@ -94,7 +94,7 @@ export class UsersService {
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data = { total: pageTotal, count: count, data: users };
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userFoundMany, data: data };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
 
   async findOne(id: string): Promise<IResponse> {
@@ -104,7 +104,7 @@ export class UsersService {
     const user = await this.userModel.findById(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userFound, data: user };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.foundSingular, data: user };
   }
 
   async findOneByDni(dni: number): Promise<IResponse> {
@@ -115,7 +115,6 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse> {
-    // throw new HttpException(USER_CONFIG.response.error.userUpdate, HttpStatus.BAD_REQUEST);
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
@@ -128,7 +127,7 @@ export class UsersService {
     const user = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userUpdate };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.updated };
   }
 
   async remove(id: string): Promise<IResponse> {
@@ -141,6 +140,6 @@ export class UsersService {
     const user = await this.userModel.findByIdAndDelete(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.userRemove, data: user };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
   }
 }

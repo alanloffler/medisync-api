@@ -10,12 +10,12 @@ export const USERS_CONFIG = {
       notUpdated: 'Paciente no actualizado',
     },
     success: {
-      userCreation: 'Paciente creado con éxito',
-      userFound: 'Paciente encontrado',
-      userFoundMany: 'Pacientes encontrados',
-      userFoundManyEmpty: 'No hay pacientes que coincidan con la búsqueda',
-      userRemove: 'Paciente eliminado con éxito',
-      userUpdate: 'Paciente actualizado con éxito',
+      created: 'Paciente creado',
+      foundSingular: 'Paciente encontrado',
+      foundPlural: 'Pacientes encontrados',
+      foundEmptyPlural: 'No hay pacientes que coincidan con la búsqueda',
+      removed: 'Paciente eliminado',
+      updated: 'Paciente actualizado',
     },
   },
   validation: {
