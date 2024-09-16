@@ -1,5 +1,5 @@
 import { IsEmail, IsInt, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
-import { USER_CONFIG } from "../../config/users.config";
+import { USER_CONFIG } from "@config/users.config";
 
 export class CreateUserDto {
   @IsString({ message: USER_CONFIG.validation.firstName.message })
