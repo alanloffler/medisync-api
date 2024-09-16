@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSpecializationDto } from '@specializations/dto/create-specialization.dto';
 import { IResponse } from '@common/interfaces/response.interface';
-import { SPEC_CONFIG } from '@common/config/specialization.config';
+import { SPECIALIZATIONS_CONFIG as SPEC_CONFIG } from '@config/specializations.config';
 import { Specialization } from '@specializations/schema/specializations.schema';
 import { UpdateSpecializationDto } from '@specializations/dto/update-specialization.dto';
 
@@ -14,9 +14,9 @@ export class SpecializationsService {
   async create(createSpecializationDto: CreateSpecializationDto): Promise<IResponse> {
     const newSpecialization = new this.specializationModel(createSpecializationDto);
     const createSpecialization = await this.specializationModel.create(newSpecialization);
-    if (!createSpecialization) throw new HttpException(SPEC_CONFIG.errors.notCreated, HttpStatus.BAD_REQUEST);
+    if (!createSpecialization) throw new HttpException(SPEC_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: SPEC_CONFIG.success.created, data: createSpecialization };
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.created, data: createSpecialization };
   }
 
   async findAll() {
