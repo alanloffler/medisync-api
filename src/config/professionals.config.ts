@@ -1,20 +1,22 @@
 export const PROFESSIONALS_CONFIG = {
-  success: {
-    created: 'Profesional creado con éxito',
-    empty: 'No hay profesionales en la base de datos',
-    found: 'Profesional encontrado en la base de datos',
-    foundMany: 'Profesionales encontrados en la base de datos',
-    removed: 'Profesional eliminado con éxito',
-    searchNotFound: 'La búsqueda no ha arrojado resultados',
-    updated: 'Profesional actualizado con éxito',
-  },
-  errors: {
-    notCreated: 'El profesional no se pudo crear en la base de datos',
-    notFound: 'Profesionales no encontrados en la base de datos',
-    notFoundOne: 'Profesional no encontrado en la base de datos',
-    notRemoved: 'El profesional no se pudo eliminar en la base de datos',
-    notUpdated: 'El profesional no se pudo actualizar en la base de datos',
-    notValid: 'ID inválido. La estructura del ID es incorrecta',
+  response: {
+    error: {
+      invalidID: 'ID inválido. La estructura del ID es incorrecta',
+      notCreated: 'Profesional no creado',
+      notFoundPlural: 'Profesionales no encontrados',
+      notFoundSingular: 'Profesional no encontrado',
+      notRemoved: 'Profesional no eliminado',
+      notUpdated: 'Profesional no actualizado',
+    },
+    success: {
+      created: 'Profesional creado',
+      empty: 'No existen profesionales',
+      foundPlural: 'Profesionales encontrados',
+      foundSingular: 'Profesional encontrado',
+      removed: 'Profesional eliminado',
+      searchNotFound: 'La búsqueda no ha arrojado resultados',
+      updated: 'Profesional actualizado',
+    },
   },
   validation: {
     configuration: {

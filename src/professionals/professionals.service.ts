@@ -13,9 +13,9 @@ export class ProfessionalsService {
 
   async create(createProfessionalDto: CreateProfessionalDto) {
     const professional = await this.professionalModel.create(createProfessionalDto);
-    if (!professional) throw new HttpException(PROF_CONFIG.errors.notCreated, HttpStatus.BAD_REQUEST);
+    if (!professional) throw new HttpException(PROF_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.success.created, data: professional };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
 
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
@@ -86,7 +86,6 @@ export class ProfessionalsService {
       ])
       .exec();
 
-    // Here do the search for the count and pageTotal
     const count = await this.professionalModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
@@ -94,7 +93,7 @@ export class ProfessionalsService {
       .countDocuments();
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
 
-    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.searchNotFound, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
 
     return { total: pageTotal, count: count, data: professionals };
   }
@@ -109,16 +108,16 @@ export class ProfessionalsService {
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
-    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.success.empty, HttpStatus.NOT_FOUND);
-    if (!professionals) throw new HttpException(PROF_CONFIG.errors.notFound, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
+    if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: PROF_CONFIG.success.foundMany, data: professionals };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
   }
 
   async findOne(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
-    // prettier-ignore
+    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
+
     const professional = await this.professionalModel
       .findById(id)
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
@@ -126,28 +125,28 @@ export class ProfessionalsService {
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
-    if (!professional) throw new HttpException(PROF_CONFIG.errors.notFoundOne, HttpStatus.NOT_FOUND);
+    if (!professional) throw new HttpException(PROF_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: PROF_CONFIG.success.found, data: professional };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundSingular, data: professional };
   }
 
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
     const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
+    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
 
     const update = await this.professionalModel.findByIdAndUpdate(id, updateProfessionalDto, { new: true });
-    if (!update) throw new HttpException(PROF_CONFIG.errors.notUpdated, HttpStatus.BAD_REQUEST);
+    if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.success.updated, data: update };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.updated, data: update };
   }
 
   async remove(id: string) {
     const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.errors.notValid, HttpStatus.BAD_REQUEST);
+    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
 
     const remove = await this.professionalModel.findByIdAndDelete(id);
-    if (!remove) throw new HttpException(PROF_CONFIG.errors.notRemoved, HttpStatus.BAD_REQUEST);
+    if (!remove) throw new HttpException(PROF_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.success.removed, data: remove };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.removed, data: remove };
   }
 }
