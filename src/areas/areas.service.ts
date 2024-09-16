@@ -1,12 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
-
-import { AREA_CONFIG } from '../common/config/area.config';
-import { Area } from './schema/areas.schema';
-import { CreateAreaDto } from './dto/create-area.dto';
-import { IResponse } from '../common/interfaces/response.interface';
-import { UpdateAreaDto } from './dto/update-area.dto';
+import { AREA_CONFIG } from '@common/config/area.config';
+import { Area } from '@areas/schema/areas.schema';
+import { CreateAreaDto } from '@areas/dto/create-area.dto';
+import { IResponse } from '@common/interfaces/response.interface';
+import { UpdateAreaDto } from '@areas/dto/update-area.dto';
 
 @Injectable()
 export class AreasService {

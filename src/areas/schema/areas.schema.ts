@@ -1,7 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-
-import { Specialization } from '../../specializations/schema/specializations.schema';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Specialization } from '@specializations/schema/specializations.schema';
 
 export type AreaDocument = HydratedDocument<Area>;
 

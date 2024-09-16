@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-
-import { AreasService } from './areas.service';
-import { CreateAreaDto } from './dto/create-area.dto';
-import { IResponse } from '../common/interfaces/response.interface';
-import { UpdateAreaDto } from './dto/update-area.dto';
+import { AreasService } from '@areas/areas.service';
+import { CreateAreaDto } from '@areas/dto/create-area.dto';
+import { IResponse } from '@common/interfaces/response.interface';
+import { UpdateAreaDto } from '@areas/dto/update-area.dto';
 
 @Controller('areas')
 export class AreasController {
