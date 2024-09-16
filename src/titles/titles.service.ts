@@ -26,7 +26,7 @@ export class TitlesService {
   async findOne(id: string) {
     const title = await this.titleModel.findById(id);
     if (!title) throw new HttpException('Title not found', HttpStatus.BAD_REQUEST);
-    
+
     return { statusCode: 200, message: 'Title found', data: title };
   }
 
