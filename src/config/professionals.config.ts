@@ -1,4 +1,4 @@
-export const PROFESSIONAL_CONFIG = {
+export const PROFESSIONALS_CONFIG = {
   validation: {
     configuration: {
       scheduleTimeInit: {

@@ -1,4 +1,4 @@
-export const USER_CONFIG = {
+export const USERS_CONFIG = {
   service: {
     error: {
       userCreation: 'Error al crear el paciente',
