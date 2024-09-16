@@ -1,4 +1,4 @@
-export const SPEC_CONFIG = {
+export const SPECIALIZATIONS_CONFIG = {
   success: {
     created: 'Especialidad creada con éxito',
     deleted: 'Especialidad eliminada con éxito',
