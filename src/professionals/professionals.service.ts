@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { IResponse } from '@common/interfaces/response.interface';
-import { PROF_CONFIG } from '@common/config/professionals.config';
+import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
