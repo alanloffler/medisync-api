@@ -10,21 +10,21 @@ import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 export class TitlesService {
   constructor(@InjectModel(Title.name) private readonly titleModel: Model<Title>) {}
 
-  async create(createTitleDto: CreateTitleDto) {
+  async create(createTitleDto: CreateTitleDto): Promise<IResponse> {
     const title = await this.titleModel.create(createTitleDto);
     if (!title) throw new HttpException('Title not created', HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: 'Title created', data: title };
   }
 
-  async findAll() {
+  async findAll(): Promise<IResponse> {
     const titles = await this.titleModel.find().sort({ name: 'asc' });
     if (!titles) throw new HttpException('Titles not found', HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: 'Titles found', data: titles };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<IResponse> {
     const title = await this.titleModel.findById(id);
     if (!title) throw new HttpException('Title not found', HttpStatus.BAD_REQUEST);
 
