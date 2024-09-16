@@ -19,28 +19,28 @@ export const USERS_CONFIG = {
     },
   },
   validation: {
-    firstName: {
-      message: 'El nombre debe ser una cadena de texto.',
-      min: 'El nombre debe poseer al menos 3 caracteres.',
-      max: 'El nombre no debe superar los 30 caracteres.',
+    isEmail: {
+      email: 'El email debe ser una cadena de texto con formato de email',
     },
-    lastName: {
-      message: 'El apellido debe ser una cadena de texto.',
-      min: 'El apellido debe poseer al menos 3 caracteres.',
-      max: 'El apellido no debe superar los 30 caracteres.',
+    isInt: {
+      dni: 'El DNI debe ser un número entero',
+      phone: 'El teléfono debe ser un número entero',
     },
-    dni: {
-      message: 'El DNI debe ser un número entero.',
-      min: 'El DNI debe poseer al menos 7 dígitos.',
-      max: 'El DNI no debe superar los 8 dígitos.',
+    isString: {
+      firstName: 'El nombre debe ser una cadena de texto',
+      lastName: 'El apellido debe ser una cadena de texto',
     },
-    phone: {
-      message: 'El teléfono debe ser un número entero.',
-      min: 'El teléfono debe poseer al menos 10 dígitos.',
-      max: 'El teléfono no debe superar los 10 dígitos.',
+    max: {
+      dni: 'El DNI no debe superar los 8 dígitos',
+      firstName: 'El nombre no debe superar los 30 caracteres',
+      lastName: 'El apellido no debe superar los 30 caracteres',
+      phone: 'El teléfono no debe superar los 10 dígitos',
     },
-    email: {
-      message: 'El email debe ser una cadena de texto con formato de email.',
+    min: {
+      dni: 'El DNI debe poseer al menos 7 dígitos',
+      firstName: 'El nombre debe poseer al menos 3 caracteres',
+      lastName: 'El apellido debe poseer al menos 3 caracteres',
+      phone: 'El teléfono debe poseer al menos 10 dígitos',
     },
   },
 };
