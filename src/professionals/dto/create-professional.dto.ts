@@ -47,7 +47,7 @@ class Configuration {
   workingDays: IWorkingDay[];
 }
 
-export class dto {
+export class CreateProfessionalDto {
   @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.area })
   @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.area })
   area: string;
