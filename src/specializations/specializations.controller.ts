@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SpecializationsService } from './specializations.service';
-import { CreateSpecializationDto } from './dto/create-specialization.dto';
-import { UpdateSpecializationDto } from './dto/update-specialization.dto';
+import { CreateSpecializationDto } from '@specializations/dto/create-specialization.dto';
+import { SpecializationsService } from '@specializations/specializations.service';
+import { UpdateSpecializationDto } from '@specializations/dto/update-specialization.dto';
 
 @Controller('specializations')
 export class SpecializationsController {
