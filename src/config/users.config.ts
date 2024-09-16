@@ -1,13 +1,13 @@
 export const USERS_CONFIG = {
-  service: {
+  response: {
     error: {
-      userCreation: 'Error al crear el paciente',
-      userExistence: 'El paciente ya existe en la base de datos',
-      userFound: 'Paciente no encontrado',
-      userFoundMany: 'Error al buscar pacientes',
-      userInvalidId: 'ID de paciente inválido',
-      userRemove: 'Error al eliminar el paciente',
-      userUpdate: 'Error al actualizar el paciente',
+      alreadyExist: 'El paciente ya existe',
+      invalidId: 'ID de paciente inválido',
+      notCreated: 'Paciente no creado',
+      notFoundPlural: 'Pacientes no encontrados',
+      notFoundSingular: 'Paciente no encontrado',
+      notRemoved: 'Paciente no eliminado',
+      notUpdated: 'Paciente no actualizado',
     },
     success: {
       userCreation: 'Paciente creado con éxito',
