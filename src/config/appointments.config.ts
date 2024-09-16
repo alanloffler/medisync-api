@@ -1,13 +1,17 @@
 export const APPOINTMENTS_CONFIG = {
   response: {
-    created: 'Turno creado',
-    foundPlural: 'Turnos encontrados',
-    foundSingular: 'Turno encontrado',
-    removed: 'Turno eliminado',
-    notCreated: 'Turno no creado',
-    notFoundPlural: 'Turnos no encontrados',
-    notFoundSingular: 'Turno no encontrado',
-    notRemoved: 'Turno no eliminado',
+    error: {
+      notCreated: 'Turno no creado',
+      notFoundPlural: 'Turnos no encontrados',
+      notFoundSingular: 'Turno no encontrado',
+      notRemoved: 'Turno no eliminado',
+    },
+    success: {
+      created: 'Turno creado',
+      foundPlural: 'Turnos encontrados',
+      foundSingular: 'Turno encontrado',
+      removed: 'Turno eliminado',
+    },
   },
   validation: {
     isInt: {
@@ -24,6 +28,6 @@ export const APPOINTMENTS_CONFIG = {
       hour: 'La hora es obligatoria',
       professional: 'El ID del profesional es obligatorio',
       user: 'El ID del usuario es obligatorio',
-    }
-  }
+    },
+  },
 };
