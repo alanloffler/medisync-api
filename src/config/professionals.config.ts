@@ -26,51 +26,41 @@ export const PROFESSIONALS_CONFIG = {
         minLength: 'El fin de los turnos no disponibles debe poseer 5 caracteres (hh:mm)',
       },
     },
-    createProfessionalDto: {
-      area: {
-        isNotEmpty: 'El área es obligatoria',
-        isString: 'El área debe ser una cadena de texto',
+    dto: {
+      isBoolean: {
+        available: 'El estado de disponibilidad debe ser un booleano',
       },
-      available: {
-        isBoolean: 'El estado de disponibilidad debe ser un booleano',
-        isNotEmpty: 'El estado de disponibilidad es obligatorio',
+      isEmail: {
+        email: 'El email debe ser un email válido',
       },
-      configuration: {
-        isNotEmptyObject: 'La configuración es obligatoria',
-        isObject: 'La configuración debe ser un objeto',
+      isNotEmpty: {
+        area: 'El área es obligatoria',
+        available: 'El estado de disponibilidad es obligatorio',
+        configuration: 'La configuración es obligatoria',
+        dni: 'El DNI es obligatorio',
+        email: 'El email es obligatorio',
+        firstName: 'El nombre es obligatorio',
+        lastName: 'El apellido es obligatorio',
+        phone: 'El teléfono es obligatorio',
+        specialization: 'La especialización es obligatoria',
+        title: 'El título es obligatorio',
       },
-      description: {
-        isString: 'La descripción debe ser una cadena de texto',
+      isNumber: {
+        dni: 'El DNI debe ser un número',
+        phone: 'El teléfono debe ser un número',
       },
-      dni: {
-        isNotEmpty: 'El DNI es obligatorio',
-        isNumber: 'El DNI debe ser un número',
+      isObject: {
+        configuration: 'La configuración debe ser un objeto',
       },
-      email: {
-        isEmail: 'El email debe ser un email válido',
-        isNotEmpty: 'El email es obligatorio',
-        isString: 'El email debe ser una cadena de texto',
+      isString: {
+        area: 'El área debe ser una cadena de texto',
+        description: 'La descripción debe ser una cadena de texto',
+        email: 'El email debe ser una cadena de texto',
+        firstName: 'El nombre debe ser una cadena de texto',
+        lastName: 'El apellido debe ser una cadena de texto',
+        specialization: 'La especialidad debe ser una cadena de texto',
+        title: 'El título debe ser una cadena de texto',
       },
-      firstName: {
-        isNotEmpty: 'El nombre es obligatorio',
-        isString: 'El nombre debe ser una cadena de texto',
-      },
-      lastName: {
-        isNotEmpty: 'El apellido es obligatorio',
-        isString: 'El apellido debe ser una cadena de texto',
-      },
-      phone: {
-        isNotEmpty: 'El teléfono es obligatorio',
-        isNumber: 'El teléfono debe ser un número',
-      },
-      specialization: {
-        isNotEmpty: 'La especialidad es obligatoria',
-        isString: 'La especialidad debe ser una cadena de texto',
-      },
-      titleAbbreviation: {
-        isNotEmpty: 'La abreviatura del título es obligatoria',
-        isString: 'La abreviatura del título debe ser una cadena de texto',
-      }
     },
     workingDays: {
       arrayNotEmpty: 'Los días laborales son obligatorios',
