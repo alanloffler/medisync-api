@@ -13,7 +13,7 @@ export class AreasService {
 
   async create(createAreaDto: CreateAreaDto): Promise<IResponse> {
     const areaExists = await this.areaModel.findOne({ name: createAreaDto.name });
-    if (areaExists) throw new HttpException(AREAS_CONFIG.response.error.errorDuplicate, HttpStatus.BAD_REQUEST);
+    if (areaExists) throw new HttpException(AREAS_CONFIG.response.error.duplicated, HttpStatus.BAD_REQUEST);
 
     const newArea = new this.areaModel(createAreaDto);
     const createdArea = await newArea.save();
@@ -29,10 +29,10 @@ export class AreasService {
       .sort({ name: 'asc' })
       .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
 
-    if (areas.length === 0) throw new HttpException(AREAS_CONFIG.response.success.emptyMany, HttpStatus.NOT_FOUND);
-    if (!areas) throw new HttpException(AREAS_CONFIG.response.error.errorFindingMany, HttpStatus.BAD_REQUEST);
+    if (areas.length === 0) throw new HttpException(AREAS_CONFIG.response.success.emptyPlural, HttpStatus.NOT_FOUND);
+    if (!areas) throw new HttpException(AREAS_CONFIG.response.error.findingPlural, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: AREAS_CONFIG.response.success.foundMany, data: areas };
+    return { statusCode: 200, message: AREAS_CONFIG.response.success.foundPlural, data: areas };
   }
 
   async findAllActive(): Promise<IResponse> {
@@ -42,23 +42,21 @@ export class AreasService {
       .sort({ name: 'asc' })
       .populate({ path: 'specializations', select: '_id name description', strictPopulate: false });
 
-    if (areas.length === 0) throw new HttpException(AREAS_CONFIG.response.success.emptyMany, HttpStatus.NOT_FOUND);
-    if (!areas) throw new HttpException(AREAS_CONFIG.response.error.errorFindingMany, HttpStatus.BAD_REQUEST);
+    if (areas.length === 0) throw new HttpException(AREAS_CONFIG.response.success.emptyPlural, HttpStatus.NOT_FOUND);
+    if (!areas) throw new HttpException(AREAS_CONFIG.response.error.findingPlural, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: AREAS_CONFIG.response.success.foundMany, data: areas };
+    return { statusCode: 200, message: AREAS_CONFIG.response.success.foundPlural, data: areas };
   }
 
   async findOne(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(AREAS_CONFIG.response.error.notValid, HttpStatus.BAD_REQUEST);
-    // prettier-ignore
-    const area = await this.areaModel
-      .findById(id)
-      .populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
-      
-    if (!area) throw new HttpException(AREAS_CONFIG.response.error.notFound, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: AREAS_CONFIG.response.success.found, data: area };
+    const area = await this.areaModel.findById(id).populate([{ path: 'specializations', select: '_id name description', strictPopulate: false }]);
+
+    if (!area) throw new HttpException(AREAS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
+
+    return { statusCode: 200, message: AREAS_CONFIG.response.success.foundSingular, data: area };
   }
 
   async update(id: string, updateAreaDto: UpdateAreaDto): Promise<IResponse> {
@@ -66,10 +64,10 @@ export class AreasService {
     if (!isValid) throw new HttpException(AREAS_CONFIG.response.error.notValid, HttpStatus.BAD_REQUEST);
 
     const areaExists = await this.areaModel.findById(id);
-    if (!areaExists) throw new HttpException(AREAS_CONFIG.response.error.notFound, HttpStatus.NOT_FOUND);
+    if (!areaExists) throw new HttpException(AREAS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
     const nameExists = await this.areaModel.findOne({ name: updateAreaDto.name });
-    if (nameExists && nameExists._id.toString() !== id) throw new HttpException(AREAS_CONFIG.response.error.errorDuplicate, HttpStatus.BAD_REQUEST);
+    if (nameExists && nameExists._id.toString() !== id) throw new HttpException(AREAS_CONFIG.response.error.duplicated, HttpStatus.BAD_REQUEST);
 
     const updatedArea = await this.areaModel.findByIdAndUpdate(id, updateAreaDto, { new: true });
     if (!updatedArea) throw new HttpException(AREAS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
@@ -82,11 +80,11 @@ export class AreasService {
     if (!isValid) throw new HttpException(AREAS_CONFIG.response.error.notValid, HttpStatus.BAD_REQUEST);
 
     const areaExists = await this.areaModel.findById(id);
-    if (!areaExists) throw new HttpException(AREAS_CONFIG.response.error.notFound, HttpStatus.NOT_FOUND);
+    if (!areaExists) throw new HttpException(AREAS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
     const deletedArea = await this.areaModel.findByIdAndDelete(id);
-    if (!deletedArea) throw new HttpException(AREAS_CONFIG.response.error.notDeleted, HttpStatus.BAD_REQUEST);
+    if (!deletedArea) throw new HttpException(AREAS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: AREAS_CONFIG.response.success.deleted, data: deletedArea };
+    return { statusCode: 200, message: AREAS_CONFIG.response.success.removed, data: deletedArea };
   }
 }
