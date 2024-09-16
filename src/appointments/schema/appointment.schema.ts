@@ -1,8 +1,7 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
-import { Professional } from '../../professionals/schema/professional.schema';
-import { User } from '../../users/schema/user.schema';
+import { Professional } from '@professionals/schema/professional.schema';
+import { User } from '@users/schema/user.schema';
 
 export type AppointmentDocument = HydratedDocument<Appointment>;
 

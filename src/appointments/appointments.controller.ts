@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
-import { AppointmentsService } from './appointments.service';
-import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { IResponse } from '../common/interfaces/response.interface';
+import { AppointmentsService } from '@appointments/appointments.service';
+import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
+import { IResponse } from '@common/interfaces/response.interface';
 
 @Controller('appointments')
 export class AppointmentsController {
