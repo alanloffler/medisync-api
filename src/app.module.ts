@@ -12,7 +12,7 @@ import { UsersModule } from '@users/users.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGODB_URI, {
-      dbName: 'medisync',
+      dbName: process.env.DATABASE,
       autoCreate: false,
     }),
     AppointmentsModule,
