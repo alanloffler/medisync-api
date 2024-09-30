@@ -39,7 +39,3 @@ export const AREAS_CONFIG = {
     },
   },
 };
-
-errors: {
-
-}
