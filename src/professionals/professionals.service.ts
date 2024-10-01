@@ -77,10 +77,11 @@ export class ProfessionalsService {
         },
       ])
       .exec();
-
+      // FIXME: this is not working when specialization is the search param
     const count = await this.professionalModel
       .find({
-        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+        // $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { 'specialization.name': { $regex: search, $options: 'i' } }],
       })
       .countDocuments();
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
