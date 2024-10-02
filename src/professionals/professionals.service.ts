@@ -18,9 +18,11 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
 
-  // TODO: implement search by specialization and area, and by professional data
-  async findBySpecialization(id: string): Promise<string> {
-    return id;
+  async findBySpecialization(id: string): Promise<IResponse> {
+    const professionals = await this.professionalModel.find({ specialization: id });
+    if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
   }
 
 
