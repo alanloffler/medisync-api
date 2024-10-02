@@ -19,7 +19,13 @@ export class ProfessionalsService {
   }
 
   async findBySpecialization(id: string): Promise<IResponse> {
-    const professionals = await this.professionalModel.find({ specialization: id });
+    const professionals = await this.professionalModel
+      .find({ specialization: id })
+      .sort({ lastName: 'asc' })
+      .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'area', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false });
+      
     if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
