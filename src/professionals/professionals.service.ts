@@ -17,6 +17,13 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
+
+  // TODO: implement search by specialization and area, and by professional data
+  async findBySpecialization(id: string): Promise<string> {
+    return id;
+  }
+
+
   // TODO: apply IResponse on this method
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
