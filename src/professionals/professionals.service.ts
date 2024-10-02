@@ -77,18 +77,17 @@ export class ProfessionalsService {
         },
       ])
       .exec();
-      // FIXME: this is not working when specialization is the search param
-    const count = await this.professionalModel
-      .find({
-        // $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
-        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { 'specialization.name': { $regex: search, $options: 'i' } }],
-      })
-      .countDocuments();
-    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    // TODO: remove this, test with more professionals
+    // const count = await this.professionalModel
+    //   .find({
+    //     $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+    //   })
+    //   .countDocuments();
+    const pageTotal = Math.floor((professionals.length - 1) / parseInt(limit)) + 1; // count replaced with professionals.length
 
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
 
-    return { total: pageTotal, count: count, data: professionals };
+    return { total: pageTotal, data: professionals };
   }
 
   async findAllActive(): Promise<IResponse> {
