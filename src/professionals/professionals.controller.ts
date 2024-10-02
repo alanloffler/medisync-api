@@ -12,6 +12,11 @@ export class ProfessionalsController {
   create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
     return this.professionalsService.create(createProfessionalDto);
   }
+  // TODO: implement search by specialization and area, and by professional data
+  @Get('specialization/:id')
+  findBySpecialization(@Param('id') id: string): Promise<string> {
+    return this.professionalsService.findBySpecialization(id);
+  }
   // TODO: apply IResponse on this method, also on service
   @Get()
   findAll(
