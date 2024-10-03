@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 import { ProfessionalsService } from '@professionals/professionals.service';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
@@ -18,10 +18,12 @@ export class ProfessionalsController {
     @Query('id') id: string,
     @Query('limit') limit: string,
     @Query('skip') skip: string,
+    @Query('sk') sortingKey: string,
+    @Query('sv') sortingValue: string,
   ): Promise<IResponse> {
-    return this.professionalsService.findBySpecialization(id, limit, skip);
+    return this.professionalsService.findBySpecialization(id, limit, skip, sortingKey, sortingValue);
   }
-  // TODO: apply IResponse on this method, also on service
+
   @Get()
   findAll(
     @Query('search') search: string,
@@ -29,7 +31,7 @@ export class ProfessionalsController {
     @Query('skip') skip: string,
     @Query('sk') sortingKey: string,
     @Query('sv') sortingValue: string,
-  ) {
+  ): Promise<IResponse> {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 

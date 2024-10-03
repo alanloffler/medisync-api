@@ -17,25 +17,35 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
-  // TODO: send count on response
-  async findBySpecialization(id: string, limit: string, skip: string): Promise<IResponse> {
+
+  async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+    if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
+    let obj = {};
+    if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
+    if (sortingValue === 'desc') obj = { [sortingKey]: -1 };
+    
     const professionals = await this.professionalModel
       .find({ specialization: id })
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
-      .sort({ lastName: 'asc' })
+      .sort(obj)
       .limit(Number(limit))
       .skip(Number(skip));
       
     if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
+    const count = await this.professionalModel
+    .find({ specialization: id })
+    .countDocuments();
+    
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    console.log({ total: pageTotal, count: count, data: professionals });
+    // TODO: return a new object with new type { statusCode, message, data } where data has new type { total, count, data }
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals }};
   }
 
-
-  // TODO: apply IResponse on this method
-  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string) {
+  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
@@ -94,17 +104,18 @@ export class ProfessionalsService {
         },
       ])
       .exec();
-    // TODO: remove this, test with more professionals
+    
     const count = await this.professionalModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
       })
       .countDocuments();
+
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
 
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
 
-    return { total: pageTotal, count: count, data: professionals };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals }};
   }
 
   async findAllActive(): Promise<IResponse> {
