@@ -13,9 +13,13 @@ export class ProfessionalsController {
     return this.professionalsService.create(createProfessionalDto);
   }
   
-  @Get('specialization/:id')
-  findBySpecialization(@Param('id') id: string): Promise<IResponse> {
-    return this.professionalsService.findBySpecialization(id);
+  @Get('specialization')
+  findBySpecialization(
+    @Query('id') id: string,
+    @Query('limit') limit: string,
+    @Query('skip') skip: string,
+  ): Promise<IResponse> {
+    return this.professionalsService.findBySpecialization(id, limit, skip);
   }
   // TODO: apply IResponse on this method, also on service
   @Get()
