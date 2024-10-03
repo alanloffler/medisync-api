@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
@@ -24,7 +24,7 @@ export class ProfessionalsService {
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
     if (sortingValue === 'desc') obj = { [sortingKey]: -1 };
     
-    const professionals = await this.professionalModel
+    const professionals: Professional[] = await this.professionalModel
       .find({ specialization: id })
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
@@ -33,15 +33,14 @@ export class ProfessionalsService {
       .limit(Number(limit))
       .skip(Number(skip));
       
-    if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (!professionals || professionals.length === 0) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    const count = await this.professionalModel
+    const count: number = await this.professionalModel
     .find({ specialization: id })
     .countDocuments();
     
-    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
-    console.log({ total: pageTotal, count: count, data: professionals });
-    // TODO: return a new object with new type { statusCode, message, data } where data has new type { total, count, data }
+    const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
+
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals }};
   }
 
