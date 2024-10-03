@@ -17,14 +17,16 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
-
-  async findBySpecialization(id: string): Promise<IResponse> {
+  // TODO: send count on response
+  async findBySpecialization(id: string, limit: string, skip: string): Promise<IResponse> {
     const professionals = await this.professionalModel
       .find({ specialization: id })
-      .sort({ lastName: 'asc' })
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
-      .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false });
+      .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
+      .sort({ lastName: 'asc' })
+      .limit(Number(limit))
+      .skip(Number(skip));
       
     if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
@@ -93,16 +95,16 @@ export class ProfessionalsService {
       ])
       .exec();
     // TODO: remove this, test with more professionals
-    // const count = await this.professionalModel
-    //   .find({
-    //     $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
-    //   })
-    //   .countDocuments();
-    const pageTotal = Math.floor((professionals.length - 1) / parseInt(limit)) + 1; // count replaced with professionals.length
+    const count = await this.professionalModel
+      .find({
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
+      })
+      .countDocuments();
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
 
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
 
-    return { total: pageTotal, data: professionals };
+    return { total: pageTotal, count: count, data: professionals };
   }
 
   async findAllActive(): Promise<IResponse> {
