@@ -26,6 +26,9 @@ export class UsersService {
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
 
+    const emptyDatabase = await this.userModel.find().countDocuments();
+    if (emptyDatabase === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.emptyDatabase, data: [] };
+
     const users = await this.userModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
