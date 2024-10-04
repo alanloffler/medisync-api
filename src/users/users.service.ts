@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 import { USERS_CONFIG } from '@config/users.config';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
@@ -12,7 +12,7 @@ export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto): Promise<IResponse> {
-    const findUser = await this.findOneByDni(createUserDto.dni);
+    const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
     if (findUser) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
 
     const user = await this.userModel.create(createUserDto);
