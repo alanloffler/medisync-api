@@ -20,7 +20,7 @@ export class UsersService {
 
     return { statusCode: 200, message: USERS_CONFIG.response.success.created, data: user };
   }
-  // Find all users by firstName and lastName
+
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
@@ -79,7 +79,7 @@ export class UsersService {
 
     if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
     if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
-    
+
     const count = await this.userModel
       .find({
         $expr: {
