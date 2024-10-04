@@ -98,10 +98,10 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    const isValidID: boolean = isValidObjectId(id);
+    if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
-    const user = await this.userModel.findById(id);
+    const user: User = await this.userModel.findById(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundSingular, data: user };
@@ -113,10 +113,10 @@ export class UsersService {
 
     return;
   }
-
+  // TODO: check findDni and findUser
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    const isValidID: boolean = isValidObjectId(id);
+    if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
     const findDni = await this.userModel.findOne({ dni: updateUserDto.dni });
     if (findDni && findDni._id.toString() !== id) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
@@ -127,7 +127,7 @@ export class UsersService {
     const user = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.updated };
+    return { statusCode: 200, message: USERS_CONFIG.response.success.updated, data: user };
   }
 
   async remove(id: string): Promise<IResponse> {
