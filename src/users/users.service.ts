@@ -36,7 +36,7 @@ export class UsersService {
       .exec();
 
     if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (users.length === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.emptyDatabase, data: [] };
+    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
 
     const count = await this.userModel
       .find({
