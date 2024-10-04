@@ -28,11 +28,7 @@ export class UsersService {
 
     const users = await this.userModel
       .find({
-        // prettier-ignore
-        $or: [
-          { firstName: { $regex: search, $options: 'i' } }, 
-          { lastName: { $regex: search, $options: 'i' } }
-        ],
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
       })
       .sort(sorting)
       .skip(parseInt(skip))
@@ -40,15 +36,11 @@ export class UsersService {
       .exec();
 
     if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
-    // Data for pagination
+    if (users.length === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.emptyDatabase, data: [] };
+
     const count = await this.userModel
       .find({
-        // prettier-ignore
-        $or: [
-          { firstName: { $regex: search, $options: 'i' } }, 
-          { lastName: { $regex: search, $options: 'i' } }
-        ],
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
       })
       .countDocuments();
 
