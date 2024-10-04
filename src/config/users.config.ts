@@ -11,6 +11,7 @@ export const USERS_CONFIG = {
     },
     success: {
       created: 'Paciente creado',
+      emptyDatabase: 'No existen pacientes en la base de datos',
       foundSingular: 'Paciente encontrado',
       foundPlural: 'Pacientes encontrados',
       foundEmptyPlural: 'No hay pacientes que coincidan con la búsqueda',
