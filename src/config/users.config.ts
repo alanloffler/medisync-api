@@ -6,7 +6,7 @@ export const USERS_CONFIG = {
       notCreated: 'Paciente no creado. Inténtalo nuevamente.',
       notFoundPlural: 'Pacientes no encontrados',
       notFoundSingular: 'Paciente no encontrado',
-      notRemoved: 'Paciente no eliminado',
+      notRemoved: 'Ha ocurrido un error y el paciente no ha sido eliminado. Inténtalo nuevamente.',
       notUpdated: 'Ha ocurrido un error y el paciente no ha sido actualizado. Inténtalo nuevamente.',
     },
     success: {
