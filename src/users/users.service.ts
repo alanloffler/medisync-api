@@ -52,7 +52,7 @@ export class UsersService {
 
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
-  // Find all users by DNI (partial search of DNI => many results)
+
   async findAllByDNI(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
@@ -126,13 +126,13 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
-
-    const findUser = await this.userModel.findById(id);
+    const isValidID: boolean = isValidObjectId(id);
+    if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    
+    const findUser: User = await this.userModel.findById(id);
     if (!findUser) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
-    const user = await this.userModel.findByIdAndDelete(id);
+    const user: User = await this.userModel.findByIdAndDelete(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
