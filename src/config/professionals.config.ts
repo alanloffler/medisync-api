@@ -2,7 +2,7 @@ export const PROFESSIONALS_CONFIG = {
   response: {
     error: {
       invalidID: 'ID inválido. La estructura del ID es incorrecta',
-      notCreated: 'Profesional no creado',
+      notCreated: 'Profesional no creado. Inténtalo nuevamente.',
       notFoundPlural: 'Profesionales no encontrados',
       notFoundSingular: 'Profesional no encontrado',
       notRemoved: 'Profesional no eliminado',
