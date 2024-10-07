@@ -12,7 +12,10 @@ export class ProfessionalsService {
   constructor(@InjectModel(Professional.name) private readonly professionalModel: Model<Professional>) {}
 
   async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
-    const professional = await this.professionalModel.create(createProfessionalDto);
+    const professionalExists: Professional = await this.professionalModel.findOne({ dni: createProfessionalDto.dni });
+    if (professionalExists) throw new HttpException(PROF_CONFIG.response.error.duplicatedKey, HttpStatus.BAD_REQUEST);
+
+    const professional: Professional = await this.professionalModel.create(createProfessionalDto);
     if (!professional) throw new HttpException(PROF_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
