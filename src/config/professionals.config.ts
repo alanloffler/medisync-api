@@ -1,6 +1,7 @@
 export const PROFESSIONALS_CONFIG = {
   response: {
     error: {
+      duplicatedKey: 'El DNI que intentas utilizar ya se ha registrado como profesional',
       invalidID: 'ID inválido. La estructura del ID es incorrecta',
       notCreated: 'Profesional no creado. Inténtalo nuevamente.',
       notFoundPlural: 'Profesionales no encontrados',
