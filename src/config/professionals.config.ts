@@ -7,7 +7,7 @@ export const PROFESSIONALS_CONFIG = {
       notFoundPlural: 'Profesionales no encontrados',
       notFoundSingular: 'Profesional no encontrado',
       notRemoved: 'Profesional no eliminado',
-      notUpdated: 'Profesional no actualizado',
+      notUpdated: 'Profesional no actualizado. Inténtalo nuevamente.',
     },
     success: {
       created: 'Profesional creado',
