@@ -1,10 +1,14 @@
-import { IWorkingDay } from '@professionals/interfaces/working-day.interface';
+import type { IWorkingDay } from '@professionals/interfaces/working-day.interface';
 
 export interface IConfiguration {
   scheduleTimeInit: string;
   scheduleTimeEnd: string;
   slotDuration: number;
-  timeSlotUnavailableInit?: string;
-  timeSlotUnavailableEnd?: string;
+  unavailableTimeSlot: IUnavailableTimeSlot;
   workingDays: IWorkingDay[];
+}
+
+interface IUnavailableTimeSlot {
+  timeSlotUnavailableInit: string | null;
+  timeSlotUnavailableEnd: string | null;
 }
