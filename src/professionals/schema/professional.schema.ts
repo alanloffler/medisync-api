@@ -1,6 +1,6 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IConfiguration } from '@professionals/interfaces/configuration.interface';
+import type { IConfiguration } from '@professionals/interfaces/configuration.interface';
 import { Specialization } from '@specializations/schema/specializations.schema';
 
 export type ProfessionalDocument = HydratedDocument<Professional>;
@@ -25,8 +25,10 @@ export class Professional {
       scheduleTimeInit: { required: true, trim: true, type: String },
       scheduleTimeEnd: { required: true, trim: true, type: String },
       slotDuration: { required: true, type: Number },
-      timeSlotUnavailableInit: { default: null, required: false, trim: true, type: String },
-      timeSlotUnavailableEnd: { default: null, required: false, trim: true, type: String },
+      unavailableTimeSlot: {
+        timeSlotUnavailableInit: { default: null, required: false, trim: true, type: String },
+        timeSlotUnavailableEnd: { default: null, required: false, trim: true, type: String },
+      },
       workingDays: { required: true, type: [{ day: Number, value: Boolean }] },
     },
   })
