@@ -8,6 +8,7 @@ export const APPOINTMENTS_CONFIG = {
     },
     success: {
       created: 'Turno creado',
+      empty: 'El paciente aún no posee turnos',
       foundPlural: 'Turnos encontrados',
       foundSingular: 'Turno encontrado',
       removed: 'Turno eliminado',
