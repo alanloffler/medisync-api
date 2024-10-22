@@ -26,9 +26,15 @@ export class AppointmentsService {
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {
-    const appointments = await this.appointmentModel
-      .find({ professional: id, day: day })
-      .populate({ path: 'user', select: '_id firstName lastName dni' });
+    const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
+
+    if (!appointments || appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
+  }
+
+  async findAllByUser(id: string): Promise<IResponse> {
+    const appointments = await this.appointmentModel.find({ user: id });
 
     if (!appointments || appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
 

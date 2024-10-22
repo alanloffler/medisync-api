@@ -18,11 +18,13 @@ export class AppointmentsController {
   }
 
   @Get('byProfessional')
-  findAllByProfessional(
-    @Query('id') id: string,
-    @Query('day') day: string
-  ): Promise<IResponse> {
+  findAllByProfessional(@Query('id') id: string, @Query('day') day: string): Promise<IResponse> {
     return this.appointmentsService.findAllByProfessional(id, day);
+  }
+
+  @Get('byUser')
+  findAllByUser(@Query('id') id: string): Promise<IResponse> {
+    return this.appointmentsService.findAllByUser(id);
   }
 
   @Get(':id')
