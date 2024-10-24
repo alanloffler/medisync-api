@@ -57,6 +57,18 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
   }
 
+  async findAllByUserAndYear(user: string, year: string): Promise<IResponse> {
+    const appointments = await this.appointmentModel
+    .find({ user: user, day: { $regex: year } })
+    .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+    .populate({ path: 'user', select: '_id firstName lastName dni' });
+
+    if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+    if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
+  }
+
   async findOne(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel
       .findById(id)
