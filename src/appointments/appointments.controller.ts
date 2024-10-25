@@ -38,8 +38,13 @@ export class AppointmentsController {
   }
 
   @Get('yearsByUser')
-  findAppointmentsYearsByUser(@Query('u') user: string): Promise<IResponse> {
-    return this.appointmentsService.findAppointmentsYearsByUser(user);
+  findApposYearsByUser(@Query('u') user: string): Promise<IResponse> {
+    return this.appointmentsService.findApposYearsByUser(user);
+  }
+
+  @Get('monthsByUser')
+  findApposMonthsByUser(@Query('u') user: string, @Query('y') year: string): Promise<IResponse> {
+    return this.appointmentsService.findApposMonthsByUser(user, year);
   }
 
   @Get(':id')

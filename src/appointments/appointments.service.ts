@@ -87,14 +87,25 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.removed, data: appointment };
   }
   // Used on UI select user appos by year
-  async findAppointmentsYearsByUser(user: string): Promise<IResponse> {
+  async findApposYearsByUser(user: string): Promise<IResponse> {
     const years = await this.appointmentModel.find({ user: user }).distinct('day');
 
     if (!years) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundYears, data: [] };
     if (years.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyYears, data: [] };
 
-    const uniqueYears = [...new Set(years.map(year => year.substring(0, 4)))];
+    const uniqueYears = [...new Set(years.map((year: string) => year.substring(0, 4)))];
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundYears, data: uniqueYears };
+  }
+
+  async findApposMonthsByUser(user: string, year: string): Promise<IResponse> {
+    const apposByYear = await this.appointmentModel.find({ user: user, day: { $regex: year } });
+
+    if (!apposByYear) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundMonths, data: [] };
+    if (apposByYear.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyMonths, data: [] };
+
+    const uniqueMonths = [...new Set(apposByYear.map((appo) => appo.day.substring(5, 7)))];
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundMonths, data: uniqueMonths };
   }
 }
