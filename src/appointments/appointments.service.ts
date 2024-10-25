@@ -35,9 +35,9 @@ export class AppointmentsService {
 
   async findAllByUser(id: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
-    .find({ user: id })
-    .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-    .populate({ path: 'user', select: '_id firstName lastName dni' });
+      .find({ user: id })
+      .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+      .populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
     if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
@@ -47,9 +47,9 @@ export class AppointmentsService {
 
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
-    .find({ user: userId, professional: professionalId })
-    .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-    .populate({ path: 'user', select: '_id firstName lastName dni' });
+      .find({ user: userId, professional: professionalId })
+      .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+      .populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
     if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
@@ -59,9 +59,9 @@ export class AppointmentsService {
 
   async findAllByUserAndYear(user: string, year: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
-    .find({ user: user, day: { $regex: year } })
-    .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-    .populate({ path: 'user', select: '_id firstName lastName dni' });
+      .find({ user: user, day: { $regex: year } })
+      .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+      .populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
     if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
@@ -85,5 +85,16 @@ export class AppointmentsService {
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.removed, data: appointment };
+  }
+  // Used on UI select user appos by year
+  async findAppointmentsYearsByUser(user: string): Promise<IResponse> {
+    const years = await this.appointmentModel.find({ user: user }).distinct('day');
+
+    if (!years) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundYears, data: [] };
+    if (years.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyYears, data: [] };
+
+    const uniqueYears = [...new Set(years.map(year => year.substring(0, 4)))];
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundYears, data: uniqueYears };
   }
 }

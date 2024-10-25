@@ -37,6 +37,11 @@ export class AppointmentsController {
     return this.appointmentsService.findAllByUserAndYear(user, year);
   }
 
+  @Get('yearsByUser')
+  findAppointmentsYearsByUser(@Query('u') user: string): Promise<IResponse> {
+    return this.appointmentsService.findAppointmentsYearsByUser(user);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse> {
     return this.appointmentsService.findOne(id);
