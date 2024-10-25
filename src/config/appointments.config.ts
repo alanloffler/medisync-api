@@ -2,6 +2,7 @@ export const APPOINTMENTS_CONFIG = {
   response: {
     error: {
       notCreated: 'Turno no creado',
+      notFoundMonths: 'Error al buscar los distintos meses de turnos',
       notFoundPlural: 'Turnos no encontrados',
       notFoundSingular: 'Turno no encontrado',
       notFoundYears: 'Error al buscar los distintos años de turnos',
@@ -10,7 +11,9 @@ export const APPOINTMENTS_CONFIG = {
     success: {
       created: 'Turno creado',
       empty: 'El paciente aún no posee turnos',
+      emptyMonths: 'No se encontraron los distintos meses de turnos',
       emptyYears: 'No se encontraron los distintos años de turnos',
+      foundMonths: 'Se encontraron los distintos meses de turnos',
       foundPlural: 'Turnos encontrados',
       foundSingular: 'Turno encontrado',
       foundYears: 'Se encontraron los distintos años de turnos',
