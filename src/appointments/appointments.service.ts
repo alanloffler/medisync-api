@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 
 @Injectable()
 export class AppointmentsService {
@@ -57,9 +57,14 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
   }
 
-  async findAllByUserAndYear(user: string, year: string): Promise<IResponse> {
-    const appointments = await this.appointmentModel
-      .find({ user: user, day: { $regex: year } })
+  async findAllByUserAndYear(user: string, year: string, month: string | undefined): Promise<IResponse> {
+    if (year === undefined) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+
+    let regex: RegExp;
+    month === undefined ? (regex = new RegExp(year)) : (regex = new RegExp(`^${year}-${month}`));
+
+    const appointments: Appointment[] = await this.appointmentModel
+      .find({ user: user, day: { $regex: regex } })
       .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .populate({ path: 'user', select: '_id firstName lastName dni' });
 
