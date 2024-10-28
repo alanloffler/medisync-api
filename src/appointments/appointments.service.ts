@@ -45,6 +45,15 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
   }
 
+  async findAllUniqueProfessionalsByUser(id: string): Promise<IResponse> {
+    const professionals = await this.appointmentModel.distinct('professional', { user: id });
+
+    if (!professionals) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundUniqueProfessionals, data: [] };
+    if (professionals.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyUniqueProfessionals, data: [] };
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
+  }
+
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
       .find({ user: userId, professional: professionalId })
