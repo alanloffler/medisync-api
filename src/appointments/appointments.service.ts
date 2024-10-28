@@ -1,6 +1,6 @@
+import mongoose, { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
@@ -46,7 +46,41 @@ export class AppointmentsService {
   }
 
   async findUniqueProfessionalsByUser(id: string): Promise<IResponse> {
-    const professionals = await this.appointmentModel.distinct('professional', { user: id });
+    const professionals = await this.appointmentModel
+      .aggregate([
+        { $match: { user: new mongoose.Types.ObjectId(id) } },
+        { $group: { _id: '$professional' } },
+        {
+          $lookup: {
+            from: 'professionals',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'professionalDetails',
+          },
+        },
+        { $unwind: '$professionalDetails' },
+        {
+          $lookup: {
+            from: 'titles',
+            localField: 'professionalDetails.title',
+            foreignField: '_id',
+            as: 'titleDetails',
+          },
+        },
+        { $unwind: '$titleDetails' },
+        {
+          $project: {
+            _id: '$professionalDetails._id',
+            firstName: '$professionalDetails.firstName',
+            lastName: '$professionalDetails.lastName',
+            title: {
+              _id: '$titleDetails._id',
+              abbreviation: '$titleDetails.abbreviation',
+            },
+          },
+        },
+      ])
+      .exec();
 
     if (!professionals) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundUniqueProfessionals, data: [] };
     if (professionals.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyUniqueProfessionals, data: [] };
