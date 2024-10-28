@@ -28,7 +28,7 @@ export class AppointmentsController {
   }
 
   @Get('uniqueProfessionalsByUser')
-  findUniqueProfessionalsByUser(@Query('id') id: string): Promise<IResponse> {
+  findUniqueProfessionalsByUser(@Query('u') id: string): Promise<IResponse> {
     return this.appointmentsService.findUniqueProfessionalsByUser(id);
   }
 
