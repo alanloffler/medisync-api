@@ -29,7 +29,7 @@ export class AppointmentsController {
 
   @Get('uniqueProfessionalsByUser')
   findUniqueProfessionalsByUser(@Query('id') id: string): Promise<IResponse> {
-    return this.appointmentsService.findAllUniqueProfessionalsByUser(id);
+    return this.appointmentsService.findUniqueProfessionalsByUser(id);
   }
 
   @Get('byUserAndProfessional')
