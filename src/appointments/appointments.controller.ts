@@ -32,6 +32,13 @@ export class AppointmentsController {
     return this.appointmentsService.findUniqueProfessionalsByUser(id);
   }
 
+  // WIP: this method will replace the next two methods
+  @Get('byFilters')
+  findApposRecordWithFilters(@Query('u') userId: string, @Query('p') professionalId?: string, @Query('y') year?: string): Promise<IResponse> {
+    return this.appointmentsService.findApposRecordWithFilters(userId, professionalId, year);
+  }
+
+  // FIXME: both methods will be replaced by an unified method (previous method)
   @Get('byUserAndProfessional')
   findAllByUserAndProfessional(@Query('user') userId: string, @Query('professional') professionalId: string): Promise<IResponse> {
     return this.appointmentsService.findAllByUserAndProfessional(userId, professionalId);
