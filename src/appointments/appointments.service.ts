@@ -88,6 +88,33 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
   }
 
+  // WIP: this method will replace findAllByUserAndProfessional and findAllByUserAndYear
+  async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
+    console.log('userId', userId, 'professionalId', professionalId, 'year', year);
+
+    let appointments: Appointment[] = [];
+    let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
+
+    if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
+      if (year === 'null' || year === undefined || year === null) {
+        appointments = await this.appointmentModel.find({ user: userId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        response = { statusCode: 200, message: 'Appointments found by user' };
+      } else {
+        appointments = await this.appointmentModel.find({ user: userId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        response = { statusCode: 200, message: 'find by user and year' };
+      }
+    } else {
+      if (year === 'null' || year === undefined || year === null) {
+        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        response = { statusCode: 200, message: 'find by professional' };
+      } else {
+        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        response = { statusCode: 200, message: 'find by professional and year' };
+      }
+    }
+    return { statusCode: response.statusCode, message: response.message, data: appointments }; // ok
+  }
+
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
       .find({ user: userId, professional: professionalId })
