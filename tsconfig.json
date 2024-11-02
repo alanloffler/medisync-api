@@ -16,6 +16,7 @@
       "@areas/*": ["./src/areas/*"],
       "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
+      "@dashboard/*": ["./src/dashboard/*"],
       "@professionals/*": ["./src/professionals/*"],
       "@specializations/*": ["./src/specializations/*"],
       "@titles/*": ["./src/titles/*"],
