@@ -37,4 +37,10 @@ export class UsersController {
   remove(@Param('id') id: string): Promise<IResponse> {
     return this.usersService.remove(id);
   }
+
+  // Dashboard methods
+  @Get('dashboard/countAll')
+  countAll(): Promise<IResponse> {
+    return this.usersService.countAll();
+  }
 }

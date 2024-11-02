@@ -137,4 +137,15 @@ export class UsersService {
 
     return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
   }
+
+  // Dashboard methods
+  async countAll(): Promise<IResponse> {
+    const countAll = await this.userModel.countDocuments();
+    if (!countAll) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+
+    const countLastMonth = await this.userModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
+    if (!countLastMonth) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+
+    return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: { value1: countAll, value2: countLastMonth }};
+  }
 }
