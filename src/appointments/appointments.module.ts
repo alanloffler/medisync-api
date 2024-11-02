@@ -8,5 +8,6 @@ import { AppointmentsService } from '@appointments/appointments.service';
   imports: [MongooseModule.forFeature([{ name: Appointment.name, schema: AppointmentSchema }])],
   controllers: [AppointmentsController],
   providers: [AppointmentsService],
+  exports: [MongooseModule],
 })
 export class AppointmentsModule {}
