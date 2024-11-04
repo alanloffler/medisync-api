@@ -14,6 +14,10 @@ export class CreateAreaDto {
   @IsString({ message: AREAS_CONFIG.validation.isString.description })
   description: string;
 
+  @IsNotEmpty({ message: AREAS_CONFIG.validation.isNotEmpty.icon })
+  @IsString({ message: AREAS_CONFIG.validation.isString.icon })
+  icon: string;
+
   @IsNumber({}, { message: AREAS_CONFIG.validation.isNumber.active })
   @IsIn([0, 1], { message: AREAS_CONFIG.validation.isIn.active })
   active: number;

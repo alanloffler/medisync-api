@@ -29,13 +29,15 @@ export const AREAS_CONFIG = {
     },
     isNotEmpty: {
       description: 'La descripción es obligatoria',
+      icon: 'El icono es obligatorio',
       name: 'El nombre es obligatorio',
       plural: 'El plural es obligatorio',
     },
     isString: {
+      description: 'La descripción debe ser una cadena de texto',
+      icon: 'El icono debe ser una cadena de texto',
       name: 'El nombre debe ser una cadena de texto',
       plural: 'El plural debe ser una cadena de texto',
-      description: 'La descripción debe ser una cadena de texto',
     },
   },
 };

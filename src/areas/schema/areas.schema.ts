@@ -28,6 +28,12 @@ export class Area {
   description: string;
 
   @Prop({
+    required: true,
+    trim: true,
+  })
+  icon: string;
+
+  @Prop({
     type: [
       {
         type: MongooseSchema.Types.ObjectId,
