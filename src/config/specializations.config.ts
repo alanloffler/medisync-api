@@ -27,6 +27,7 @@ export const SPECIALIZATIONS_CONFIG = {
     isNotEmpty: {
       area: 'El area es obligatoria',
       description: 'La descripción es obligatoria',
+      icon: 'El icono es obligatorio',
       name: 'El nombre es obligatorio',
       plural: 'El plural es obligatorio',
     },
@@ -36,6 +37,7 @@ export const SPECIALIZATIONS_CONFIG = {
     isString: {
       area: 'El area debe ser una cadena de texto',
       description: 'La descripción debe ser una cadena de texto',
+      icon: 'El icono debe ser una cadena de texto',
       name: 'El nombre debe ser una cadena de texto',
       plural: 'El plural debe ser una cadena de texto',
     },

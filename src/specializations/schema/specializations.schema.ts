@@ -35,6 +35,12 @@ export class Specialization {
 
   @Prop({
     required: true,
+    trim: true,
+  })
+  icon: string;
+
+  @Prop({
+    required: true,
     default: 1,
   })
   active: number;
