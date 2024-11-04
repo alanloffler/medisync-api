@@ -9,7 +9,7 @@ async function bootstrap() {
   const app: INestApplication = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL,
+    origin: [process.env.FRONTEND_URL, process.env.PREVIEW_URL],
   });
 
   app.useGlobalPipes(
