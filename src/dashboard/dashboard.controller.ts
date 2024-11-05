@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { DashboardService } from '@dashboard/dashboard.service';
 
 @Controller('dashboard')
@@ -23,5 +23,10 @@ export class DashboardController {
   @Get('countUsersLastMonth')
   countUsersLastMonth() {
     return this.dashboardService.countUsersLastMonth();
+  }
+
+  @Get('latestAppointments')
+  latestAppointments(@Query('l') limit: string) {
+    return this.dashboardService.latestAppointments(limit);
   }
 }
