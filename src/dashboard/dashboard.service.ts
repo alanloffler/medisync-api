@@ -40,4 +40,24 @@ export class DashboardService {
 
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.count, data: users };
   }
+
+  async latestAppointments(limit: string): Promise<IResponse> {
+    const appointments = await this.appointmentModel
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .populate({ path: 'user', select: 'firstName lastName dni' })
+      .populate({
+        path: 'professional',
+        select: 'title specialization firstName lastName',
+        populate: [
+          { path: 'title', select: 'abbreviation' },
+          { path: 'specialization', select: 'icon name' },
+        ],
+      });
+
+    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.NOT_FOUND);
+
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundLatest, data: appointments };
+  }
 }
