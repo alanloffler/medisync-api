@@ -21,7 +21,7 @@ export class SpecializationsService {
 
   async findAll(): Promise<IResponse> {
     // return this.specializationModel.find().populate('area');ok
-    const specializations = await this.specializationModel.find();
+    const specializations = await this.specializationModel.find().sort({ name: 'asc' });
     if (!specializations) throw new HttpException(SPEC_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: SPEC_CONFIG.response.success.foundPlural, data: specializations };
@@ -32,7 +32,10 @@ export class SpecializationsService {
   }
 
   async update(id: string, updateSpecializationDto: UpdateSpecializationDto): Promise<IResponse> {
-    return { statusCode: 200, message: SPEC_CONFIG.response.success.updated, data: [id, updateSpecializationDto] };
+    const updated = await this.specializationModel.findByIdAndUpdate(id, updateSpecializationDto, { new: true });
+    if (!updated) throw new HttpException(SPEC_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: SPEC_CONFIG.response.success.created, data: updated };
   }
 
   async remove(id: string): Promise<IResponse> {
