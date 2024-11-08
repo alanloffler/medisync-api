@@ -17,7 +17,7 @@ export class DashboardService {
     const appointments = await this.appointmentModel.countDocuments();
     if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.count, HttpStatus.NOT_FOUND);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.count, data: appointments };
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.count, data: [appointments] };
   }
 
   async countAppointmentsLastMonth(): Promise<IResponse> {
