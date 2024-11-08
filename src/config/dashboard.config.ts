@@ -2,11 +2,11 @@ export const DASHBOARD_CONFIG = {
   response: {
     error: {
       appointment: {
-        count: 'Error al contar el total de los turnos',
-        notFoundLatest: 'Error al buscar los turnos recientes',
+        count: 'Error al contar turnos',
+        notFoundLatest: 'Error al buscar turnos',
       },
       user: {
-        count: 'Error al contar el total de los pacientes',
+        count: 'Error al contar pacientes',
       },
     },
     success: {
