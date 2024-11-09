@@ -7,6 +7,7 @@ export const DASHBOARD_CONFIG = {
       },
       user: {
         count: 'Error al contar pacientes',
+        notFoundLatest: 'Error al buscar usuarios recientes',
       },
     },
     success: {
@@ -16,6 +17,7 @@ export const DASHBOARD_CONFIG = {
       },
       user: {
         count: 'Total de pacientes contados',
+        foundLatest: 'Usuarios recientes encontrados',
       },
     },
   },
