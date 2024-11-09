@@ -29,4 +29,9 @@ export class DashboardController {
   latestAppointments(@Query('l') limit: string) {
     return this.dashboardService.latestAppointments(limit);
   }
+
+  @Get('latestUsers')
+  latestUsers(@Query('l') limit: string) {
+    return this.dashboardService.latestUsers(limit);
+  }
 }

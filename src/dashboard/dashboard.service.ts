@@ -60,4 +60,11 @@ export class DashboardService {
 
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundLatest, data: appointments };
   }
+
+  async latestUsers(limit: string): Promise<IResponse> {
+    const users = await this.userModel.find().sort({ createdAt: -1 }).limit(parseInt(limit));
+    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
+
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
+  }
 }
