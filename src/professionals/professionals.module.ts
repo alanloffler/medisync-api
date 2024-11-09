@@ -8,5 +8,6 @@ import { ProfessionalsService } from '@professionals/professionals.service';
   imports: [MongooseModule.forFeature([{ name: Professional.name, schema: ProfessionalSchema }])],
   controllers: [ProfessionalsController],
   providers: [ProfessionalsService],
+  exports: [MongooseModule],
 })
 export class ProfessionalsModule {}
