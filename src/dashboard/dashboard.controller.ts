@@ -25,6 +25,16 @@ export class DashboardController {
     return this.dashboardService.countUsersLastMonth();
   }
 
+  @Get('countProfessionals')
+  countProfessionals() {
+    return this.dashboardService.countProfessionals();
+  }
+
+  @Get('countProfessionalsLastMonth')
+  countProfessionalsLastMonth() {
+    return this.dashboardService.countProfessionalsLastMonth();
+  }
+
   @Get('latestAppointments')
   latestAppointments(@Query('l') limit: string) {
     return this.dashboardService.latestAppointments(limit);

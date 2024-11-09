@@ -4,12 +4,14 @@ import { Model } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { DASHBOARD_CONFIG } from '@config/dashboard.config';
+import { Professional } from '@/professionals/schema/professional.schema';
 import { User } from '@users/schema/user.schema';
 
 @Injectable()
 export class DashboardService {
   constructor(
     @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
+    @InjectModel('Professional') private readonly professionalModel: Model<Professional>,
     @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
 
@@ -36,9 +38,23 @@ export class DashboardService {
 
   async countUsersLastMonth(): Promise<IResponse> {
     const users = await this.userModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
-    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.count, HttpStatus.NOT_FOUND);
+    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.count, data: users };
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
+  }
+
+  async countProfessionals(): Promise<IResponse> {
+    const professionals = await this.professionalModel.countDocuments();
+    if (!professionals) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.count, HttpStatus.NOT_FOUND);
+
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.count, data: professionals };
+  }
+
+  async countProfessionalsLastMonth(): Promise<IResponse> {
+    const professionals = await this.professionalModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
+    if (!professionals) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.notFoundLatest, HttpStatus.NOT_FOUND);
+
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: professionals };
   }
 
   async latestAppointments(limit: string): Promise<IResponse> {
