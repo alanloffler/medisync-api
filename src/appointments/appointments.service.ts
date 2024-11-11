@@ -88,7 +88,8 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
   }
 
-  // WIP: this method will replace findAllByUserAndProfessional and findAllByUserAndYear
+  // WIP: this method is replacing findAllByUserAndProfessional and findAllByUserAndYear
+  // Test it!
   async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
     console.log('userId', userId, 'professionalId', professionalId, 'year', year);
 
@@ -97,18 +98,18 @@ export class AppointmentsService {
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       if (year === 'null' || year === undefined || year === null) {
-        appointments = await this.appointmentModel.find({ user: userId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        appointments = await this.appointmentModel.find({ user: userId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
-        appointments = await this.appointmentModel.find({ user: userId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        appointments = await this.appointmentModel.find({ user: userId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by user and year' };
       }
     } else {
       if (year === 'null' || year === undefined || year === null) {
-        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional' };
       } else {
-        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId, day: { $regex: year } }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
@@ -156,6 +157,7 @@ export class AppointmentsService {
   }
 
   async remove(id: string): Promise<IResponse> {
+    throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
