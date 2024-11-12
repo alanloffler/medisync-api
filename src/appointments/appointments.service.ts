@@ -155,7 +155,6 @@ export class AppointmentsService {
   }
 
   async remove(id: string): Promise<IResponse> {
-    throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
