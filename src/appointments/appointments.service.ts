@@ -91,8 +91,6 @@ export class AppointmentsService {
   // WIP: this method is replacing findAllByUserAndProfessional and findAllByUserAndYear
   // Test it!
   async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
-    console.log('userId', userId, 'professionalId', professionalId, 'year', year);
-
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
 
