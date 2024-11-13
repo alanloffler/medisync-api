@@ -44,4 +44,9 @@ export class DashboardController {
   latestUsers(@Query('l') limit: string) {
     return this.dashboardService.latestUsers(limit);
   }
+
+  @Get('apposChartData')
+  appointmentChartData() {
+    return this.dashboardService.apposChartData();
+  }
 }

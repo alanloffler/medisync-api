@@ -83,4 +83,82 @@ export class DashboardService {
 
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
   }
+
+  async apposChartData(): Promise<IResponse> {
+    // Last month (30 days)
+    // const today: Date = new Date();
+    // const last30Days: Date = new Date();
+
+    // last30Days.setDate(today.getDate() - 30);
+
+    // const appointments = await this.appointmentModel.aggregate([
+    //   {
+    //     $match: {
+    //       $expr: {
+    //         $gte: [{ $dateFromString: { dateString: '$day' } }, last30Days],
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: {
+    //         $dateToString: {
+    //           format: '%Y-%m-%d',
+    //           date: { $dateFromString: { dateString: '$day' } },
+    //         },
+    //       },
+    //       value: { $sum: 1 },
+    //     },
+    //   },
+    //   {
+    //     $sort: { _id: 1 },
+    //   },
+    //   {
+    //     $project: {
+    //       date: '$_id',
+    //       value: 1,
+    //       _id: 0,
+    //     },
+    //   },
+    // ]);
+
+    // Last week (7 days)
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const appointments = await this.appointmentModel.aggregate([
+      {
+        $match: {
+          $expr: {
+            $gte: [{ $dateFromString: { dateString: '$day' } }, sevenDaysAgo],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: { $dateFromString: { dateString: '$day' } },
+            },
+          },
+          value: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          date: '$_id',
+          value: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    if (!appointments) throw new HttpException('Appos not found', HttpStatus.BAD_REQUEST);
+
+    return { statusCode: HttpStatus.OK, message: 'Appos found', data: appointments };
+  }
 }
