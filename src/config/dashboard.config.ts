@@ -4,6 +4,7 @@ export const DASHBOARD_CONFIG = {
       appointment: {
         count: 'Error al contar turnos',
         daysNotFound: 'Debes asignar la cantidad de días',
+        emptyDaysCount: 'Aún no existen turnos',
         notFoundDaysCount: 'Turnos por día no encontrados',
         notFoundLatest: 'Error al buscar turnos recientes',
       },
