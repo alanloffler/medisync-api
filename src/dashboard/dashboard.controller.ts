@@ -46,7 +46,7 @@ export class DashboardController {
   }
 
   @Get('apposChartData')
-  appointmentChartData() {
-    return this.dashboardService.apposChartData();
+  appointmentChartData(@Query('d') days: string) {
+    return this.dashboardService.apposChartData(days);
   }
 }
