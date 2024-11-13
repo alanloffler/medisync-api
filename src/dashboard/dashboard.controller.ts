@@ -45,8 +45,8 @@ export class DashboardController {
     return this.dashboardService.latestUsers(limit);
   }
 
-  @Get('apposChartData')
-  appointmentChartData(@Query('d') days: string) {
-    return this.dashboardService.apposChartData(days);
+  @Get('apposDaysCount')
+  apposDaysCount(@Query('d') days: string) {
+    return this.dashboardService.apposDaysCount(days);
   }
 }
