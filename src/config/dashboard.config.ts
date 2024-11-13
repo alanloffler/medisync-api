@@ -3,6 +3,8 @@ export const DASHBOARD_CONFIG = {
     error: {
       appointment: {
         count: 'Error al contar turnos',
+        daysNotFound: 'Debes asignar la cantidad de días',
+        notFoundDaysCount: 'Turnos por día no encontrados',
         notFoundLatest: 'Error al buscar turnos recientes',
       },
       professional: {
@@ -17,6 +19,7 @@ export const DASHBOARD_CONFIG = {
     success: {
       appointment: {
         count: 'Total de turnos contados',
+        foundDaysCount: 'Turnos por día encontrados',
         foundLatest: 'Turnos recientes encontrados',
       },
       professional: {
