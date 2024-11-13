@@ -84,7 +84,7 @@ export class DashboardService {
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
   }
 
-  async apposChartData(days: string): Promise<IResponse> {
+  async apposDaysCount(days: string): Promise<IResponse> {
       if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.NOT_FOUND);
       
       const _days: number = parseInt(days);
@@ -124,6 +124,7 @@ export class DashboardService {
       ]);
   
       if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
+      if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
   
       return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount, data: appointments };
     }
