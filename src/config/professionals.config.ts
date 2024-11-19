@@ -8,6 +8,7 @@ export const PROFESSIONALS_CONFIG = {
       notFoundSingular: 'Profesional no encontrado',
       notRemoved: 'Profesional no eliminado',
       notUpdated: 'Profesional no actualizado. Inténtalo nuevamente.',
+      notUpdatedAvailability: 'Disponibilidad no actualizada. Inténtalo nuevamente.',
     },
     success: {
       created: 'Profesional creado',
@@ -17,6 +18,7 @@ export const PROFESSIONALS_CONFIG = {
       removed: 'Profesional eliminado',
       searchNotFound: 'La búsqueda no ha arrojado resultados',
       updated: 'Profesional actualizado',
+      updatedAvailability: 'Disponibilidad actualizada',
     },
   },
   validation: {
