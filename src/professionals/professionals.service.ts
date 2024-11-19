@@ -26,7 +26,7 @@ export class ProfessionalsService {
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
     if (sortingValue === 'desc') obj = { [sortingKey]: -1 };
-    
+
     const professionals: Professional[] = await this.professionalModel
       .find({ specialization: id })
       .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
@@ -35,16 +35,14 @@ export class ProfessionalsService {
       .sort(obj)
       .limit(Number(limit))
       .skip(Number(skip));
-      
+
     if (!professionals || professionals.length === 0) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    const count: number = await this.professionalModel
-    .find({ specialization: id })
-    .countDocuments();
-    
+    const count: number = await this.professionalModel.find({ specialization: id }).countDocuments();
+
     const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals }};
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
   }
 
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
@@ -106,7 +104,7 @@ export class ProfessionalsService {
         },
       ])
       .exec();
-    
+
     const count = await this.professionalModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }],
@@ -117,7 +115,7 @@ export class ProfessionalsService {
 
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals }};
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
   }
 
   async findAllActive(): Promise<IResponse> {
@@ -169,7 +167,7 @@ export class ProfessionalsService {
     const update = await this.professionalModel.findByIdAndUpdate(id, { available: availability }, { new: true });
     if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdatedAvailability, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: update };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: { id: update._id, available: update.available } };
   }
 
   async remove(id: string): Promise<IResponse> {
