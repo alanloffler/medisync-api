@@ -162,11 +162,11 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.updated, data: update };
   }
 
-  async updateAvailability(id: string, availability: string): Promise<IResponse> {
+  async updateAvailability(id: string, availability: boolean): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.NOT_FOUND);
 
-    const update = await this.professionalModel.findByIdAndUpdate(id, { available: Boolean(availability) }, { new: true });
+    const update = await this.professionalModel.findByIdAndUpdate(id, { available: availability }, { new: true });
     if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdatedAvailability, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: update };
