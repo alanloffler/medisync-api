@@ -142,7 +142,7 @@ export class ProfessionalsService {
 
     const professional = await this.professionalModel
       .findById(id)
-      .populate({ path: 'specialization', select: '_id name description', strictPopulate: false })
+      .populate({ path: 'specialization', select: '_id name description icon', strictPopulate: false })
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
@@ -160,6 +160,16 @@ export class ProfessionalsService {
     if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.updated, data: update };
+  }
+
+  async updateAvailability(id: string, availability: string): Promise<IResponse> {
+    const isValid = isValidObjectId(id);
+    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.NOT_FOUND);
+
+    const update = await this.professionalModel.findByIdAndUpdate(id, { available: Boolean(availability) }, { new: true });
+    if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdatedAvailability, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: update };
   }
 
   async remove(id: string): Promise<IResponse> {
