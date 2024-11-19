@@ -50,6 +50,11 @@ export class ProfessionalsController {
     return this.professionalsService.update(id, updateProfessionalDto);
   }
 
+  @Patch(':id/availability')
+  updateAvailability(@Param('id') id: string, @Body() updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
+    return this.professionalsService.updateAvailability(id, updateProfessionalDto.available);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string): Promise<IResponse> {
     return this.professionalsService.remove(id);
