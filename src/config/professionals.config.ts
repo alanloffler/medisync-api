@@ -1,6 +1,7 @@
 export const PROFESSIONALS_CONFIG = {
   response: {
     error: {
+      databaseCount: 'Error al obtener el resumen de profesionales',
       duplicatedKey: 'El DNI que intentas utilizar ya se ha registrado como profesional',
       invalidID: 'ID inválido. La estructura del ID es incorrecta',
       notCreated: 'Profesional no creado. Inténtalo nuevamente.',
@@ -12,6 +13,7 @@ export const PROFESSIONALS_CONFIG = {
     },
     success: {
       created: 'Profesional creado',
+      databaseCount: 'Resumen de profesionales en la base de datos',
       empty: 'No existen profesionales',
       foundPlural: 'Profesionales encontrados',
       foundSingular: 'Profesional encontrado',
