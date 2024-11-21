@@ -179,4 +179,14 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.removed, data: remove };
   }
+
+  async databaseCount(): Promise<IResponse> {
+    const count = await this.professionalModel.countDocuments();
+    const countAvailable = await this.professionalModel.countDocuments({ available: true });
+    const countNotAvailable = await this.professionalModel.countDocuments({ available: false });
+
+    if (!count || !countAvailable || !countNotAvailable) throw new HttpException(PROF_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: PROF_CONFIG.response.success.databaseCount, data: { total: count, available: countAvailable, notAvailable: countNotAvailable } };
+  }
 }
