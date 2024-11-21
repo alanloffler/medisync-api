@@ -12,32 +12,25 @@ export class ProfessionalsController {
   create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
     return this.professionalsService.create(createProfessionalDto);
   }
-  
+
   @Get('specialization')
-  findBySpecialization(
-    @Query('id') id: string,
-    @Query('limit') limit: string,
-    @Query('skip') skip: string,
-    @Query('sk') sortingKey: string,
-    @Query('sv') sortingValue: string,
-  ): Promise<IResponse> {
+  findBySpecialization(@Query('id') id: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findBySpecialization(id, limit, skip, sortingKey, sortingValue);
   }
 
   @Get()
-  findAll(
-    @Query('search') search: string,
-    @Query('limit') limit: string,
-    @Query('skip') skip: string,
-    @Query('sk') sortingKey: string,
-    @Query('sv') sortingValue: string,
-  ): Promise<IResponse> {
+  findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get('active')
   findAllActive(): Promise<IResponse> {
     return this.professionalsService.findAllActive();
+  }
+
+  @Get('databaseCount')
+  databaseCount(): Promise<IResponse> {
+    return this.professionalsService.databaseCount();
   }
 
   @Get(':id')
