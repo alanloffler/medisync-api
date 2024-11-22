@@ -23,6 +23,16 @@ export class UsersController {
     return this.usersService.findAllByDNI(search, limit, skip, sortingKey, sortingValue);
   }
 
+  @Get('databaseCount')
+  databaseCount(): Promise<IResponse> {
+    return this.usersService.databaseCount();
+  }
+
+  @Get('countByMonth')
+  countByMonth(@Query('m') month: string, @Query('y') year: string): Promise<IResponse> {
+    return this.usersService.countByMonth(month, year);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse> {
     return this.usersService.findOne(id);
