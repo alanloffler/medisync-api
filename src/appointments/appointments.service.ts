@@ -1,6 +1,7 @@
 import mongoose, { Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { z } from 'zod';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
@@ -17,8 +18,23 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.created, data: appointment };
   }
 
-  async findAll(): Promise<IResponse<Appointment[]>> {
-    const appointments = await this.appointmentModel.find();
+  async findAll(page: string, limit: string): Promise<IResponse<Appointment[]>> {
+    const _page = Number(page);
+    const _limit = Number(limit);
+
+    const schema = z.number().min(0).int();
+
+    if (!schema.safeParse(_page).success) throw new HttpException(APPOINTMENTS_CONFIG.inlineValidation.page, HttpStatus.BAD_REQUEST);
+    if (!schema.safeParse(_limit).success) throw new HttpException(APPOINTMENTS_CONFIG.inlineValidation.limit, HttpStatus.BAD_REQUEST);
+
+    const appointments = await this.appointmentModel
+      .find()
+      .sort({ day: -1, hour: 1 })
+      .skip(_page * _limit)
+      .limit(_limit);
+      // .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+      // .populate({ path: 'user', select: '_id firstName lastName dni' });
+
     if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
@@ -96,18 +112,34 @@ export class AppointmentsService {
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       if (year === 'null' || year === undefined || year === null) {
-        appointments = await this.appointmentModel.find({ user: userId }).sort({ day: -1 }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
+        appointments = await this.appointmentModel
+          .find({ user: userId })
+          .sort({ day: -1 })
+          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
-        appointments = await this.appointmentModel.find({ user: userId, day: { $regex: year } }).sort({ day: -1 }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
+        appointments = await this.appointmentModel
+          .find({ user: userId, day: { $regex: year } })
+          .sort({ day: -1 })
+          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by user and year' };
       }
     } else {
       if (year === 'null' || year === undefined || year === null) {
-        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId }).sort({ day: -1 }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
+        appointments = await this.appointmentModel
+          .find({ user: userId, professional: professionalId })
+          .sort({ day: -1 })
+          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional' };
       } else {
-        appointments = await this.appointmentModel.find({ user: userId, professional: professionalId, day: { $regex: year } }).sort({ day: -1 }).populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } }).populate({ path: 'user', select: '_id firstName lastName dni' });
+        appointments = await this.appointmentModel
+          .find({ user: userId, professional: professionalId, day: { $regex: year } })
+          .sort({ day: -1 })
+          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
