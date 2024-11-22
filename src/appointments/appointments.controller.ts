@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
+import type { IResponse } from '@common/interfaces/response.interface';
+import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -13,7 +14,7 @@ export class AppointmentsController {
   }
 
   @Get()
-  findAll(): Promise<IResponse> {
+  findAll(): Promise<IResponse<Appointment[]>> {
     return this.appointmentsService.findAll();
   }
 
