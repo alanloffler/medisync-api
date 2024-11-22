@@ -19,8 +19,8 @@ export class AppointmentsService {
   }
 
   async findAll(page: string, limit: string): Promise<IResponse<Appointment[]>> {
-    const _page = Number(page);
-    const _limit = Number(limit);
+    const _page: number = Number(page);
+    const _limit: number = Number(limit);
 
     const schema = z.number().min(0).int();
 
@@ -31,14 +31,18 @@ export class AppointmentsService {
       .find()
       .sort({ day: -1, hour: 1 })
       .skip(_page * _limit)
-      .limit(_limit);
-      // .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-      // .populate({ path: 'user', select: '_id firstName lastName dni' });
+      .limit(_limit + 1);
 
     if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
+    const hasMore: boolean = appointments.length > _limit;
+    const appointmentsResult = hasMore ? appointments.slice(0, -1) : appointments;
+
+    const totalPages = await this.appointmentModel.countDocuments();
+    if (!totalPages) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointmentsResult, pagination: { hasMore, totalPages } };
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {
