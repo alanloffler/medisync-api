@@ -1,11 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import { z } from 'zod';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { USERS_CONFIG } from '@config/users.config';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
+
+interface IDataUser {
+  total: number;
+}
 
 @Injectable()
 export class UsersService {
@@ -128,7 +133,7 @@ export class UsersService {
   async remove(id: string): Promise<IResponse> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
-    
+
     const findUser: User = await this.userModel.findById(id);
     if (!findUser) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
@@ -138,6 +143,34 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
   }
 
+  async databaseCount(): Promise<IResponse<IDataUser>> {
+    const count = await this.userModel.countDocuments();
+    if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: count } };
+  }
+
+  async countByMonth(month: string, year: string): Promise<IResponse<IDataUser>> {
+    const _month = parseInt(month);
+    const _year = parseInt(year);
+    const actualYear = new Date().getFullYear();
+
+    const monthSchema = z.number().min(1).max(12);
+    const yearSchema = z.number().min(2022).max(actualYear);
+
+    if (!monthSchema.safeParse(_month).success) throw new HttpException(USERS_CONFIG.inlineValidation.month, HttpStatus.BAD_REQUEST);
+    if (!yearSchema.safeParse(_year).success) throw new HttpException(USERS_CONFIG.inlineValidation.year, HttpStatus.BAD_REQUEST);
+    
+    const startDate = new Date(_year, _month - 1, 1);
+    const endDate = new Date(_year, _month, 1);
+
+    const count = await this.userModel.countDocuments({ createdAt: { $gte: startDate, $lt: endDate } });
+    
+    if (count === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: 0 } };
+    if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: count } };
+  }
   // Dashboard methods
   async countAll(): Promise<IResponse> {
     const countAll = await this.userModel.countDocuments();
@@ -146,6 +179,6 @@ export class UsersService {
     const countLastMonth = await this.userModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
     if (!countLastMonth) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: { value1: countAll, value2: countLastMonth }};
+    return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: { value1: countAll, value2: countLastMonth } };
   }
 }
