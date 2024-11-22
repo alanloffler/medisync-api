@@ -2,6 +2,7 @@ export const USERS_CONFIG = {
   response: {
     error: {
       alreadyExist: 'El paciente ya existe en la base de datos. El DNI que intentas utilizar ya se ha registrado como paciente.',
+      databaseCount: 'Error al obtener el resumen de usuarios',
       invalidId: 'ID de paciente inválido',
       notCreated: 'Paciente no creado. Inténtalo nuevamente.',
       notFoundPlural: 'Pacientes no encontrados',
@@ -11,13 +12,18 @@ export const USERS_CONFIG = {
     },
     success: {
       created: 'Paciente creado',
+      databaseCount: 'Resumen de usuarios en la base de datos',
       emptyDatabase: 'No existen pacientes en la base de datos',
-      foundSingular: 'Paciente encontrado',
-      foundPlural: 'Pacientes encontrados',
       foundEmptyPlural: 'No hay pacientes que coincidan con la búsqueda',
+      foundPlural: 'Pacientes encontrados',
+      foundSingular: 'Paciente encontrado',
       removed: 'Paciente eliminado',
       updated: 'Paciente actualizado',
     },
+  },
+  inlineValidation: {
+    month: 'El mes debe estar comprendido entre 1 y 12',
+    year: 'El año debe estar comprendido entre 2022 y el presente',
   },
   validation: {
     isEmail: {
