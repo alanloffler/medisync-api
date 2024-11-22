@@ -17,9 +17,9 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.created, data: appointment };
   }
 
-  async findAll(): Promise<IResponse> {
+  async findAll(): Promise<IResponse<Appointment[]>> {
     const appointments = await this.appointmentModel.find();
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
@@ -111,7 +111,7 @@ export class AppointmentsService {
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
-    
+
     return { statusCode: response.statusCode, message: response.message, data: appointments };
   }
 
