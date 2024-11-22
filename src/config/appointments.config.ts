@@ -1,4 +1,8 @@
 export const APPOINTMENTS_CONFIG = {
+  inlineValidation: {
+    limit: 'El límite debe ser un número entero mayor o igual a 0',
+    page: 'La página debe ser un número entero mayor o igual a 0',
+  },
   response: {
     error: {
       notCreated: 'Turno no creado',
