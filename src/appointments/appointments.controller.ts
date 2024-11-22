@@ -14,8 +14,8 @@ export class AppointmentsController {
   }
 
   @Get()
-  findAll(): Promise<IResponse<Appointment[]>> {
-    return this.appointmentsService.findAll();
+  findAll(@Query('p') page: string, @Query('l') limit: string): Promise<IResponse<Appointment[]>> {
+    return this.appointmentsService.findAll(page, limit);
   }
 
   @Get('byProfessional')
