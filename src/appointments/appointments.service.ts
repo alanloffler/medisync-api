@@ -41,10 +41,10 @@ export class AppointmentsService {
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult = hasMore ? appointments.slice(0, -1) : appointments;
 
-    const totalPages = await this.appointmentModel.countDocuments();
-    if (!totalPages) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    const totalItems = await this.appointmentModel.countDocuments();
+    if (!totalItems) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointmentsResult, pagination: { hasMore, totalPages } };
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointmentsResult, pagination: { hasMore, totalItems } };
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {

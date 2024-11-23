@@ -4,6 +4,6 @@ export interface IResponse<T = any> {
   data?: any;
   pagination?: {
     hasMore: boolean;
-    totalPages: number;
+    totalItems: number;
   };
 }
