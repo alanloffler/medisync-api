@@ -31,7 +31,9 @@ export class AppointmentsService {
       .find()
       .sort({ day: -1, hour: 1 })
       .skip(_page * _limit)
-      .limit(_limit + 1);
+      .limit(_limit + 1)
+      .populate({ path: 'user', select: '_id firstName lastName dni' })
+      .populate({ path: 'professional', select: '_id title specialization firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
 
     if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
