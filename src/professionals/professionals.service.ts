@@ -93,6 +93,7 @@ export class ProfessionalsService {
             _id: 1,
             available: 1,
             area: { _id: 1, name: 1 },
+            dni: 1,
             specialization: { _id: 1, name: 1 },
             title: { _id: 1, name: 1, abbreviation: 1 },
             firstName: 1,
