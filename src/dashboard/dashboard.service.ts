@@ -94,14 +94,26 @@ export class DashboardService {
 
     const _days: number = parseInt(days);
     const daysAgo: Date = new Date();
-    daysAgo.setDate(daysAgo.getDate() - (_days - 1));
+    // daysAgo.setDate(daysAgo.getDate() - (_days - 1));
+    let includedDaysCount = 0;
+    const validDates: string[] = [];
+
+    while (includedDaysCount < _days) {
+      if (daysAgo.getDay() !== 0) {
+        validDates.push(daysAgo.toISOString().split('T')[0]);
+        includedDaysCount++;
+      }
+      daysAgo.setDate(daysAgo.getDate() - 1);
+    }
 
     const appointments = await this.appointmentModel.aggregate([
       {
         $match: {
           day: {
-            $gte: daysAgo.toISOString().split('T')[0],
-            $lte: new Date().toISOString().split('T')[0],
+            $gte: validDates[validDates.length - 1],
+            $lte: validDates[0],
+            // $gte: daysAgo.toISOString().split('T')[0],
+            // $lte: new Date().toISOString().split('T')[0],
           },
         },
       },
