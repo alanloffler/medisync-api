@@ -54,10 +54,10 @@ export class DashboardService {
 
   async countProfessionalsLastMonth(): Promise<IResponse> {
     const professionals = await this.professionalModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
-    
+
     if (professionals === 0) return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: 0 };
     if (!professionals) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.notFoundLatest, HttpStatus.NOT_FOUND);
-    
+
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: professionals };
   }
 
@@ -90,47 +90,47 @@ export class DashboardService {
   }
 
   async apposDaysCount(days: string): Promise<IResponse> {
-      if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.NOT_FOUND);
-      
-      const _days: number = parseInt(days);
-      const daysAgo: Date = new Date();
-      daysAgo.setDate(daysAgo.getDate() - (_days - 1));
-  
-      const appointments = await this.appointmentModel.aggregate([
-        {
-          $match: {
-            day: {
-              $gte: daysAgo.toISOString().split('T')[0],
-              $lte: new Date().toISOString().split('T')[0],
+    if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.NOT_FOUND);
+
+    const _days: number = parseInt(days);
+    const daysAgo: Date = new Date();
+    daysAgo.setDate(daysAgo.getDate() - (_days - 1));
+
+    const appointments = await this.appointmentModel.aggregate([
+      {
+        $match: {
+          day: {
+            $gte: daysAgo.toISOString().split('T')[0],
+            $lte: new Date().toISOString().split('T')[0],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: { $dateFromString: { dateString: '$day', format: '%Y-%m-%d' } },
             },
           },
+          value: { $sum: 1 },
         },
-        {
-          $group: {
-            _id: {
-              $dateToString: {
-                format: '%Y-%m-%d',
-                date: { $dateFromString: { dateString: '$day', format: '%Y-%m-%d' } },
-              },
-            },
-            value: { $sum: 1 },
-          },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          date: '$_id',
+          value: 1,
+          _id: 0,
         },
-        {
-          $sort: { _id: 1 },
-        },
-        {
-          $project: {
-            date: '$_id',
-            value: 1,
-            _id: 0,
-          },
-        },
-      ]);
-  
-      if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
-      if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
-  
-      return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount, data: appointments };
-    }
+      },
+    ]);
+
+    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
+    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
+
+    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount, data: appointments };
+  }
 }
