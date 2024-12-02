@@ -120,7 +120,6 @@ export class ProfessionalsService {
   }
 
   async findAllActive(): Promise<IResponse> {
-    // prettier-ignore
     const professionals = await this.professionalModel
       .find({ available: true })
       .sort({ lastName: 'asc' })
@@ -128,7 +127,7 @@ export class ProfessionalsService {
       .populate({ path: 'area', select: '_id name description', strictPopulate: false })
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
-
+      
     if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
     if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
