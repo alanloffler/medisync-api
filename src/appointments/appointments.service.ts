@@ -33,7 +33,14 @@ export class AppointmentsService {
       .skip(_page * _limit)
       .limit(_limit + 1)
       .populate({ path: 'user', select: '_id firstName lastName dni' })
-      .populate({ path: 'professional', select: '_id title specialization firstName lastName', populate: { path: 'title', select: 'abbreviation' } });
+      .populate({
+        path: 'professional',
+        select: '_id title specialization firstName lastName',
+        populate: [
+          { path: 'title', select: 'abbreviation' },
+          { path: 'specialization', select: '_id name', strictPopulate: false },
+        ],
+      });
 
     if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
