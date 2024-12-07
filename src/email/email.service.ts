@@ -23,14 +23,13 @@ export class EmailService {
   }
 
   async sendEmail(dto: sendEmailDto) {
-    const { recipients, subject, html, text } = dto;
+    const { body, to, subject } = dto;
     const transport = this.emailTransport();
     const options: nodemailer.SendMailOptions = {
       from: this.configService.get<string>('EMAIL_USER'),
-      to: recipients,
-      subject,
-      html,
-      text,
+      to: to,
+      subject: subject,
+      html: body,
     };
 
     try {
