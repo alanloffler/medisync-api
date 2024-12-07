@@ -3,9 +3,10 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppointmentsModule } from '@appointments/appointments.module';
 import { AreasModule } from '@areas/areas.module';
+import { DashboardModule } from '@dashboard/dashboard.module';
+import { EmailModule } from '@email/email.module';
 import { ProfessionalsModule } from '@professionals/professionals.module';
 import { SpecializationsModule } from '@specializations/specializations.module';
-import { DashboardModule } from '@dashboard/dashboard.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
 
@@ -19,6 +20,7 @@ import { UsersModule } from '@users/users.module';
     AppointmentsModule,
     AreasModule,
     DashboardModule,
+    EmailModule,
     ProfessionalsModule,
     SpecializationsModule,
     TitlesModule,
