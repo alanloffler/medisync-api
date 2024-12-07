@@ -17,6 +17,7 @@
       "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
       "@dashboard/*": ["./src/dashboard/*"],
+      "@email/*": ["./src/email/*"],
       "@professionals/*": ["./src/professionals/*"],
       "@specializations/*": ["./src/specializations/*"],
       "@titles/*": ["./src/titles/*"],
