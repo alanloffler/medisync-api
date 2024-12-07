@@ -9,12 +9,11 @@ export const EMAIL_CONFIG = {
   },
   validation: {
     isEmail: {
-      recipients: 'Cada contenido del recipiente debe ser un email',
+      to: 'Cada contenido del recipiente debe ser un email',
     },
     isString: {
-      html: 'El contenido debe ser una cadena de texto',
+      body: 'El contenido debe ser una cadena de texto',
       subject: 'El sujeto debe ser una cadena de texto',
-      text: 'El texto debe ser una cadena de texto',
     },
   },
 };
