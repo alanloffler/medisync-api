@@ -17,8 +17,10 @@ export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto): Promise<IResponse> {
-    const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
-    if (findUser) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
+    if (createUserDto.dni !== undefined) {
+      const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
+      if (findUser) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
+    }
 
     const user = await this.userModel.create(createUserDto);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
@@ -160,12 +162,12 @@ export class UsersService {
 
     if (!monthSchema.safeParse(_month).success) throw new HttpException(USERS_CONFIG.inlineValidation.month, HttpStatus.BAD_REQUEST);
     if (!yearSchema.safeParse(_year).success) throw new HttpException(USERS_CONFIG.inlineValidation.year, HttpStatus.BAD_REQUEST);
-    
+
     const startDate = new Date(_year, _month - 1, 1);
     const endDate = new Date(_year, _month, 1);
 
     const count = await this.userModel.countDocuments({ createdAt: { $gte: startDate, $lt: endDate } });
-    
+
     if (count === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: 0 } };
     if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
 
