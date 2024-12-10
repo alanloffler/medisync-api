@@ -1,5 +1,5 @@
-import { IsEmail, IsInt, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
-import { USERS_CONFIG } from "@config/users.config";
+import { IsEmail, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { USERS_CONFIG } from '@config/users.config';
 
 export class CreateUserDto {
   @IsString({ message: USERS_CONFIG.validation.isString.firstName })
@@ -21,7 +21,8 @@ export class CreateUserDto {
   @Min(1000000000, { message: USERS_CONFIG.validation.min.phone }) // 0000 000000
   @Max(9999999999, { message: USERS_CONFIG.validation.max.phone }) // 0000 000000
   phone: number;
-  
+
+  @IsOptional()
   @IsEmail({}, { message: USERS_CONFIG.validation.isEmail.email })
-  email: string;
+  email?: string;
 }
