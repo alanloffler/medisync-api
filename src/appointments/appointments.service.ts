@@ -6,10 +6,14 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
+import { User } from '@/users/schema/user.schema';
 
 @Injectable()
 export class AppointmentsService {
-  constructor(@InjectModel('Appointment') private appointmentModel: Model<Appointment>) {}
+  constructor(
+    @InjectModel('Appointment') private appointmentModel: Model<Appointment>,
+    @InjectModel('User') private userModel: Model<User>,
+  ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
     const appointment = await this.appointmentModel.create(createAppointmentDto);
@@ -227,5 +231,43 @@ export class AppointmentsService {
     const uniqueMonths = [...new Set(apposByYear.map((appo) => appo.day.substring(5, 7)))];
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundMonths, data: uniqueMonths };
+  }
+  // WIP: used on appointments data table.
+  async findSearch(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+    let sorting = {};
+    if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
+    if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
+
+    const emptyDatabase = await this.appointmentModel.find().countDocuments();
+    if (emptyDatabase === 0) return { statusCode: 200, message: 'APPOINTMENTS_CONFIG.response.success.emptyDatabase', data: [] };
+
+    const users = await this.userModel
+      .find({ firstName: { $regex: search, $options: 'i' } }) // Search users by firstName with regex
+      .select('_id'); // Only select the IDs
+
+    const userIds = users.map((user) => user._id);
+
+    const appointments = await this.appointmentModel
+      .find({ user: { $in: userIds } }) // Query appointments with matching user IDs
+      .populate({ path: 'user', select: '_id firstName lastName dni' }) // Populate the user details
+      .populate({ path: 'professional', select: '_id title firstName lastName', populate: { path: 'title', select: 'abbreviation' } }) // Populate the user details
+      .sort(sorting)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .exec();
+
+    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (appointments.length === 0) throw new HttpException('APPOINTMENTS_CONFIG.response.success.foundEmptyPlural', HttpStatus.NOT_FOUND);
+
+    const count = await this.appointmentModel
+      .find({
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
+      })
+      .countDocuments();
+
+    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    const data = { total: pageTotal, count: count, data: appointments };
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: data };
   }
 }
