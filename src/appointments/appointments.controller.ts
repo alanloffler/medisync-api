@@ -43,6 +43,11 @@ export class AppointmentsController {
   findApposRecordWithFilters(@Query('u') userId: string, @Query('p') professionalId?: string, @Query('y') year?: string): Promise<IResponse> {
     return this.appointmentsService.findApposRecordWithFilters(userId, professionalId, year);
   }
+  // CHECKED: used on appointments data table
+  @Get('count')
+  countAppointments(): Promise<IResponse> {
+    return this.appointmentsService.countAppointments();
+  }
 
   // FIXME: both methods will be replaced by an unified method (previous method)
   @Get('byUserAndProfessional')

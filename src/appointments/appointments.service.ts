@@ -264,4 +264,11 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: data };
   }
+  // CHECKED: used on appointments data table.
+  async countAppointments(): Promise<IResponse> {
+    const count = await this.appointmentModel.find().countDocuments();
+    if (!count) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notCount, HttpStatus.NOT_FOUND);
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.count, data: count };
+  }
 }

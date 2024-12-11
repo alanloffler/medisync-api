@@ -5,6 +5,7 @@ export const APPOINTMENTS_CONFIG = {
   },
   response: {
     error: {
+      notCount: 'Error al contar turnos',
       notCreated: 'Turno no creado',
       notFoundMonths: 'Error al buscar los distintos meses de turnos',
       notFoundPlural: 'Turnos no encontrados',
@@ -14,6 +15,7 @@ export const APPOINTMENTS_CONFIG = {
       notRemoved: 'Turno no eliminado',
     },
     success: {
+      count: 'Total de turnos contados',
       created: 'Turno creado',
       empty: 'El paciente aún no posee turnos',
       emptyMonths: 'No se encontraron los distintos meses de turnos',
