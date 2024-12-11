@@ -13,6 +13,12 @@ export class AppointmentsController {
     return this.appointmentsService.create(createAppointmentDto);
   }
 
+  @Get('search')
+  findSearch(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+    console.log(search, limit, skip, sortingKey, sortingValue);
+    return this.appointmentsService.findSearch(search, limit, skip, sortingKey, sortingValue);
+  }
+
   @Get()
   findAll(@Query('p') page: string, @Query('l') limit: string): Promise<IResponse<Appointment[]>> {
     return this.appointmentsService.findAll(page, limit);
