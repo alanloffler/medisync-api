@@ -15,7 +15,6 @@ export class AppointmentsController {
 
   @Get('search')
   findSearch(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
-    console.log(search, limit, skip, sortingKey, sortingValue);
     return this.appointmentsService.findSearch(search, limit, skip, sortingKey, sortingValue);
   }
 
