@@ -241,7 +241,10 @@ export class AppointmentsService {
     const emptyDatabase = await this.appointmentModel.find().countDocuments();
     if (emptyDatabase === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDatabase, data: [] };
 
-    const users = await this.userModel.find({ firstName: { $regex: search, $options: 'i' } }).select('_id');
+    const users = await this.userModel
+      .find({ $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }] })
+      .select('_id')
+      .exec();
 
     const userIds = users.map((user) => user._id);
 
