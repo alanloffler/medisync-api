@@ -6,6 +6,7 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
+import { ESearchType } from '@/common/enums/search-type.enum';
 import { User } from '@/users/schema/user.schema';
 
 @Injectable()
@@ -233,7 +234,9 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundMonths, data: uniqueMonths };
   }
   // CHECKED: used on appointments data table.
-  async findSearch(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  async findSearch(searchType: ESearchType, search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+    console.log(searchType);
+
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
