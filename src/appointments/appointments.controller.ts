@@ -14,9 +14,9 @@ export class AppointmentsController {
     return this.appointmentsService.create(createAppointmentDto);
   }
 
-  @Get('search')
-  findSearch(@Query('searchType') searchType: ESearchType, @Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
-    return this.appointmentsService.findSearch(searchType, search, limit, skip, sortingKey, sortingValue);
+  @Post('search')
+  findSearch(@Body() dto: any): Promise<IResponse<Appointment[]>> {
+    return this.appointmentsService.findSearch(dto);
   }
 
   @Get()
