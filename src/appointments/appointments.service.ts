@@ -234,8 +234,8 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundMonths, data: uniqueMonths };
   }
   // CHECKED: used on appointments data table.
-  async findSearch(searchType: ESearchType, search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
-    console.log(searchType);
+  async findSearch(dto: any): Promise<IResponse> {
+    const { search, limit, skip, sortingKey, sortingValue } = dto;
 
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
@@ -246,21 +246,21 @@ export class AppointmentsService {
 
     let queryValue = {};
 
-    if (searchType === ESearchType.NAME) {
+    if (search[0].type === ESearchType.NAME) {
       const users = await this.userModel
-        .find({ $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }] })
+        .find({ $or: [{ firstName: { $regex: search[0].value, $options: 'i' } }, { lastName: { $regex: search[0].value, $options: 'i' } }] })
         .select('_id')
         .exec();
 
       const userIds = users.map((user) => user._id);
-      queryValue = { user: { $in: userIds } };
+      queryValue = { ...queryValue, user: { $in: userIds } };
     }
 
-    if (searchType === ESearchType.DAY) {
-      queryValue = { day: { $regex: search, $options: 'i' } };
+    if (search[1].type === ESearchType.DAY) {
+      if (search[1].value !== undefined) queryValue = { ...queryValue, day: { $regex: search[1].value, $options: 'i' } };
     }
 
-    if (searchType !== ESearchType.DAY && searchType !== ESearchType.NAME) {
+    if (search[0].type !== ESearchType.NAME && search[1].type !== ESearchType.DAY) {
       throw new HttpException(APPOINTMENTS_CONFIG.response.error.invalidSearchType, HttpStatus.BAD_REQUEST);
     }
 
