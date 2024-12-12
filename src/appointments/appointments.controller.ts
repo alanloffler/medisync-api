@@ -3,6 +3,7 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
+import { ESearchType } from '@/common/enums/search-type.enum';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -14,8 +15,8 @@ export class AppointmentsController {
   }
 
   @Get('search')
-  findSearch(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
-    return this.appointmentsService.findSearch(search, limit, skip, sortingKey, sortingValue);
+  findSearch(@Query('searchType') searchType: ESearchType, @Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+    return this.appointmentsService.findSearch(searchType, search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get()
