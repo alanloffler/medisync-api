@@ -6,6 +6,7 @@ export const APPOINTMENTS_CONFIG = {
   response: {
     error: {
       apposSearch: 'Búsqueda sin resultados',
+      invalidSearchType: 'Tipo de búsqueda no valido',
       notCount: 'Error al contar turnos',
       notCreated: 'Turno no creado',
       notFoundMonths: 'Error al buscar los distintos meses de turnos',
