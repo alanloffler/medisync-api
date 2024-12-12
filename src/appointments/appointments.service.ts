@@ -244,15 +244,28 @@ export class AppointmentsService {
     const emptyDatabase = await this.appointmentModel.find().countDocuments();
     if (emptyDatabase === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDatabase, data: [] };
 
-    const users = await this.userModel
-      .find({ $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }] })
-      .select('_id')
-      .exec();
+    let queryValue = {};
 
-    const userIds = users.map((user) => user._id);
+    if (searchType === ESearchType.NAME) {
+      const users = await this.userModel
+        .find({ $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }] })
+        .select('_id')
+        .exec();
+
+      const userIds = users.map((user) => user._id);
+      queryValue = { user: { $in: userIds } };
+    }
+
+    if (searchType === ESearchType.DAY) {
+      queryValue = { day: { $regex: search, $options: 'i' } };
+    }
+
+    if (searchType !== ESearchType.DAY && searchType !== ESearchType.NAME) {
+      throw new HttpException(APPOINTMENTS_CONFIG.response.error.invalidSearchType, HttpStatus.BAD_REQUEST);
+    }
 
     const appointments = await this.appointmentModel
-      .find({ user: { $in: userIds } })
+      .find(queryValue)
       .populate({ path: 'user', select: '_id firstName lastName dni' })
       .populate({ path: 'professional', select: '_id title firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .sort(sorting)
@@ -260,10 +273,10 @@ export class AppointmentsService {
       .limit(parseInt(limit))
       .exec();
 
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
+    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearch, HttpStatus.NOT_FOUND);
+    if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearch, HttpStatus.NOT_FOUND);
 
-    const count = await this.appointmentModel.find({ user: { $in: userIds } }).countDocuments();
+    const count = await this.appointmentModel.find(queryValue).countDocuments();
 
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data = { total: pageTotal, count: count, data: appointments };
