@@ -18,6 +18,7 @@ export const APPOINTMENTS_CONFIG = {
       count: 'Total de turnos contados',
       created: 'Turno creado',
       empty: 'El paciente aún no posee turnos',
+      emptyDatabase: 'No se encontraron turnos',
       emptyMonths: 'No se encontraron los distintos meses de turnos',
       emptyUniqueProfessionals: 'No se encontraron profesionales únicos',
       emptyYears: 'No se encontraron los distintos años de turnos',
