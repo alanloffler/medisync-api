@@ -239,7 +239,7 @@ export class AppointmentsService {
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
 
     const emptyDatabase = await this.appointmentModel.find().countDocuments();
-    if (emptyDatabase === 0) return { statusCode: 200, message: 'APPOINTMENTS_CONFIG.response.success.emptyDatabase', data: [] };
+    if (emptyDatabase === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDatabase, data: [] };
 
     const users = await this.userModel.find({ firstName: { $regex: search, $options: 'i' } }).select('_id');
 
@@ -255,7 +255,7 @@ export class AppointmentsService {
       .exec();
 
     if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
-    if (appointments.length === 0) throw new HttpException('APPOINTMENTS_CONFIG.response.success.foundEmptyPlural', HttpStatus.NOT_FOUND);
+    if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
 
     const count = await this.appointmentModel.find({ user: { $in: userIds } }).countDocuments();
 
