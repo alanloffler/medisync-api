@@ -3,7 +3,6 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
-import { ESearchType } from '@/common/enums/search-type.enum';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -13,7 +12,7 @@ export class AppointmentsController {
   create(@Body() createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
     return this.appointmentsService.create(createAppointmentDto);
   }
-
+  // CHECKED: used on appointments data table
   @Post('search')
   findSearch(@Body() dto: any): Promise<IResponse<Appointment[]>> {
     return this.appointmentsService.findSearch(dto);
@@ -48,6 +47,11 @@ export class AppointmentsController {
   @Get('count')
   countAppointments(): Promise<IResponse> {
     return this.appointmentsService.countAppointments();
+  }
+  // CHECKED: used on ApposFlowCard
+  @Get('statistics')
+  getApposStatistics(): Promise<IResponse> {
+    return this.appointmentsService.getApposStatistics();
   }
 
   // FIXME: both methods will be replaced by an unified method (previous method)
