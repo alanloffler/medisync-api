@@ -6,6 +6,7 @@ export const APPOINTMENTS_CONFIG = {
   response: {
     error: {
       apposSearch: 'Búsqueda sin resultados',
+      apposStatistics: 'Error al obtener estadísticas de turnos',
       invalidSearchType: 'Tipo de búsqueda no valido',
       notCount: 'Error al contar turnos',
       notCreated: 'Turno no creado',
@@ -17,6 +18,7 @@ export const APPOINTMENTS_CONFIG = {
       notRemoved: 'Turno no eliminado',
     },
     success: {
+      apposStatistics: 'Estadísticas de turnos',
       count: 'Total de turnos contados',
       created: 'Turno creado',
       empty: 'El paciente aún no posee turnos',
