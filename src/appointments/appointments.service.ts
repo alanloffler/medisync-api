@@ -308,23 +308,22 @@ export class AppointmentsService {
       const pastWeek = await this.appointmentModel.find({ day: { $gt: startLastWeekFormatted, $lte: startWeekFormatted } }).countDocuments();
       const month = await this.appointmentModel.find({ day: { $gte: startMonthFormatted, $lte: todayFormatted } }).countDocuments();
 
+      // OBS: take care with labels, they have highly dependence on translation
+      // Each key must exist on translation files
       const data: IStatistic[] = [
         {
-          type: 'today',
-          count: today,
-          last: yesterday,
+          count: { label: 'today', value: today },
+          last: { label: 'yesterday', value: yesterday },
           diff: this.getDifference(today, yesterday),
         },
         {
-          type: 'last week',
-          count: week,
-          last: pastWeek,
+          count: { label: 'week', value: week },
+          last: { label: 'lastWeek', value: pastWeek },
           diff: this.getDifference(week, pastWeek),
         },
         {
-          type: 'last month',
-          count: total,
-          last: month,
+          count: { label: 'total', value: total },
+          last: { label: 'lastMonth', value: month },
         },
       ];
 
