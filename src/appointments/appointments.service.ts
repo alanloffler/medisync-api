@@ -294,47 +294,44 @@ export class AppointmentsService {
   }
   // CHECKED: used on ApposFlowCard
   async getApposStatistics(): Promise<IResponse> {
-    const _today: Date = new Date();
-    const _yesterday = new Date(new Date().setDate(_today.getDate() - 1));
-    const _startWeek = new Date(new Date().setDate(_today.getDate() - 7));
-    const _startLastWeek = new Date(new Date().setDate(_today.getDate() - 14));
-    const _startMonth = new Date(new Date().setDate(_today.getDate() - 29));
+    const todayFormatted = format(new Date(), 'YYYY-MM-DD');
+    const yesterdayFormatted = format(new Date(new Date().setDate(new Date().getDate() - 1)), 'YYYY-MM-DD');
+    const startWeekFormatted = format(new Date(new Date().setDate(new Date().getDate() - 7)), 'YYYY-MM-DD');
+    const startLastWeekFormatted = format(new Date(new Date().setDate(new Date().getDate() - 14)), 'YYYY-MM-DD');
+    const startMonthFormatted = format(new Date(new Date().setDate(new Date().getDate() - 29)), 'YYYY-MM-DD');
 
-    const todayFormatted = format(_today, 'YYYY-MM-DD');
-    const yesterdayFormatted = format(_yesterday, 'YYYY-MM-DD');
-    const startWeekFormatted = format(_startWeek, 'YYYY-MM-DD');
-    const startLastWeekFormatted = format(_startLastWeek, 'YYYY-MM-DD');
-    const startMonthFormatted = format(_startMonth, 'YYYY-MM-DD');
+    try {
+      const total = await this.appointmentModel.find().countDocuments();
+      const today = await this.appointmentModel.find({ day: { $regex: todayFormatted } }).countDocuments();
+      const yesterday = await this.appointmentModel.find({ day: { $regex: yesterdayFormatted } }).countDocuments();
+      const week = await this.appointmentModel.find({ day: { $gt: startWeekFormatted, $lte: todayFormatted } }).countDocuments();
+      const pastWeek = await this.appointmentModel.find({ day: { $gt: startLastWeekFormatted, $lte: startWeekFormatted } }).countDocuments();
+      const month = await this.appointmentModel.find({ day: { $gte: startMonthFormatted, $lte: todayFormatted } }).countDocuments();
 
-    const total = await this.appointmentModel.find().countDocuments();
-    const today = await this.appointmentModel.find({ day: { $regex: todayFormatted } }).countDocuments();
-    const yesterday = await this.appointmentModel.find({ day: { $regex: yesterdayFormatted } }).countDocuments();
-    const week = await this.appointmentModel.find({ day: { $gt: startWeekFormatted, $lte: todayFormatted } }).countDocuments();
-    const pastWeek = await this.appointmentModel.find({ day: { $gt: startLastWeekFormatted, $lte: startWeekFormatted } }).countDocuments();
-    const month = await this.appointmentModel.find({ day: { $gte: startMonthFormatted, $lte: todayFormatted } }).countDocuments();
-    if (!total || !today || !yesterday || !week || !pastWeek || !month) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposStatistics, HttpStatus.BAD_REQUEST);
+      const data: IStatistic[] = [
+        {
+          type: 'today',
+          count: today,
+          last: yesterday,
+          diff: this.getDifference(today, yesterday),
+        },
+        {
+          type: 'last week',
+          count: week,
+          last: pastWeek,
+          diff: this.getDifference(week, pastWeek),
+        },
+        {
+          type: 'last month',
+          count: total,
+          last: month,
+        },
+      ];
 
-    const data: IStatistic[] = [
-      {
-        type: 'today',
-        count: today,
-        last: yesterday,
-        diff: this.getDifference(today, yesterday),
-      },
-      {
-        type: 'last week',
-        count: week,
-        last: pastWeek,
-        diff: this.getDifference(week, pastWeek),
-      },
-      {
-        type: 'last month',
-        count: total,
-        last: month,
-      },
-    ];
-
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.apposStatistics, data: data };
+      return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.apposStatistics, data: data };
+    } catch (error) {
+      throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposStatistics, HttpStatus.BAD_REQUEST);
+    }
   }
 
   private getDifference(value1: number, value2: number): number {
