@@ -1,6 +1,10 @@
 export interface IStatistic {
-  count: number;
+  count: IStatisticElement;
   diff?: number;
-  last: number;
-  type: string;
+  last: IStatisticElement;
+}
+
+interface IStatisticElement {
+  label: string;
+  value: number;
 }
