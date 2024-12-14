@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, Patch } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
@@ -78,6 +78,12 @@ export class AppointmentsController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse> {
     return this.appointmentsService.findOne(id);
+  }
+
+  // USED
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: { status: string }): Promise<IResponse> {
+    return this.appointmentsService.update(id, dto);
   }
 
   @Delete(':id')
