@@ -16,6 +16,7 @@ export const APPOINTMENTS_CONFIG = {
       notFoundUniqueProfessionals: 'Error al buscar profesionales únicos',
       notFoundYears: 'Error al buscar los distintos años de turnos',
       notRemoved: 'Turno no eliminado',
+      notUpdated: 'Turno no actualizado',
     },
     success: {
       apposStatistics: 'Estadísticas de turnos',
@@ -32,6 +33,7 @@ export const APPOINTMENTS_CONFIG = {
       foundUniqueProfessionals: 'Se encontraron los profesionales únicos',
       foundYears: 'Se encontraron los distintos años de turnos',
       removed: 'Turno eliminado',
+      updated: 'Turno actualizado',
     },
   },
   validation: {
