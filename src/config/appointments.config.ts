@@ -42,6 +42,7 @@ export const APPOINTMENTS_CONFIG = {
       day: 'El día debe ser una cadena de texto',
       hour: 'La hora debe ser una cadena de texto',
       professional: 'El ID del profesional debe ser una cadena de texto',
+      status: 'El estado debe ser una cadena de texto',
       user: 'El ID del usuario debe ser una cadena de texto',
     },
     isNotEmpty: {
