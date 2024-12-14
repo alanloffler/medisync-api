@@ -207,6 +207,16 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundSingular, data: appointment };
   }
 
+  // CHECKED: use on StatusSelect.tsx
+  async update(id: string, dto: { status: string }): Promise<IResponse> {
+    const { status } = dto;
+
+    const update = await this.appointmentModel.findByIdAndUpdate(id, { status }, { new: true });
+    if (!update) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.updated, data: update };
+  }
+
   async remove(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
