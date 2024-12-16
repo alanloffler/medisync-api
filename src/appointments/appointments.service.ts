@@ -252,6 +252,7 @@ export class AppointmentsService {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
+    if (sortingKey === 'day') sorting = { day: -1, hour: -1 };
 
     const emptyDatabase = await this.appointmentModel.find().countDocuments();
     if (emptyDatabase === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDatabase, data: [] };
