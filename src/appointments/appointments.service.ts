@@ -304,6 +304,10 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.count, data: count };
   }
+  // CHECKED: used on DateSelection.tsx
+  async daysWithAppos(): Promise<IResponse> {
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.daysWithAppos, data: await this.appointmentModel.distinct('day') };
+  }
   // CHECKED: used on ApposFlowCard
   async getApposStatistics(): Promise<IResponse> {
     const todayFormatted = format(new Date(), 'YYYY-MM-DD');
