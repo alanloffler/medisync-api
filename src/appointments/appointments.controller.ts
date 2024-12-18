@@ -48,6 +48,11 @@ export class AppointmentsController {
   countAppointments(): Promise<IResponse> {
     return this.appointmentsService.countAppointments();
   }
+  // CHECKED: used on DateSelection.tsx
+  @Get('daysWithAppos')
+  daysWithAppos(): Promise<IResponse> {
+    return this.appointmentsService.daysWithAppos();
+  }
   // CHECKED: used on ApposFlowCard
   @Get('statistics')
   getApposStatistics(): Promise<IResponse> {
