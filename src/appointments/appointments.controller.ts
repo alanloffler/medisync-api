@@ -50,8 +50,8 @@ export class AppointmentsController {
   }
   // CHECKED: used on DateSelection.tsx
   @Get('daysWithAppos')
-  daysWithAppos(): Promise<IResponse> {
-    return this.appointmentsService.daysWithAppos();
+  daysWithAppos(@Query('professionalId') professionalId: string, @Query('year') year: string, @Query('month') month: string): Promise<IResponse> {
+    return this.appointmentsService.daysWithAppos(professionalId, year, month);
   }
   // CHECKED: used on ApposFlowCard
   @Get('statistics')
