@@ -7,6 +7,7 @@ export const APPOINTMENTS_CONFIG = {
     error: {
       apposSearch: 'Búsqueda sin resultados',
       apposStatistics: 'Error al obtener estadísticas de turnos',
+      daysWithAppos: 'Error al obtener dias con turnos',
       invalidSearchType: 'Tipo de búsqueda no valido',
       notCount: 'Error al contar turnos',
       notCreated: 'Turno no creado',
@@ -25,6 +26,7 @@ export const APPOINTMENTS_CONFIG = {
       daysWithAppos: 'Días con turnos',
       empty: 'El paciente aún no posee turnos',
       emptyDatabase: 'No se encontraron turnos',
+      emptyDaysWithAppos: 'No se encontraron días con turnos',
       emptyMonths: 'No se encontraron los distintos meses de turnos',
       emptyUniqueProfessionals: 'No se encontraron profesionales únicos',
       emptyYears: 'No se encontraron los distintos años de turnos',
