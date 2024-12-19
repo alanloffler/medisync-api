@@ -305,8 +305,18 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.count, data: count };
   }
   // CHECKED: used on DateSelection.tsx
-  async daysWithAppos(): Promise<IResponse> {
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.daysWithAppos, data: await this.appointmentModel.distinct('day') };
+  async daysWithAppos(professionalId: string, year: string, month: string): Promise<IResponse> {
+    const apposByMonth = await this.appointmentModel.find({ professional: professionalId, day: { $regex: year + '-' + month } }).distinct('day');
+
+    if (apposByMonth.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDaysWithAppos, data: [] };
+    if (!apposByMonth) throw new HttpException(APPOINTMENTS_CONFIG.response.error.daysWithAppos, HttpStatus.BAD_REQUEST);
+
+    let formattedData: { day: string }[] = [];
+    apposByMonth.forEach((date) => {
+      formattedData.push({ day: date });
+    });
+
+    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.daysWithAppos, data: formattedData };
   }
   // CHECKED: used on ApposFlowCard
   async getApposStatistics(): Promise<IResponse> {
