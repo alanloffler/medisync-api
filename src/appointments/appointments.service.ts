@@ -287,7 +287,7 @@ export class AppointmentsService {
       .limit(parseInt(limit))
       .exec();
 
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearch, HttpStatus.NOT_FOUND);
+    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearchError, HttpStatus.NOT_FOUND);
     if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearch, HttpStatus.NOT_FOUND);
 
     const count = await this.appointmentModel.find(queryValue).countDocuments();
