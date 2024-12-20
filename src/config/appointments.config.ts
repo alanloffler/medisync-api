@@ -6,6 +6,7 @@ export const APPOINTMENTS_CONFIG = {
   response: {
     error: {
       apposSearch: 'Búsqueda sin resultados',
+      apposSearchError: 'Error al buscar turnos',
       apposStatistics: 'Error al obtener estadísticas de turnos',
       daysWithAppos: 'Error al obtener dias con turnos',
       invalidSearchType: 'Tipo de búsqueda no valido',
