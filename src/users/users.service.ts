@@ -60,7 +60,7 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
 
-  async findAllByDNI(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  async findAllByIdentityNumber(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
