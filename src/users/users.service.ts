@@ -79,7 +79,7 @@ export class UsersService {
       .limit(parseInt(limit))
       .exec();
 
-    if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
     if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
 
     const count = await this.userModel
