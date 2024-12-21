@@ -17,10 +17,10 @@ export class UsersController {
   findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.usersService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
-
-  @Get('byDNI')
-  findAllByDNI(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
-    return this.usersService.findAllByDNI(search, limit, skip, sortingKey, sortingValue);
+  // CHECKED: used on UsersCombo.tsx
+  @Get('byIdentityNumber')
+  findAllByIdentityNumber(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+    return this.usersService.findAllByIdentityNumber(search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get('databaseCount')
