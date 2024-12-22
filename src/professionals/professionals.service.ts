@@ -21,6 +21,7 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
 
+  // CHECKED: used on Professionals.tsx
   async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
@@ -44,7 +45,7 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
   }
-
+  // CHECKED: used on Professionals.tsx
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
