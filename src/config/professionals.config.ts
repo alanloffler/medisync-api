@@ -18,7 +18,7 @@ export const PROFESSIONALS_CONFIG = {
       foundPlural: 'Profesionales encontrados',
       foundSingular: 'Profesional encontrado',
       removed: 'Profesional eliminado',
-      searchNotFound: 'La búsqueda no ha arrojado resultados',
+      searchNotFound: 'Búsqueda sin resultados',
       updated: 'Profesional actualizado',
       updatedAvailability: 'Disponibilidad actualizada',
     },
