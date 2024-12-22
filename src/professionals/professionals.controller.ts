@@ -12,12 +12,12 @@ export class ProfessionalsController {
   create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
     return this.professionalsService.create(createProfessionalDto);
   }
-
+  // CHECKED: used on Professionals.tsx
   @Get('specialization')
   findBySpecialization(@Query('id') id: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findBySpecialization(id, limit, skip, sortingKey, sortingValue);
   }
-
+  // CHECKED: used on Professionals.tsx
   @Get()
   findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
