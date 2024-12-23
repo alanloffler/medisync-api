@@ -132,6 +132,8 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.updated, data: user };
   }
 
+  // CHECKED: used on UsersDataTable.tsx
+  // TODO: remove appointments associated to the user
   async remove(id: string): Promise<IResponse> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);

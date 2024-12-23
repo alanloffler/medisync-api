@@ -171,6 +171,8 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: { id: update._id, available: update.available } };
   }
 
+  // CHECKED: used on ProfessionalsDataTable.tsx
+  // TODO: remove appointments associated to the professional
   async remove(id: string): Promise<IResponse> {
     const isValid = isValidObjectId(id);
     if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);

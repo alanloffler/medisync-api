@@ -48,6 +48,7 @@ export class ProfessionalsController {
     return this.professionalsService.updateAvailability(id, updateProfessionalDto.available);
   }
 
+  // CHECKED: used on ProfessionalsDataTable.tsx
   @Delete(':id')
   remove(@Param('id') id: string): Promise<IResponse> {
     return this.professionalsService.remove(id);
