@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
@@ -17,8 +17,8 @@ export class AppointmentsService {
     @InjectModel('Appointment') private appointmentModel: Model<Appointment>,
     @InjectModel('User') private userModel: Model<User>,
   ) {}
-
-  async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
+  // CHECKED: used on DialogReserve.tsx
+  async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse<Appointment>> {
     const appointment = await this.appointmentModel.create(createAppointmentDto);
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
 
@@ -217,8 +217,11 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.updated, data: update };
   }
-
+  // CHECKED: used on DialogReserve.tsx
   async remove(id: string): Promise<IResponse> {
+    const isValidId = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(APPOINTMENTS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
 
