@@ -7,9 +7,9 @@ import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
-
+  // CHECKED: used on DialogReserve.tsx
   @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto): Promise<IResponse> {
+  create(@Body() createAppointmentDto: CreateAppointmentDto): Promise<IResponse<Appointment>> {
     return this.appointmentsService.create(createAppointmentDto);
   }
   // CHECKED: used on appointments data table
@@ -90,7 +90,7 @@ export class AppointmentsController {
   update(@Param('id') id: string, @Body() dto: { status: string }): Promise<IResponse> {
     return this.appointmentsService.update(id, dto);
   }
-
+  // CHECKED: used on DialogReserve.tsx
   @Delete(':id')
   remove(@Param('id') id: string): Promise<IResponse> {
     return this.appointmentsService.remove(id);
