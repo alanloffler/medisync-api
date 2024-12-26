@@ -208,8 +208,8 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundSingular, data: appointment };
   }
 
-  // CHECKED: use on StatusSelect.tsx
-  async update(id: string, dto: { status: string }): Promise<IResponse> {
+  // CHECKED: used on StatusSelect.tsx
+  async update(id: string, dto: { status: string }): Promise<IResponse<Appointment>> {
     const { status } = dto;
 
     const update = await this.appointmentModel.findByIdAndUpdate(id, { status }, { new: true });
