@@ -85,9 +85,9 @@ export class AppointmentsController {
     return this.appointmentsService.findOne(id);
   }
 
-  // USED
+  // CHECKED: used on StatusSelect.tsx
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: { status: string }): Promise<IResponse> {
+  update(@Param('id') id: string, @Body() dto: { status: string }): Promise<IResponse<Appointment>> {
     return this.appointmentsService.update(id, dto);
   }
   // CHECKED: used on DialogReserve.tsx
