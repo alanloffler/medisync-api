@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import { format } from '@formkit/tempo';
 import { z } from 'zod';
+
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { USERS_CONFIG } from '@config/users.config';
@@ -154,6 +156,9 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: count } };
   }
 
+  // CHECKED: used on DBCountUsers.tsx
+  // POSSIBLE RENAMED
+  // TODO: send data customized for use
   async countByMonth(month: string, year: string): Promise<IResponse<IDataUser>> {
     const _month = parseInt(month);
     const _year = parseInt(year);
@@ -173,7 +178,29 @@ export class UsersService {
     if (count === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: 0 } };
     if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: count } };
+    const allUsers = await this.userModel.countDocuments();
+    if (!allUsers) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+    // console.log((count * 100) / allUsers);
+    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: (count * 100) / allUsers } };
+  }
+
+  // CHECKED: used on DBCountUsers.tsx
+  // TODO: removed the countByMonth method if not used
+  async newUsersToday(): Promise<IResponse<{ percentage: number; today: number; total: number }>> {
+    const countAll = await this.userModel.countDocuments();
+    if (!countAll) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+
+    const today = format(new Date(), 'YYYY-MM-DD');
+    const countToday = await this.userModel.countDocuments({ createdAt: { $gte: today } });
+    if (!countToday) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+
+    const data = {
+      percentage: (countToday * 100) / countAll,
+      today: countToday,
+      total: countAll,
+    };
+
+    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: data };
   }
   // Dashboard methods
   async countAll(): Promise<IResponse> {
