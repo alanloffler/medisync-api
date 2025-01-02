@@ -195,7 +195,7 @@ export class UsersService {
     const countToday = await this.userModel.countDocuments({ createdAt: { $gte: today } });
 
     const data = {
-      percentage: (countToday * 100) / countAll,
+      percentage: countToday ? (countToday * 100) / countAll : 0,
       today: countToday,
       total: countAll,
     };
