@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
-import { IResponse } from '@common/interfaces/response.interface';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { UsersService } from '@users/users.service';
 
@@ -21,6 +21,13 @@ export class UsersController {
   @Get('byIdentityNumber')
   findAllByIdentityNumber(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.usersService.findAllByIdentityNumber(search, limit, skip, sortingKey, sortingValue);
+  }
+
+  // CHECKED: used on DBCountUsers.tsx
+  // TODO: remove countByMonth if not used
+  @Get('newUsersToday')
+  newUsersToday(): Promise<IResponse<{ percentage: number; today: number; total: number }>> {
+    return this.usersService.newUsersToday();
   }
 
   @Get('databaseCount')
