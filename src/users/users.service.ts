@@ -192,7 +192,6 @@ export class UsersService {
 
     const today = format(new Date(), 'YYYY-MM-DD');
     const countToday = await this.userModel.countDocuments({ createdAt: { $gte: today } });
-    if (!countToday) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
 
     const data = {
       percentage: (countToday * 100) / countAll,
