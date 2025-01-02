@@ -19,7 +19,8 @@ interface IDataUser {
 export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<IResponse> {
+  // CHECKED: used on CreateUser.tsx
+  async create(createUserDto: CreateUserDto): Promise<IResponse<User>> {
     if (createUserDto.dni !== undefined) {
       const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
       if (findUser) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);

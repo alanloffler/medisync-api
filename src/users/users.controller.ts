@@ -3,14 +3,16 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
+import { User } from '@users/schema/user.schema';
 import { UsersService } from '@users/users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // CHECKED: used on CreateUser.tsx
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<IResponse> {
+  create(@Body() createUserDto: CreateUserDto): Promise<IResponse<User>> {
     return this.usersService.create(createUserDto);
   }
 
