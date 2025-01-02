@@ -2,7 +2,7 @@ export const USERS_CONFIG = {
   response: {
     error: {
       alreadyExist: 'El paciente ya existe en la base de datos. El DNI que intentas utilizar ya se ha registrado como paciente.',
-      databaseCount: 'Error al obtener el resumen de usuarios',
+      databaseCount: 'Error al obtener el total de usuarios',
       invalidId: 'ID de paciente inválido',
       notCreated: 'Paciente no creado. Inténtalo nuevamente.',
       notFoundPlural: 'Pacientes no encontrados',
