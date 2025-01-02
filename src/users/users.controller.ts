@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
+import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { UsersService } from '@users/users.service';
@@ -26,7 +27,7 @@ export class UsersController {
   // CHECKED: used on DBCountUsers.tsx
   // TODO: remove countByMonth if not used
   @Get('newUsersToday')
-  newUsersToday(): Promise<IResponse<{ percentage: number; today: number; total: number }>> {
+  newUsersToday(): Promise<IResponse<IUserStats>> {
     return this.usersService.newUsersToday();
   }
 

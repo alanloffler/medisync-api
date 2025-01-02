@@ -5,6 +5,7 @@ import { format } from '@formkit/tempo';
 import { z } from 'zod';
 
 import type { IResponse } from '@common/interfaces/response.interface';
+import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { USERS_CONFIG } from '@config/users.config';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
@@ -186,7 +187,7 @@ export class UsersService {
 
   // CHECKED: used on DBCountUsers.tsx
   // TODO: removed the countByMonth method if not used
-  async newUsersToday(): Promise<IResponse<{ percentage: number; today: number; total: number }>> {
+  async newUsersToday(): Promise<IResponse<IUserStats>> {
     const countAll = await this.userModel.countDocuments();
     if (!countAll) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
 
