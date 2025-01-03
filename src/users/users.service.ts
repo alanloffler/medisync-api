@@ -156,13 +156,6 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
   }
 
-  async databaseCount(): Promise<IResponse<IDataUser>> {
-    const count = await this.userModel.countDocuments();
-    if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
-
-    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: count } };
-  }
-
   // CHECKED: used on DBCountUsers.tsx
   // TODO: removed the countByMonth method if not used
   async newUsersToday(): Promise<IResponse<IUserStats>> {
