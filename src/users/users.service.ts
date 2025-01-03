@@ -2,8 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { format } from '@formkit/tempo';
-import { z } from 'zod';
-
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
@@ -11,15 +9,13 @@ import { USERS_CONFIG } from '@config/users.config';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
 
-interface IDataUser {
-  total: number;
-}
+// Checked: all
+// Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-  // CHECKED: used on CreateUser.tsx
   async create(createUserDto: CreateUserDto): Promise<IResponse<User>> {
     if (createUserDto.dni !== undefined) {
       const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
@@ -32,7 +28,7 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.created, data: user };
   }
 
-  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
@@ -64,7 +60,7 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
 
-  async findAllByIdentityNumber(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  async findAllByIdentityNumber(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
     let sorting = {};
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
@@ -103,10 +99,6 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
 
-  // CHECKED: used on
-  // SendEmail.tsx
-  // UpdateUser.tsx
-  // WhatsApp.tsx
   async findOne(id: string): Promise<IResponse<User>> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
@@ -117,14 +109,6 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundSingular, data: user };
   }
 
-  async findOneByDni(dni: number): Promise<IResponse> {
-    const user = await this.userModel.findOne({ dni });
-    if (user) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.NOT_FOUND);
-
-    return;
-  }
-
-  // CHECKED: used on UpdateUser.tsx
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
@@ -141,9 +125,8 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.updated, data: user };
   }
 
-  // CHECKED: used on UsersDataTable.tsx
   // TODO: remove appointments associated to the user
-  async remove(id: string): Promise<IResponse> {
+  async remove(id: string): Promise<IResponse<User>> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
@@ -152,12 +135,10 @@ export class UsersService {
 
     const user: User = await this.userModel.findByIdAndDelete(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
-
+    console.log('onRemoved', user);
     return { statusCode: 200, message: USERS_CONFIG.response.success.removed, data: user };
   }
 
-  // CHECKED: used on DBCountUsers.tsx
-  // TODO: removed the countByMonth method if not used
   async newUsersToday(): Promise<IResponse<IUserStats>> {
     const countAll = await this.userModel.countDocuments();
     if (!countAll) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
