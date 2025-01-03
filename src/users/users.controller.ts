@@ -6,11 +6,13 @@ import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
 import { UsersService } from '@users/users.service';
 
+// Checked: all
+// Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
+
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // CHECKED: used on CreateUser.tsx
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<IResponse<User>> {
     return this.usersService.create(createUserDto);
@@ -20,36 +22,29 @@ export class UsersController {
   findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.usersService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
-  // CHECKED: used on UsersCombo.tsx
+
   @Get('byIdentityNumber')
   findAllByIdentityNumber(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.usersService.findAllByIdentityNumber(search, limit, skip, sortingKey, sortingValue);
   }
 
-  // CHECKED: used on DBCountUsers.tsx
-  // TODO: remove countByMonth if not used
-  @Get('newUsersToday')
-  newUsersToday(): Promise<IResponse<IUserStats>> {
-    return this.usersService.newUsersToday();
-  }
-
-  // CHECKED: used on
-  // SendEmail.tsx
-  // UpdateUser.tsx
-  // WhatsApp.tsx
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.findOne(id);
   }
 
-  // CHECKED: used on UpdateUser.tsx
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<IResponse> {
+  remove(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.remove(id);
+  }
+
+  @Get('newUsersToday')
+  newUsersToday(): Promise<IResponse<IUserStats>> {
+    return this.usersService.newUsersToday();
   }
 }
