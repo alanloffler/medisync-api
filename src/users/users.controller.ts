@@ -33,11 +33,6 @@ export class UsersController {
     return this.usersService.newUsersToday();
   }
 
-  @Get('databaseCount')
-  databaseCount(): Promise<IResponse> {
-    return this.usersService.databaseCount();
-  }
-
   // CHECKED: used on
   // SendEmail.tsx
   // UpdateUser.tsx
