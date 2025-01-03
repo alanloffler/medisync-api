@@ -164,34 +164,6 @@ export class UsersService {
   }
 
   // CHECKED: used on DBCountUsers.tsx
-  // POSSIBLE RENAMED
-  // TODO: send data customized for use
-  async countByMonth(month: string, year: string): Promise<IResponse<IDataUser>> {
-    const _month = parseInt(month);
-    const _year = parseInt(year);
-    const actualYear = new Date().getFullYear();
-
-    const monthSchema = z.number().min(1).max(12);
-    const yearSchema = z.number().min(2022).max(actualYear);
-
-    if (!monthSchema.safeParse(_month).success) throw new HttpException(USERS_CONFIG.inlineValidation.month, HttpStatus.BAD_REQUEST);
-    if (!yearSchema.safeParse(_year).success) throw new HttpException(USERS_CONFIG.inlineValidation.year, HttpStatus.BAD_REQUEST);
-
-    const startDate = new Date(_year, _month - 1, 1);
-    const endDate = new Date(_year, _month, 1);
-
-    const count = await this.userModel.countDocuments({ createdAt: { $gte: startDate, $lt: endDate } });
-
-    if (count === 0) return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: 0 } };
-    if (!count) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
-
-    const allUsers = await this.userModel.countDocuments();
-    if (!allUsers) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
-    // console.log((count * 100) / allUsers);
-    return { statusCode: 200, message: USERS_CONFIG.response.success.databaseCount, data: { total: (count * 100) / allUsers } };
-  }
-
-  // CHECKED: used on DBCountUsers.tsx
   // TODO: removed the countByMonth method if not used
   async newUsersToday(): Promise<IResponse<IUserStats>> {
     const countAll = await this.userModel.countDocuments();
