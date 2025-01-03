@@ -38,11 +38,6 @@ export class UsersController {
     return this.usersService.databaseCount();
   }
 
-  @Get('countByMonth')
-  countByMonth(@Query('m') month: string, @Query('y') year: string): Promise<IResponse> {
-    return this.usersService.countByMonth(month, year);
-  }
-
   // CHECKED: used on
   // SendEmail.tsx
   // UpdateUser.tsx
