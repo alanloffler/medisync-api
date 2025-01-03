@@ -28,6 +28,11 @@ export class UsersController {
     return this.usersService.findAllByIdentityNumber(search, limit, skip, sortingKey, sortingValue);
   }
 
+  @Get('newUsersToday')
+  newUsersToday(): Promise<IResponse<IUserStats>> {
+    return this.usersService.newUsersToday();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.findOne(id);
@@ -41,10 +46,5 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.remove(id);
-  }
-
-  @Get('newUsersToday')
-  newUsersToday(): Promise<IResponse<IUserStats>> {
-    return this.usersService.newUsersToday();
   }
 }
