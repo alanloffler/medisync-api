@@ -123,8 +123,9 @@ export class UsersService {
 
     return;
   }
-  // TODO: check findDni and findUser
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse> {
+  
+  // CHECKED: used on UpdateUser.tsx
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
