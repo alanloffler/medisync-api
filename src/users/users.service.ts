@@ -103,7 +103,11 @@ export class UsersService {
     return { statusCode: 200, message: USERS_CONFIG.response.success.foundPlural, data: data };
   }
 
-  async findOne(id: string): Promise<IResponse> {
+  // CHECKED: used on
+  // SendEmail.tsx
+  // UpdateUser.tsx
+  // WhatsApp.tsx
+  async findOne(id: string): Promise<IResponse<User>> {
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 

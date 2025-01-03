@@ -43,8 +43,12 @@ export class UsersController {
     return this.usersService.countByMonth(month, year);
   }
 
+  // CHECKED: used on
+  // SendEmail.tsx
+  // UpdateUser.tsx
+  // WhatsApp.tsx
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<IResponse> {
+  findOne(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.findOne(id);
   }
 
