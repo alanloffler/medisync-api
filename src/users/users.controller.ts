@@ -52,8 +52,9 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  // CHECKED: used on UpdateUser.tsx
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IResponse> {
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     return this.usersService.update(id, updateUserDto);
   }
 
