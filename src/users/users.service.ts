@@ -127,6 +127,7 @@ export class UsersService {
 
   // TODO: remove appointments associated to the user
   async remove(id: string): Promise<IResponse<User>> {
+    // throw new HttpException(USERS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
     const isValidID: boolean = isValidObjectId(id);
     if (!isValidID) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
 
