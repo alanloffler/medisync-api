@@ -201,7 +201,7 @@ export class AppointmentsService {
     const appointment = await this.appointmentModel
       .findById(id)
       .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-      .populate({ path: 'user', select: '_id firstName lastName dni' });
+      .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
 
