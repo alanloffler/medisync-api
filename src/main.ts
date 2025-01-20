@@ -1,5 +1,6 @@
 import { AppModule } from '@/app.module';
 import { NestFactory } from '@nestjs/core';
+import { json } from 'express';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { formatValidationError } from '@common/validators/format-error';
 
@@ -17,6 +18,8 @@ async function bootstrap() {
       exceptionFactory: formatValidationError,
     }),
   );
+
+  app.use(json({ limit: '5mb' }));
 
   await app.listen(PORT);
 }
