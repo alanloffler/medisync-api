@@ -1,6 +1,6 @@
 import { AppModule } from '@/app.module';
 import { NestFactory } from '@nestjs/core';
-import { json } from 'express';
+import { json, raw, urlencoded } from 'express';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { formatValidationError } from '@common/validators/format-error';
 
@@ -19,7 +19,9 @@ async function bootstrap() {
     }),
   );
 
-  app.use(json({ limit: '5mb' }));
+  app.use(json({ limit: '15mb' }));
+  app.use(raw({ limit: '15mb' }));
+  app.use(urlencoded({ limit: '15mb', extended: true }));
 
   await app.listen(PORT);
 }

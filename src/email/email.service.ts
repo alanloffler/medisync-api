@@ -23,7 +23,8 @@ export class EmailService {
   }
 
   async sendEmail(dto: sendEmailDto) {
-    const { body, to, subject, attachment } = dto;
+    const { body, to, subject, attachments } = dto;
+    console.log('attachments', attachments);
     const transport = this.emailTransport();
 
     const options: nodemailer.SendMailOptions = {
@@ -31,7 +32,7 @@ export class EmailService {
       to: to,
       subject: subject,
       html: body,
-      attachments: attachment ? attachment : undefined,
+      attachments: attachments ? attachments : undefined,
     };
 
     try {
