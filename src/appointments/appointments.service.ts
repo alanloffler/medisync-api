@@ -136,14 +136,28 @@ export class AppointmentsService {
         appointments = await this.appointmentModel
           .find({ user: userId })
           .sort({ day: -1 })
-          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({
+            path: 'professional',
+            select: '_id firstName lastName',
+            populate: [
+              { path: 'title', select: 'abbreviation' },
+              { path: 'specialization', select: 'name' },
+            ],
+          })
           .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
         appointments = await this.appointmentModel
           .find({ user: userId, day: { $regex: year } })
           .sort({ day: -1 })
-          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({
+            path: 'professional',
+            select: '_id firstName lastName',
+            populate: [
+              { path: 'title', select: 'abbreviation' },
+              { path: 'specialization', select: 'name' },
+            ],
+          })
           .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by user and year' };
       }
@@ -152,14 +166,28 @@ export class AppointmentsService {
         appointments = await this.appointmentModel
           .find({ user: userId, professional: professionalId })
           .sort({ day: -1 })
-          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({
+            path: 'professional',
+            select: '_id firstName lastName',
+            populate: [
+              { path: 'title', select: 'abbreviation' },
+              { path: 'specialization', select: 'name' },
+            ],
+          })
           .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional' };
       } else {
         appointments = await this.appointmentModel
           .find({ user: userId, professional: professionalId, day: { $regex: year } })
           .sort({ day: -1 })
-          .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+          .populate({
+            path: 'professional',
+            select: '_id firstName lastName',
+            populate: [
+              { path: 'title', select: 'abbreviation' },
+              { path: 'specialization', select: 'name' },
+            ],
+          })
           .populate({ path: 'user', select: '_id firstName lastName dni' });
         response = { statusCode: 200, message: 'find by professional and year' };
       }
@@ -200,7 +228,14 @@ export class AppointmentsService {
   async findOne(id: string): Promise<IResponse> {
     const appointment = await this.appointmentModel
       .findById(id)
-      .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
+      .populate({
+        path: 'professional',
+        select: '_id firstName lastName',
+        populate: [
+          { path: 'title', select: 'abbreviation' },
+          { path: 'specialization', select: 'name' },
+        ],
+      })
       .populate({ path: 'user', select: '_id firstName lastName dni email phone' });
 
     if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
