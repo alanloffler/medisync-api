@@ -144,7 +144,7 @@ export class AppointmentsService {
               { path: 'specialization', select: 'name' },
             ],
           })
-          .populate({ path: 'user', select: '_id firstName lastName dni' });
+          .populate({ path: 'user', select: '_id firstName lastName dni email' });
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
         appointments = await this.appointmentModel
@@ -158,7 +158,7 @@ export class AppointmentsService {
               { path: 'specialization', select: 'name' },
             ],
           })
-          .populate({ path: 'user', select: '_id firstName lastName dni' });
+          .populate({ path: 'user', select: '_id firstName lastName dni email' });
         response = { statusCode: 200, message: 'find by user and year' };
       }
     } else {
@@ -174,7 +174,7 @@ export class AppointmentsService {
               { path: 'specialization', select: 'name' },
             ],
           })
-          .populate({ path: 'user', select: '_id firstName lastName dni' });
+          .populate({ path: 'user', select: '_id firstName lastName dni email' });
         response = { statusCode: 200, message: 'find by professional' };
       } else {
         appointments = await this.appointmentModel
@@ -188,7 +188,7 @@ export class AppointmentsService {
               { path: 'specialization', select: 'name' },
             ],
           })
-          .populate({ path: 'user', select: '_id firstName lastName dni' });
+          .populate({ path: 'user', select: '_id firstName lastName dni email' });
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
