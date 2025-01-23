@@ -124,9 +124,7 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
   }
-
-  // WIP: this method is replacing findAllByUserAndProfessional and findAllByUserAndYear
-  // Test it!
+  // CHECKED: used in ApposTable.tsx
   async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
