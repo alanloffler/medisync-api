@@ -125,6 +125,7 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
   }
   // CHECKED: used in ApposTable.tsx
+  // TODO: manage errors!
   async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
@@ -187,10 +188,14 @@ export class AppointmentsService {
             ],
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
+
+        if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.errorFoundPlural, HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
-
+    
     return { statusCode: response.statusCode, message: response.message, data: appointments };
   }
 
