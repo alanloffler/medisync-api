@@ -38,7 +38,7 @@ export class AppointmentsController {
     return this.appointmentsService.findUniqueProfessionalsByUser(id);
   }
 
-  // WIP: this method will replace the next two methods
+  // CHECKED: used in ApposTable.tsx
   @Get('byFilters')
   findApposRecordWithFilters(@Query('u') userId: string, @Query('p') professionalId?: string, @Query('y') year?: string): Promise<IResponse> {
     return this.appointmentsService.findApposRecordWithFilters(userId, professionalId, year);
