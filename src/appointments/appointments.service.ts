@@ -126,9 +126,11 @@ export class AppointmentsService {
   }
   // CHECKED: used in ApposTable.tsx
   // TODO: manage errors!
-  async findApposRecordWithFilters(userId: string, professionalId?: string, year?: string) {
+  async findApposRecordWithFilters(userId: string, limit: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
+
+    console.log('limit', limit);
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       if (year === 'null' || year === undefined || year === null) {
@@ -195,7 +197,7 @@ export class AppointmentsService {
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
-    
+
     return { statusCode: response.statusCode, message: response.message, data: appointments };
   }
 
