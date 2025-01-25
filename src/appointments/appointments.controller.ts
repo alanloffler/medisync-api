@@ -40,8 +40,8 @@ export class AppointmentsController {
 
   // CHECKED: used in ApposTable.tsx
   @Get('byFilters')
-  findApposRecordWithFilters(@Query('u') userId: string, @Query('l') limit?: string, @Query('p') professionalId?: string, @Query('y') year?: string): Promise<IResponse> {
-    return this.appointmentsService.findApposRecordWithFilters(userId, limit, professionalId, year);
+  findApposRecordWithFilters(@Query('u') userId: string, @Query('l') limit?: string, @Query('pg') page?: string, @Query('p') professionalId?: string, @Query('y') year?: string): Promise<IResponse> {
+    return this.appointmentsService.findApposRecordWithFilters(userId, limit, page, professionalId, year);
   }
   // CHECKED: used on appointments data table
   @Get('count')
