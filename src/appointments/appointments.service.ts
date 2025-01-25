@@ -126,17 +126,20 @@ export class AppointmentsService {
   }
   // CHECKED: used in ApposTable.tsx
   // TODO: manage errors!
-  async findApposRecordWithFilters(userId: string, limit?: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
+  async findApposRecordWithFilters(userId: string, limit?: string, page?: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
     const _limit: number = limit ? Number(limit) : 10;
-    console.log('_limit', _limit);
+    const _page: number = page ? Number(page) : 0;
+    console.log('_limit', _limit, '_page', _page);
+    let totalItems: number = 0;
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       if (year === 'null' || year === undefined || year === null) {
         appointments = await this.appointmentModel
           .find({ user: userId })
           .sort({ day: -1 })
+          .skip(_page * _limit)
           .limit(_limit + 1)
           .populate({
             path: 'professional',
@@ -147,11 +150,15 @@ export class AppointmentsService {
             ],
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
+
+        totalItems = await this.appointmentModel.countDocuments({ user: userId });
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
         appointments = await this.appointmentModel
           .find({ user: userId, day: { $regex: year } })
           .sort({ day: -1 })
+          .skip(_page * _limit)
+          .limit(_limit + 1)
           .populate({
             path: 'professional',
             select: '_id firstName lastName',
@@ -161,6 +168,8 @@ export class AppointmentsService {
             ],
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
+
+        totalItems = await this.appointmentModel.countDocuments({ user: userId, day: { $regex: year } });
         response = { statusCode: 200, message: 'find by user and year' };
       }
     } else {
@@ -168,6 +177,8 @@ export class AppointmentsService {
         appointments = await this.appointmentModel
           .find({ user: userId, professional: professionalId })
           .sort({ day: -1 })
+          .skip(_page * _limit)
+          .limit(_limit + 1)
           .populate({
             path: 'professional',
             select: '_id firstName lastName',
@@ -177,11 +188,15 @@ export class AppointmentsService {
             ],
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
+
+        totalItems = await this.appointmentModel.countDocuments({ user: userId, professional: professionalId });
         response = { statusCode: 200, message: 'find by professional' };
       } else {
         appointments = await this.appointmentModel
           .find({ user: userId, professional: professionalId, day: { $regex: year } })
           .sort({ day: -1 })
+          .skip(_page * _limit)
+          .limit(_limit + 1)
           .populate({
             path: 'professional',
             select: '_id firstName lastName',
@@ -195,6 +210,7 @@ export class AppointmentsService {
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.errorFoundPlural, HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
 
+        totalItems = await this.appointmentModel.countDocuments({ user: userId, professional: professionalId, day: { $regex: year } });
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
@@ -202,9 +218,7 @@ export class AppointmentsService {
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult: Appointment[] = hasMore ? appointments.slice(0, -1) : appointments;
 
-    const totalItems: number = await this.appointmentModel.countDocuments({ user: userId });
-    if (!totalItems) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
-
+    console.log('totalItems', totalItems);
     return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems } };
   }
 
