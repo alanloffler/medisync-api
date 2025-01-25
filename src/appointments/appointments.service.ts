@@ -126,17 +126,18 @@ export class AppointmentsService {
   }
   // CHECKED: used in ApposTable.tsx
   // TODO: manage errors!
-  async findApposRecordWithFilters(userId: string, limit: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
+  async findApposRecordWithFilters(userId: string, limit?: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
     let appointments: Appointment[] = [];
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
-
-    console.log('limit', limit);
+    const _limit: number = limit ? Number(limit) : 10;
+    console.log('_limit', _limit);
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       if (year === 'null' || year === undefined || year === null) {
         appointments = await this.appointmentModel
           .find({ user: userId })
           .sort({ day: -1 })
+          .limit(_limit + 1)
           .populate({
             path: 'professional',
             select: '_id firstName lastName',
@@ -198,7 +199,13 @@ export class AppointmentsService {
       }
     }
 
-    return { statusCode: response.statusCode, message: response.message, data: appointments };
+    const hasMore: boolean = appointments.length > _limit;
+    const appointmentsResult: Appointment[] = hasMore ? appointments.slice(0, -1) : appointments;
+
+    const totalItems: number = await this.appointmentModel.countDocuments({ user: userId });
+    if (!totalItems) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+
+    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems } };
   }
 
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
