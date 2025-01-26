@@ -117,6 +117,7 @@ export class AppointmentsService {
           },
         },
       ])
+      .sort({ firstName: 'asc' })
       .exec();
 
     if (!professionals) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundUniqueProfessionals, data: [] };
