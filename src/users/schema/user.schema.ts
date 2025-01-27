@@ -15,6 +15,9 @@ export class User {
   dni: number;
 
   @Prop({ required: true })
+  areaCode: number;
+
+  @Prop({ required: true })
   phone: number;
 
   @Prop({ lowercase: true, trim: true, unique: false, required: false })
