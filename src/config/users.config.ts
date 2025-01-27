@@ -30,6 +30,7 @@ export const USERS_CONFIG = {
       email: 'El email debe ser una cadena de texto con formato de email',
     },
     isInt: {
+      areaCode: 'El código de area debe ser un número entero',
       dni: 'El DNI debe ser un número entero',
       phone: 'El teléfono debe ser un número entero',
     },
@@ -38,12 +39,14 @@ export const USERS_CONFIG = {
       lastName: 'El apellido debe ser una cadena de texto',
     },
     max: {
+      areaCode: 'El código de area no debe superar los 3 dígitos',
       dni: 'El DNI no debe superar los 8 dígitos',
       firstName: 'El nombre no debe superar los 30 caracteres',
       lastName: 'El apellido no debe superar los 30 caracteres',
       phone: 'El teléfono no debe superar los 10 dígitos',
     },
     min: {
+      areaCode: 'El código de area debe poseer al menos 1 dígito',
       dni: 'El DNI debe poseer al menos 7 dígitos',
       firstName: 'El nombre debe poseer al menos 3 caracteres',
       lastName: 'El apellido debe poseer al menos 3 caracteres',
