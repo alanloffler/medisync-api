@@ -17,6 +17,11 @@ export class CreateUserDto {
   @Max(99999999, { message: USERS_CONFIG.validation.max.dni }) // 99.99 mill max
   dni: number;
 
+  @IsInt({ message: USERS_CONFIG.validation.isInt.areaCode })
+  @Min(1, { message: USERS_CONFIG.validation.min.areaCode }) // 1
+  @Max(999, { message: USERS_CONFIG.validation.max.areaCode }) // 000
+  areaCode: number;
+
   @IsInt({ message: USERS_CONFIG.validation.isInt.phone })
   @Min(1000000000, { message: USERS_CONFIG.validation.min.phone }) // 0000 000000
   @Max(9999999999, { message: USERS_CONFIG.validation.max.phone }) // 0000 000000
