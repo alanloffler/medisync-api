@@ -132,7 +132,6 @@ export class AppointmentsService {
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
     const _limit: number = limit ? Number(limit) : 10;
     const _page: number = page ? Number(page) : 0;
-    console.log('_limit', _limit, '_page', _page);
     let totalItems: number = 0;
 
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
@@ -219,7 +218,6 @@ export class AppointmentsService {
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult: Appointment[] = hasMore ? appointments.slice(0, -1) : appointments;
 
-    console.log('totalItems', totalItems);
     return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems } };
   }
 
