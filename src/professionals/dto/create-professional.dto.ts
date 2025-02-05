@@ -1,6 +1,6 @@
 import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IWorkingDay } from '@professionals/interfaces/working-day.interface';
+import type { IWorkingDay } from '@professionals/interfaces/working-day.interface';
 import { PROFESSIONALS_CONFIG } from '@config/professionals.config';
 
 class WorkingDayDto {
@@ -51,6 +51,11 @@ export class CreateProfessionalDto {
   @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.area })
   @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.area })
   area: string;
+
+  @IsInt({ message: PROFESSIONALS_CONFIG.validation.dto.isInt.areaCode })
+  @Min(1, { message: PROFESSIONALS_CONFIG.validation.dto.min.areaCode }) // 1
+  @Max(999, { message: PROFESSIONALS_CONFIG.validation.dto.max.areaCode }) // 000
+  areaCode: number;
 
   @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.available })
   @IsBoolean({ message: PROFESSIONALS_CONFIG.validation.dto.isBoolean.available })
