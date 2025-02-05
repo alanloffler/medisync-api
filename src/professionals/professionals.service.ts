@@ -71,14 +71,6 @@ export class ProfessionalsService {
             as: 'area',
           },
         },
-        {
-          $lookup: {
-            from: 'areaCode',
-            localField: 'areaCode',
-            foreignField: '_id',
-            as: 'areaCode',
-          },
-        },
         { $unwind: '$area' },
         {
           $lookup: {
@@ -108,6 +100,7 @@ export class ProfessionalsService {
             firstName: 1,
             lastName: 1,
             email: 1,
+            areaCode: 1,
             phone: 1,
             __v: 1,
           },
