@@ -17,6 +17,9 @@ export class Professional {
   })
   area: string;
 
+  @Prop({ required: true })
+  areaCode: number;
+
   @Prop({ default: true })
   available: boolean;
 
