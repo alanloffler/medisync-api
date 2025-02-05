@@ -57,6 +57,9 @@ export const PROFESSIONALS_CONFIG = {
       isEmail: {
         email: 'El email debe ser un email válido',
       },
+      isInt: {
+        areaCode: 'El código de area debe ser un número entero',
+      },
       isNotEmpty: {
         area: 'El área es obligatoria',
         available: 'El estado de disponibilidad es obligatorio',
@@ -84,6 +87,12 @@ export const PROFESSIONALS_CONFIG = {
         lastName: 'El apellido debe ser una cadena de texto',
         specialization: 'La especialidad debe ser una cadena de texto',
         title: 'El título debe ser una cadena de texto',
+      },
+      max: {
+        areaCode: 'El código de area no debe superar los 3 dígitos',
+      },
+      min: {
+        areaCode: 'El código de area debe poseer al menos 1 dígito',
       },
     },
     workingDays: {
