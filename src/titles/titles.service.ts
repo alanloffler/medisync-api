@@ -18,7 +18,7 @@ export class TitlesService {
     return { statusCode: 200, message: TITLES_CONFIG.response.success.created, data: title };
   }
 
-  async findAll(): Promise<IResponse> {
+  async findAll(): Promise<IResponse<Title[]>> {
     const titles = await this.titleModel.find().sort({ name: 'asc' });
     if (!titles) throw new HttpException(TITLES_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
