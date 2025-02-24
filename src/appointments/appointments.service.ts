@@ -3,15 +3,15 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
 import { z } from 'zod';
-import type { IAppoAttendance } from './interfaces/appo-attendance.interface';
+import type { IAppoAttendance } from '@appointments/interfaces/appo-attendance.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
-import type { IStatistic } from '@/common/interfaces/statistic.interface';
+import type { IStatistic } from '@common/interfaces/statistic.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
 import { EAttendance } from '@appointments/enums/attendance.enum';
-import { ESearchType } from '@/common/enums/search-type.enum';
-import { User } from '@/users/schema/user.schema';
+import { ESearchType } from '@common/enums/search-type.enum';
+import { User } from '@users/schema/user.schema';
 
 @Injectable()
 export class AppointmentsService {
