@@ -374,7 +374,7 @@ export class AppointmentsService {
     if (apposByMonth.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDaysWithAppos, data: [] };
     if (!apposByMonth) throw new HttpException(APPOINTMENTS_CONFIG.response.error.daysWithAppos, HttpStatus.BAD_REQUEST);
 
-    let formattedData: { day: string }[] = [];
+    const formattedData: { day: string }[] = [];
     apposByMonth.forEach((date) => {
       formattedData.push({ day: date });
     });
