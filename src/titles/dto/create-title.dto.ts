@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { TITLES_CONFIG } from '@/config/titles.config';
+import { TITLES_CONFIG } from '@config/titles.config';
 
 export class CreateTitleDto {
   @IsString({ message: TITLES_CONFIG.validation.isString.name })

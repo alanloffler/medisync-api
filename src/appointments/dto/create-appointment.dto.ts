@@ -1,6 +1,6 @@
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
-import { EStatus } from '@/common/enums/status.enum';
+import { EStatus } from '@common/enums/status.enum';
 
 export class CreateAppointmentDto {
   @IsString({ message: APPOINTMENTS_CONFIG.validation.isString.professional })

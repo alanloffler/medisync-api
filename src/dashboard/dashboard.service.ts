@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { DASHBOARD_CONFIG } from '@config/dashboard.config';
-import { Professional } from '@/professionals/schema/professional.schema';
+import { Professional } from '@professionals/schema/professional.schema';
 import { User } from '@users/schema/user.schema';
 
 @Injectable()

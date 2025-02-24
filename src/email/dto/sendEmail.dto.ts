@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { EMAIL_CONFIG } from '@config/email.config';
-import { MaxFileSize } from '@/common/validators/max-size.validator';
+import { MaxFileSize } from '@common/validators/max-size.validator';
 
 export class sendEmailDto {
   @IsEmail({}, { message: EMAIL_CONFIG.validation.isEmail.to, each: true })

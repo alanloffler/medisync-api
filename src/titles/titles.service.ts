@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTitleDto } from '@titles/dto/create-title.dto';
 import { IResponse } from '@common/interfaces/response.interface';
-import { TITLES_CONFIG } from '@/config/titles.config';
+import { TITLES_CONFIG } from '@config/titles.config';
 import { Title } from '@titles/schema/title.schema';
 import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 

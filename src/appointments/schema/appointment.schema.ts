@@ -1,6 +1,6 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { EStatus } from '@/common/enums/status.enum';
+import { EStatus } from '@common/enums/status.enum';
 import { Professional } from '@professionals/schema/professional.schema';
 import { User } from '@users/schema/user.schema';
 
