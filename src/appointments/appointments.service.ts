@@ -3,11 +3,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
 import { z } from 'zod';
+import type { IAppoAttendance } from './interfaces/appo-attendance.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IStatistic } from '@/common/interfaces/statistic.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
+import { EAttendance } from '@appointments/enums/attendance.enum';
 import { ESearchType } from '@/common/enums/search-type.enum';
 import { User } from '@/users/schema/user.schema';
 
@@ -428,13 +430,31 @@ export class AppointmentsService {
   }
 
   // CHECKED: used on ApposAttendance.tsx
-  // TODO: response interface, get data from database
-  async getAttendance(): Promise<IResponse<any>> {
-    const result = [
-      { attendance: 'Attendance', value: 81.62 },
-      { attendance: 'Non-attendance', value: 18.38 },
-    ];
+  async getAttendance(): Promise<IResponse<IAppoAttendance[]>> {
+    const data: IAppoAttendance[] = [];
+    const total: number = await this.appointmentModel.countDocuments().exec();
+    const attended: number = await this.appointmentModel.countDocuments({ status: EAttendance.ATTENDED }).exec();
+    const notAttended: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_ATTENDED }).exec();
+    const notStatus: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_STATUS }).exec();
+
+    const hour: string = new Date().getHours().toString();
+    const minutes: string = new Date().getMinutes().toString();
+    const fullHour: string = `${hour}:${minutes}`;
+
+    const waiting: number = await this.appointmentModel
+      .find({
+        status: EAttendance.NOT_STATUS,
+        $or: [{ day: { $gt: format(new Date(), 'YYYY-MM-DD') } }, { day: format(new Date(), 'YYYY-MM-DD'), hour: { $gt: fullHour } }],
+      })
+      .countDocuments()
+      .exec();
+
+    data.push({ attendance: EAttendance.ATTENDED, value: (attended * 100) / total });
+    data.push({ attendance: EAttendance.NOT_ATTENDED, value: (notAttended * 100) / total });
+    data.push({ attendance: EAttendance.NOT_STATUS, value: ((notStatus - waiting) * 100) / total });
+    data.push({ attendance: EAttendance.WAITING, value: (waiting * 100) / total });
+
     // throw new HttpException('Error fetching attendance information', HttpStatus.BAD_REQUEST);
-    return { statusCode: 200, message: 'Attendance obtained successfully', data: result };
+    return { statusCode: 200, message: 'Attendance obtained successfully', data: data };
   }
 }
