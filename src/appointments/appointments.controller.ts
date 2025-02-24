@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Param, Delete, Query, Patch } from '@nestjs/common';
+import type { IAppoAttendance } from './interfaces/appo-attendance.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
@@ -60,9 +61,8 @@ export class AppointmentsController {
   }
 
   // CHECKED: used on ApposAttendance.tsx
-  // TODO: response interface
   @Get('attendance')
-  getAttendance(): Promise<IResponse<any>> {
+  getAttendance(): Promise<IResponse<IAppoAttendance[]>> {
     return this.appointmentsService.getAttendance();
   }
 
