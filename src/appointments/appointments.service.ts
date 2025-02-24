@@ -426,4 +426,15 @@ export class AppointmentsService {
     if (value2 > 0) return ((value1 - value2) / value2) * 100;
     return value1 * 100;
   }
+
+  // CHECKED: used on ApposAttendance.tsx
+  // TODO: response interface, get data from database
+  async getAttendance(): Promise<IResponse<any>> {
+    const result = [
+      { attendance: 'Attendance', value: 81.62 },
+      { attendance: 'Non-attendance', value: 18.38 },
+    ];
+    // throw new HttpException('Error fetching attendance information', HttpStatus.BAD_REQUEST);
+    return { statusCode: 200, message: 'Attendance obtained successfully', data: result };
+  }
 }

@@ -59,6 +59,13 @@ export class AppointmentsController {
     return this.appointmentsService.getApposStatistics();
   }
 
+  // CHECKED: used on ApposAttendance.tsx
+  // TODO: response interface
+  @Get('attendance')
+  getAttendance(): Promise<IResponse<any>> {
+    return this.appointmentsService.getAttendance();
+  }
+
   // FIXME: both methods will be replaced by an unified method (previous method)
   @Get('byUserAndProfessional')
   findAllByUserAndProfessional(@Query('user') userId: string, @Query('professional') professionalId: string): Promise<IResponse> {
