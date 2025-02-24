@@ -1,4 +1,4 @@
-import { AppModule } from '@/app.module';
+import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { formatValidationError } from '@common/validators/format-error';
