@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
@@ -184,7 +185,10 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.removed, data: remove };
   }
 
-  async databaseCount(): Promise<IResponse> {
+  // CHECKED:
+  // used on service ProfessionalApiService.countAll()
+  // used on component DBCountProfessionals.tsx
+  async databaseCount(): Promise<IResponse<IDBCount>> {
     const count = await this.professionalModel.countDocuments();
     const countAvailable = await this.professionalModel.countDocuments({ available: true });
     const countNotAvailable = await this.professionalModel.countDocuments({ available: false });
