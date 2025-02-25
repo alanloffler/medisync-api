@@ -25,8 +25,11 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
   }
 
-  // CHECKED: used on Professionals.tsx
-  async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  // CHECKED:
+  // Used on service ProfessionalApiService.searchProfessionalsBy()
+  // Used on component ProfessionalsDataTable.tsx
+  // TODO: create interface for data
+  async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
@@ -49,6 +52,7 @@ export class ProfessionalsService {
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
   }
+
   // CHECKED: used on Professionals.tsx
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
