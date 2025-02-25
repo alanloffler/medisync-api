@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
+import { Professional } from '@professionals/schema/professional.schema';
 import { ProfessionalsService } from '@professionals/professionals.service';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
@@ -10,15 +11,15 @@ export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
 
   @Post()
-  create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
+  create(@Body() createProfessionalDto: CreateProfessionalDto): Promise<IResponse<Professional>> {
     return this.professionalsService.create(createProfessionalDto);
   }
-  // CHECKED: used on Professionals.tsx
+
   @Get('specialization')
   findBySpecialization(@Query('id') id: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findBySpecialization(id, limit, skip, sortingKey, sortingValue);
   }
-  // CHECKED: used on Professionals.tsx
+
   @Get()
   findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
