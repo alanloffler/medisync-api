@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { ProfessionalsService } from '@professionals/professionals.service';
@@ -29,7 +30,7 @@ export class ProfessionalsController {
   }
 
   @Get('databaseCount')
-  databaseCount(): Promise<IResponse> {
+  databaseCount(): Promise<IResponse<IDBCount>> {
     return this.professionalsService.databaseCount();
   }
 
