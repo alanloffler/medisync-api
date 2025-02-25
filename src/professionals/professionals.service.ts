@@ -12,7 +12,10 @@ import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dt
 export class ProfessionalsService {
   constructor(@InjectModel(Professional.name) private readonly professionalModel: Model<Professional>) {}
 
-  async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse> {
+  // CHECKED:
+  // Used on service ProfessionalApiService.create()
+  // Used on component CreateProfessional.tsx
+  async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse<Professional>> {
     const professionalExists: Professional = await this.professionalModel.findOne({ dni: createProfessionalDto.dni });
     if (professionalExists) throw new HttpException(PROF_CONFIG.response.error.duplicatedKey, HttpStatus.BAD_REQUEST);
 
