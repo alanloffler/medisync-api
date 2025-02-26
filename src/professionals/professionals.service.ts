@@ -149,6 +149,9 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
   }
 
+  // CHECKED:
+  // Used on service ProfessionalApiService.findAllAvailableForChange()
+  // Used on component ProfessionalsSelect.tsx
   async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
     const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
 
