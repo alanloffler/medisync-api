@@ -10,6 +10,12 @@ export type ProfessionalDocument = HydratedDocument<Professional>;
 })
 export class Professional {
   @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    auto: true,
+  })
+  _id: string;
+
+  @Prop({
     default: {},
     ref: 'Area',
     required: true,
