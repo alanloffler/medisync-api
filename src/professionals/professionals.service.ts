@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import { parse } from '@formkit/tempo';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
+import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
-import { parse } from '@formkit/tempo';
-import { Appointment } from '@appointments/schema/appointment.schema';
 
 @Injectable()
 export class ProfessionalsService {
@@ -153,6 +153,11 @@ export class ProfessionalsService {
   // Used on service ProfessionalApiService.findAllAvailableForChange()
   // Used on component ProfessionalsSelect.tsx
   async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
+    const dayRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+    const hourRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!dayRegex.test(day)) throw new HttpException('Invalid day format or value', HttpStatus.BAD_REQUEST);
+    if (!hourRegex.test(hour)) throw new HttpException('Invalid hour format or value', HttpStatus.BAD_REQUEST);
+
     const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
 
     // Professionals that work on the given day
