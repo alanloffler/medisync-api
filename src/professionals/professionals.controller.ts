@@ -30,6 +30,11 @@ export class ProfessionalsController {
     return this.professionalsService.findAllActive();
   }
 
+  @Get('availableForChange')
+  findAllAvailableForChange(@Query('day') day: string, @Query('hour') hour: string): Promise<IResponse<Professional[]>> {
+    return this.professionalsService.findAllAvailableForChange(day, hour);
+  }
+
   @Get('databaseCount')
   databaseCount(): Promise<IResponse<IDBCount>> {
     return this.professionalsService.databaseCount();

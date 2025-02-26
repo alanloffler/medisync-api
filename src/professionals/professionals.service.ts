@@ -7,10 +7,15 @@ import { CreateProfessionalDto } from '@professionals/dto/create-professional.dt
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
+import { parse } from '@formkit/tempo';
+import { Appointment } from '@appointments/schema/appointment.schema';
 
 @Injectable()
 export class ProfessionalsService {
-  constructor(@InjectModel(Professional.name) private readonly professionalModel: Model<Professional>) {}
+  constructor(
+    @InjectModel(Professional.name) private readonly professionalModel: Model<Professional>,
+    @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
+  ) {}
 
   // CHECKED:
   // Used on service ProfessionalApiService.create()
@@ -129,7 +134,7 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
   }
 
-  async findAllActive(): Promise<IResponse> {
+  async findAllActive(): Promise<IResponse<Professional[]>> {
     const professionals = await this.professionalModel
       .find({ available: true })
       .sort({ lastName: 'asc' })
@@ -142,6 +147,34 @@ export class ProfessionalsService {
     if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
 
     return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
+  }
+
+  async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
+    const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
+
+    // Professionals that work on the given day
+    const professionalsOnWorkingDays: Professional[] = await this.professionalModel
+      .find({
+        'configuration.workingDays': {
+          $elemMatch: {
+            day: dayOfWeek,
+            value: true,
+          },
+        },
+        available: true,
+      })
+      .populate({ path: 'title', select: '_id abbreviation', strictPopulate: false })
+      .sort({ lastName: 'asc' })
+      .exec();
+
+    // Find all appointments in the given day and hour
+    const appointmentsInSlot: Appointment[] = await this.appointmentModel.find({ day: day, hour: hour }).exec();
+    // Get all professional IDs from appointmentsInSlot
+    const appointmentProfessionalIds: string[] = appointmentsInSlot.map((appointment) => appointment.professional.toString());
+    // Filter out professionals whose _id exists in appointmentProfessionalIds
+    const filteredProfessionals: Professional[] = professionalsOnWorkingDays.filter((professional) => !appointmentProfessionalIds.includes(professional._id.toString()));
+
+    return { statusCode: 200, message: 'Found available professionals for appointment change', data: filteredProfessionals };
   }
 
   async findOne(id: string): Promise<IResponse> {
