@@ -107,5 +107,9 @@ export const PROFESSIONALS_CONFIG = {
         isBoolean: 'El valor debe ser un booleano',
       },
     },
+    arguments: {
+      day: 'Formato o valor inválido del día',
+      hour: 'Formato o valor inválido de la hora',
+    }
   },
 };
