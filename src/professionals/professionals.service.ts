@@ -4,6 +4,7 @@ import { Model, isValidObjectId } from 'mongoose';
 import { parse } from '@formkit/tempo';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
+import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
@@ -153,14 +154,13 @@ export class ProfessionalsService {
   // Used on service ProfessionalApiService.findAllAvailableForChange()
   // Used on component ProfessionalsSelect.tsx
   async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
-    const dayRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-    const hourRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    if (!dayRegex.test(day)) throw new HttpException('Invalid day format or value', HttpStatus.BAD_REQUEST);
-    if (!hourRegex.test(hour)) throw new HttpException('Invalid hour format or value', HttpStatus.BAD_REQUEST);
+    const dayRegex: RegExp = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+    const hourRegex: RegExp = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!dayRegex.test(day)) throw new HttpException(PROF_CONFIG.validation.arguments.day, HttpStatus.BAD_REQUEST);
+    if (!hourRegex.test(hour)) throw new HttpException(PROF_CONFIG.validation.arguments.hour, HttpStatus.BAD_REQUEST);
 
     const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
-
-    // Professionals that work on the given day
+    
     const professionalsOnWorkingDays: Professional[] = await this.professionalModel
       .find({
         'configuration.workingDays': {
@@ -175,14 +175,17 @@ export class ProfessionalsService {
       .sort({ lastName: 'asc' })
       .exec();
 
-    // Find all appointments in the given day and hour
+    if (professionalsOnWorkingDays.length === 0) throw new HttpException(PROF_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
+    if (!professionalsOnWorkingDays) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+
     const appointmentsInSlot: Appointment[] = await this.appointmentModel.find({ day: day, hour: hour }).exec();
-    // Get all professional IDs from appointmentsInSlot
+    if (appointmentsInSlot.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.success.emptyDatabase, HttpStatus.NOT_FOUND);
+    if (!appointmentsInSlot) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+
     const appointmentProfessionalIds: string[] = appointmentsInSlot.map((appointment) => appointment.professional.toString());
-    // Filter out professionals whose _id exists in appointmentProfessionalIds
     const filteredProfessionals: Professional[] = professionalsOnWorkingDays.filter((professional) => !appointmentProfessionalIds.includes(professional._id.toString()));
 
-    return { statusCode: 200, message: 'Found available professionals for appointment change', data: filteredProfessionals };
+    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: filteredProfessionals };
   }
 
   async findOne(id: string): Promise<IResponse> {
