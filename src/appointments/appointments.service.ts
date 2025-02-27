@@ -270,15 +270,18 @@ export class AppointmentsService {
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundSingular, data: appointment };
   }
 
-  // CHECKED: used on StatusSelect.tsx
-  async update(id: string, dto: { status: string }): Promise<IResponse<Appointment>> {
-    const { status } = dto;
+  // CHECKED:
+  // Used on service ProfessionalApiService.update()
+  // Used on StatusSelect.tsx (change status) and AppoDataTable.tsx (change professional)
+  async update(id: string, dto: { professional: string; status: string }): Promise<IResponse<Appointment>> {
+    const { professional, status } = dto;
 
-    const update = await this.appointmentModel.findByIdAndUpdate(id, { status }, { new: true });
+    const update = await this.appointmentModel.findByIdAndUpdate(id, { professional, status }, { new: true });
     if (!update) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.updated, data: update };
   }
+  
   // CHECKED: used on DialogReserve.tsx
   async remove(id: string): Promise<IResponse> {
     const isValidId = isValidObjectId(id);
