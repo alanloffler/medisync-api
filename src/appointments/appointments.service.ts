@@ -4,13 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
 import { z } from 'zod';
 import type { IAppoAttendance } from '@appointments/interfaces/appo-attendance.interface';
-import type { IResponse } from '@common/interfaces/response.interface';
+import type { IResponse, IStats } from '@common/interfaces/response.interface';
 import type { IStatistic } from '@common/interfaces/statistic.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
 import { EAttendance } from '@appointments/enums/attendance.enum';
 import { ESearchType } from '@common/enums/search-type.enum';
+import { EStatus } from '@common/enums/status.enum';
 import { User } from '@users/schema/user.schema';
 
 @Injectable()
@@ -134,12 +135,16 @@ export class AppointmentsService {
     let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
     const _limit: number = limit ? Number(limit) : 10;
     const _page: number = page ? Number(page) : 0;
-    let totalItems: number = 0;
+    let apposStats: IStats = { total: 0, attended: 0, notAttended: 0, notStatus: 0, waiting: 0 };
 
+    // Searching appointments without professional Id
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
+      // Searching appointments without professional Id and without year
       if (year === 'null' || year === undefined || year === null) {
+        const filter = { user: userId };
+
         appointments = await this.appointmentModel
-          .find({ user: userId })
+          .find(filter)
           .sort({ day: -1 })
           .skip(_page * _limit)
           .limit(_limit + 1)
@@ -153,9 +158,31 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        totalItems = await this.appointmentModel.countDocuments({ user: userId });
+        const attended = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.ATTENDED });
+        const notAttended = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_ATTENDED });
+        const notStatus = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_STATUS });
+        const waiting = await this.appointmentModel.countDocuments({
+          ...filter,
+          status: EStatus.NOT_STATUS,
+          $expr: {
+            $gt: [
+              {
+                $dateFromString: {
+                  dateString: { $concat: ['$day', 'T', '$hour', ':00'] },
+                },
+              },
+              new Date(),
+            ],
+          },
+        });
+        const total = attended + notAttended + notStatus;
+
+        apposStats = { attended, notAttended, notStatus, total, waiting };
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
+        // Searching appointments without professional Id but with year
+        // const filter = { user: userId, day: { $regex: year } };
+
         appointments = await this.appointmentModel
           .find({ user: userId, day: { $regex: year } })
           .sort({ day: -1 })
@@ -171,7 +198,13 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        totalItems = await this.appointmentModel.countDocuments({ user: userId, day: { $regex: year } });
+        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
+        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
+        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
+        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
+
+        const waiting = 20;
+        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by user and year' };
       }
     } else {
@@ -191,7 +224,13 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        totalItems = await this.appointmentModel.countDocuments({ user: userId, professional: professionalId });
+        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
+        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
+        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
+        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
+
+        const waiting = 30;
+        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by professional' };
       } else {
         appointments = await this.appointmentModel
@@ -212,7 +251,13 @@ export class AppointmentsService {
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.errorFoundPlural, HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
 
-        totalItems = await this.appointmentModel.countDocuments({ user: userId, professional: professionalId, day: { $regex: year } });
+        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
+        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
+        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
+        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
+
+        const waiting = 40;
+        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
@@ -220,7 +265,10 @@ export class AppointmentsService {
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult: Appointment[] = hasMore ? appointments.slice(0, -1) : appointments;
 
-    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems } };
+    apposStats = { ...apposStats, notStatus: apposStats.notStatus - apposStats.waiting };
+    console.log('apposStats', apposStats);
+
+    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems: apposStats.total }, stats: apposStats };
   }
 
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
@@ -281,7 +329,7 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.updated, data: update };
   }
-  
+
   // CHECKED: used on DialogReserve.tsx
   async remove(id: string): Promise<IResponse> {
     const isValidId = isValidObjectId(id);
