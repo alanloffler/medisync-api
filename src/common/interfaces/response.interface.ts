@@ -1,9 +1,18 @@
 export interface IResponse<T = any> {
-  statusCode: number;
-  message: string;
   data?: T;
+  message: string;
   pagination?: {
     hasMore: boolean;
     totalItems: number;
   };
+  stats?: IStats;
+  statusCode: number;
+}
+
+export interface IStats {
+  attended: number;
+  notAttended: number;
+  notStatus: number;
+  total: number;
+  waiting: number;
 }
