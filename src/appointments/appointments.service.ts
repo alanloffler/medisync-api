@@ -252,7 +252,7 @@ export class AppointmentsService {
     });
     const total: number = attended + notAttended + notStatus;
 
-    paginationTotalItems = await this.appointmentModel.countDocuments({ user: userId });
+    paginationTotalItems = await this.appointmentModel.countDocuments(filter);
     apposStats = { attended, notAttended, notStatus, total, waiting };
     apposStats = { ...apposStats, notStatus: apposStats.notStatus - apposStats.waiting };
 
