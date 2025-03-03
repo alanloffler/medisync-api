@@ -37,6 +37,12 @@ export const APPOINTMENTS_CONFIG = {
       emptyMonths: 'No se encontraron los distintos meses de turnos',
       emptyUniqueProfessionals: 'No se encontraron profesionales únicos',
       emptyYears: 'No se encontraron los distintos años de turnos',
+
+      emptyFoundPluralFilterAll: 'No se encontraron turnos por profesional y año',
+      emptyFoundPluralFilterNone: 'No se encontraron turnos',
+      emptyFoundPluralFilterProfessional: 'No se encontraron turnos por profesional',
+      emptyFoundPluralFilterYear: 'No se encontraron turnos por año',
+
       foundMonths: 'Se encontraron los distintos meses de turnos',
       foundPlural: 'Turnos encontrados',
       foundSingular: 'Turno encontrado',
