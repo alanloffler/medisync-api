@@ -128,8 +128,10 @@ export class AppointmentsService {
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
   }
-  // CHECKED: used in ApposTable.tsx
-  // TODO: manage errors!
+
+  // CHECKED:
+  // Used in service AppointmentApiService.findApposRecordWithFilters()
+  // Used in component ApposRecord.tsx
   async findApposRecordWithFilters(userId: string, limit?: string, page?: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
     const _limit: number = limit ? Number(limit) : 10;
     const _page: number = page ? Number(page) : 0;
@@ -161,6 +163,7 @@ export class AppointmentsService {
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterNone, HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterNone, data: [], statusCode: 404 };
 
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
@@ -183,6 +186,7 @@ export class AppointmentsService {
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterYear, HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterYear, data: [], statusCode: 404 };
 
         response = { statusCode: 200, message: 'find by user and year' };
       }
@@ -208,6 +212,7 @@ export class AppointmentsService {
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterProfessional, HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterProfessional, data: [], statusCode: 404 };
 
         response = { statusCode: 200, message: 'find by professional' };
       } else {
@@ -230,7 +235,7 @@ export class AppointmentsService {
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterAll, HttpStatus.BAD_REQUEST);
-        // if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterAll, data: [], statusCode: 404 };
 
         response = { statusCode: 200, message: 'find by professional and year' };
       }
