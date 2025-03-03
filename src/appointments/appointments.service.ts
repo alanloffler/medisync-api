@@ -131,17 +131,19 @@ export class AppointmentsService {
   // CHECKED: used in ApposTable.tsx
   // TODO: manage errors!
   async findApposRecordWithFilters(userId: string, limit?: string, page?: string, professionalId?: string, year?: string): Promise<IResponse<Appointment[]>> {
-    let appointments: Appointment[] = [];
-    let response: { statusCode: number; message: string } = { statusCode: 0, message: '' };
     const _limit: number = limit ? Number(limit) : 10;
     const _page: number = page ? Number(page) : 0;
+    let appointments: Appointment[] = [];
     let apposStats: IStats = { total: 0, attended: 0, notAttended: 0, notStatus: 0, waiting: 0 };
+    let filter = {};
+    let paginationTotalItems: number = 0;
+    let response: IResponse = { statusCode: 0, message: '' };
 
     // Searching appointments without professional Id
     if (professionalId === 'null' || professionalId === undefined || professionalId === null) {
       // Searching appointments without professional Id and without year
       if (year === 'null' || year === undefined || year === null) {
-        const filter = { user: userId };
+        filter = { user: userId };
 
         appointments = await this.appointmentModel
           .find(filter)
@@ -158,33 +160,13 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        const attended = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.ATTENDED });
-        const notAttended = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_ATTENDED });
-        const notStatus = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_STATUS });
-        const waiting = await this.appointmentModel.countDocuments({
-          ...filter,
-          status: EStatus.NOT_STATUS,
-          $expr: {
-            $gt: [
-              {
-                $dateFromString: {
-                  dateString: { $concat: ['$day', 'T', '$hour', ':00'] },
-                },
-              },
-              new Date(),
-            ],
-          },
-        });
-        const total = attended + notAttended + notStatus;
-
-        apposStats = { attended, notAttended, notStatus, total, waiting };
         response = { statusCode: 200, message: 'Appointments found by user' };
       } else {
         // Searching appointments without professional Id but with year
-        // const filter = { user: userId, day: { $regex: year } };
+        filter = { user: userId, day: { $regex: year } };
 
         appointments = await this.appointmentModel
-          .find({ user: userId, day: { $regex: year } })
+          .find(filter)
           .sort({ day: -1 })
           .skip(_page * _limit)
           .limit(_limit + 1)
@@ -198,19 +180,16 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
-        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
-        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
-        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
-
-        const waiting = 20;
-        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by user and year' };
       }
+      // Searching appointments with professional Id
     } else {
+      // Searching appointments with professional Id and without year
       if (year === 'null' || year === undefined || year === null) {
+        filter = { user: userId, professional: professionalId };
+
         appointments = await this.appointmentModel
-          .find({ user: userId, professional: professionalId })
+          .find(filter)
           .sort({ day: -1 })
           .skip(_page * _limit)
           .limit(_limit + 1)
@@ -224,17 +203,13 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
-        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
-        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
-        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
-
-        const waiting = 30;
-        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by professional' };
       } else {
+        // Searching appointments with professional Id and with year
+        filter = { user: userId, professional: professionalId, day: { $regex: year } };
+
         appointments = await this.appointmentModel
-          .find({ user: userId, professional: professionalId, day: { $regex: year } })
+          .find(filter)
           .sort({ day: -1 })
           .skip(_page * _limit)
           .limit(_limit + 1)
@@ -251,13 +226,6 @@ export class AppointmentsService {
         if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.errorFoundPlural, HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
 
-        const totalItems = await this.appointmentModel.countDocuments({ user: userId });
-        const attended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.ATTENDED });
-        const notAttended = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_ATTENDED });
-        const notStatus = await this.appointmentModel.countDocuments({ user: userId, status: EStatus.NOT_STATUS });
-
-        const waiting = 40;
-        apposStats = { total: totalItems, attended, notAttended, notStatus, waiting };
         response = { statusCode: 200, message: 'find by professional and year' };
       }
     }
@@ -265,10 +233,30 @@ export class AppointmentsService {
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult: Appointment[] = hasMore ? appointments.slice(0, -1) : appointments;
 
-    apposStats = { ...apposStats, notStatus: apposStats.notStatus - apposStats.waiting };
-    console.log('apposStats', apposStats);
+    const attended: number = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.ATTENDED });
+    const notAttended: number = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_ATTENDED });
+    const notStatus: number = await this.appointmentModel.countDocuments({ ...filter, status: EStatus.NOT_STATUS });
+    const waiting: number = await this.appointmentModel.countDocuments({
+      ...filter,
+      status: EStatus.NOT_STATUS,
+      $expr: {
+        $gt: [
+          {
+            $dateFromString: {
+              dateString: { $concat: ['$day', 'T', '$hour', ':00'] },
+            },
+          },
+          new Date(),
+        ],
+      },
+    });
+    const total: number = attended + notAttended + notStatus;
 
-    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems: apposStats.total }, stats: apposStats };
+    paginationTotalItems = await this.appointmentModel.countDocuments({ user: userId });
+    apposStats = { attended, notAttended, notStatus, total, waiting };
+    apposStats = { ...apposStats, notStatus: apposStats.notStatus - apposStats.waiting };
+
+    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems: paginationTotalItems }, stats: apposStats };
   }
 
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
