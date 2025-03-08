@@ -7,6 +7,7 @@ import { DashboardModule } from '@dashboard/dashboard.module';
 import { EmailModule } from '@email/email.module';
 import { ProfessionalsModule } from '@professionals/professionals.module';
 import { SpecializationsModule } from '@specializations/specializations.module';
+import { StatisticsModule } from '@statistics/statistics.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
 
@@ -23,6 +24,7 @@ import { UsersModule } from '@users/users.module';
     EmailModule,
     ProfessionalsModule,
     SpecializationsModule,
+    StatisticsModule,
     TitlesModule,
     UsersModule,
   ],
