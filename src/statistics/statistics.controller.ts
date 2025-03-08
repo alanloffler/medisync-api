@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { StatisticsService } from './statistics.service';
 
@@ -7,8 +7,8 @@ export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
 
   @Get('countApposByProfessional')
-  countApposByProfessional(): Promise<IResponse<number>> {
-    return this.statisticsService.countApposByProfessional();
+  countApposByProfessional(@Query('id') id: string): Promise<IResponse<number>> {
+    return this.statisticsService.countApposByProfessional(id);
   }
 
   @Get(':id')
