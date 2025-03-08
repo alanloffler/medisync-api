@@ -19,8 +19,9 @@
       "@email/*": ["./src/email/*"],
       "@professionals/*": ["./src/professionals/*"],
       "@specializations/*": ["./src/specializations/*"],
+      "@statistics/*": ["./src/statistics/*"],
       "@titles/*": ["./src/titles/*"],
-      "@users/*": ["./src/users/*"],
+      "@users/*": ["./src/users/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
