@@ -13,7 +13,7 @@ export class AdminService {
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
     if (createAdminDto.email !== undefined) {
       const alreadyRegistered: Admin = await this.adminModel.findOne({ email: createAdminDto.email });
-      if (alreadyRegistered) throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+      if (alreadyRegistered) throw new HttpException('Failed to create admin, email already exists', HttpStatus.BAD_REQUEST);
     }
 
     const admin: Admin = await this.adminModel.create(createAdminDto);
@@ -24,7 +24,7 @@ export class AdminService {
 
   async findAll(): Promise<IResponse<Admin[]>> {
     const admins: Admin[] = await this.adminModel.find();
-    if (!admins) throw new HttpException('No admins found', HttpStatus.NOT_FOUND);
+    if (!admins) throw new HttpException('Admins not found', HttpStatus.NOT_FOUND);
 
     return { data: admins, message: 'Admins found successfully', statusCode: HttpStatus.OK };
   }
@@ -43,13 +43,27 @@ export class AdminService {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException('Invalid admin ID', HttpStatus.BAD_REQUEST);
 
+    if (updateAdminDto.email !== undefined) {
+      const alreadyRegistered: Admin = await this.adminModel.findOne({ email: updateAdminDto.email });
+      if (alreadyRegistered) throw new HttpException('Failed to update admin, email already exists', HttpStatus.BAD_REQUEST);
+    }
+
     const admin: Admin = await this.adminModel.findByIdAndUpdate(id, updateAdminDto, { new: true });
     if (!admin) throw new HttpException('Failed to update admin', HttpStatus.BAD_REQUEST);
 
     return { data: admin, message: 'Admin updated successfully', statusCode: HttpStatus.OK };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+  async remove(id: string): Promise<IResponse<Admin>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException('Invalid admin ID', HttpStatus.BAD_REQUEST);
+
+    const admin: Admin = await this.adminModel.findById(id);
+    if (!admin) throw new HttpException('Failed to remove admin, admin not found', HttpStatus.NOT_FOUND);
+
+    const adminToRemove: Admin = await this.adminModel.findByIdAndDelete(id);
+    if (!adminToRemove) throw new HttpException('Failed to remove admin', HttpStatus.BAD_REQUEST);
+
+    return { data: adminToRemove, message: 'Admin removed successfully', statusCode: HttpStatus.OK };
   }
 }
