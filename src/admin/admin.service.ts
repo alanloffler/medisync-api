@@ -17,7 +17,7 @@ export class AdminService {
       if (alreadyRegistered) throw new HttpException('Failed to create admin, email already exists', HttpStatus.CONFLICT);
     }
 
-    const passwordHashed = await bcryptjs.hash(createAdminDto.password, 10);
+    const passwordHashed: string = await bcryptjs.hash(createAdminDto.password, 10);
     createAdminDto.password = passwordHashed;
 
     const admin: Admin = await this.adminModel.create(createAdminDto);
@@ -53,8 +53,8 @@ export class AdminService {
     }
 
     if (updateAdminDto.password !== undefined) {
-      const hashedPassword: string = await bcryptjs.hash(updateAdminDto.password, 10);
-      updateAdminDto.password = hashedPassword;
+      const passwordHashed: string = await bcryptjs.hash(updateAdminDto.password, 10);
+      updateAdminDto.password = passwordHashed;
     }
 
     const admin: Admin = await this.adminModel.findByIdAndUpdate(id, updateAdminDto, { new: true });
