@@ -25,8 +25,8 @@ export class AdminController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
+  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto): Promise<IResponse<Admin>> {
+    return this.adminService.update(id, updateAdminDto);
   }
 
   @Delete(':id')
