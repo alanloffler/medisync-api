@@ -30,7 +30,7 @@ export class AdminController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(+id);
+  remove(@Param('id') id: string): Promise<IResponse<Admin>> {
+    return this.adminService.remove(id);
   }
 }
