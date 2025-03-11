@@ -13,6 +13,9 @@ export class Admin {
 
   @Prop({ lowercase: true, trim: true, unique: true, required: true })
   email: string;
+
+  @Prop({ required: true })
+  password: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
