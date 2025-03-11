@@ -22,8 +22,11 @@ export class AdminService {
     return { data: admin, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
   }
 
-  findAll() {
-    return `This action returns all admin`;
+  async findAll(): Promise<IResponse<Admin[]>> {
+    const admins = await this.adminModel.find();
+    if (!admins) throw new HttpException('No admins found', HttpStatus.NOT_FOUND);
+
+    return { data: admins, message: 'Admins found successfully', statusCode: HttpStatus.OK };
   }
 
   findOne(id: number) {
