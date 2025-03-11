@@ -39,8 +39,14 @@ export class AdminService {
     return { data: admin, message: 'Admin found successfully', statusCode: HttpStatus.OK };
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
+  async update(id: string, updateAdminDto: UpdateAdminDto): Promise<IResponse<Admin>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException('Invalid admin ID', HttpStatus.BAD_REQUEST);
+
+    const admin: Admin = await this.adminModel.findByIdAndUpdate(id, updateAdminDto, { new: true });
+    if (!admin) throw new HttpException('Failed to update admin', HttpStatus.BAD_REQUEST);
+
+    return { data: admin, message: 'Admin updated successfully', statusCode: HttpStatus.OK };
   }
 
   remove(id: number) {
