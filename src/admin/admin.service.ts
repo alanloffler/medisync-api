@@ -17,6 +17,9 @@ export class AdminService {
       if (alreadyRegistered) throw new HttpException('Failed to create admin, email already exists', HttpStatus.CONFLICT);
     }
 
+    const passwordHashed = await bcryptjs.hash(createAdminDto.password, 10);
+    createAdminDto.password = passwordHashed;
+
     const admin: Admin = await this.adminModel.create(createAdminDto);
     if (!admin) throw new HttpException('Failed to create admin', HttpStatus.BAD_REQUEST);
 
