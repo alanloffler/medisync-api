@@ -1,3 +1,4 @@
+import * as bcryptjs from 'bcryptjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
@@ -46,6 +47,11 @@ export class AdminService {
     if (updateAdminDto.email !== undefined) {
       const alreadyRegistered: Admin = await this.adminModel.findOne({ email: updateAdminDto.email });
       if (alreadyRegistered) throw new HttpException('Failed to update admin, email already exists', HttpStatus.CONFLICT);
+    }
+
+    if (updateAdminDto.password !== undefined) {
+      const hashedPassword: string = await bcryptjs.hash(updateAdminDto.password, 10);
+      updateAdminDto.password = hashedPassword;
     }
 
     const admin: Admin = await this.adminModel.findByIdAndUpdate(id, updateAdminDto, { new: true });
