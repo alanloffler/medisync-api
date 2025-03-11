@@ -13,7 +13,7 @@ export class AdminService {
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
     if (createAdminDto.email !== undefined) {
       const alreadyRegistered: Admin = await this.adminModel.findOne({ email: createAdminDto.email });
-      if (alreadyRegistered) throw new HttpException('Failed to create admin, email already exists', HttpStatus.BAD_REQUEST);
+      if (alreadyRegistered) throw new HttpException('Failed to create admin, email already exists', HttpStatus.CONFLICT);
     }
 
     const admin: Admin = await this.adminModel.create(createAdminDto);
@@ -45,7 +45,7 @@ export class AdminService {
 
     if (updateAdminDto.email !== undefined) {
       const alreadyRegistered: Admin = await this.adminModel.findOne({ email: updateAdminDto.email });
-      if (alreadyRegistered) throw new HttpException('Failed to update admin, email already exists', HttpStatus.BAD_REQUEST);
+      if (alreadyRegistered) throw new HttpException('Failed to update admin, email already exists', HttpStatus.CONFLICT);
     }
 
     const admin: Admin = await this.adminModel.findByIdAndUpdate(id, updateAdminDto, { new: true });
