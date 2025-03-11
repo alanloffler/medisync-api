@@ -1,6 +1,6 @@
-import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, isValidObjectId } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
@@ -12,25 +12,31 @@ export class AdminService {
 
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
     if (createAdminDto.email !== undefined) {
-      const alreadyRegistered = await this.adminModel.findOne({ email: createAdminDto.email });
+      const alreadyRegistered: Admin = await this.adminModel.findOne({ email: createAdminDto.email });
       if (alreadyRegistered) throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
     }
 
-    const admin = await this.adminModel.create(createAdminDto);
+    const admin: Admin = await this.adminModel.create(createAdminDto);
     if (!admin) throw new HttpException('Failed to create admin', HttpStatus.BAD_REQUEST);
 
     return { data: admin, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
   }
 
   async findAll(): Promise<IResponse<Admin[]>> {
-    const admins = await this.adminModel.find();
+    const admins: Admin[] = await this.adminModel.find();
     if (!admins) throw new HttpException('No admins found', HttpStatus.NOT_FOUND);
 
     return { data: admins, message: 'Admins found successfully', statusCode: HttpStatus.OK };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
+  async findOne(id: string): Promise<IResponse<Admin>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException('Invalid admin ID', HttpStatus.BAD_REQUEST);
+
+    const admin: Admin = await this.adminModel.findById(id);
+    if (!admin) throw new HttpException('Admin not found', HttpStatus.NOT_FOUND);
+
+    return { data: admin, message: 'Admin found successfully', statusCode: HttpStatus.OK };
   }
 
   update(id: number, updateAdminDto: UpdateAdminDto) {
