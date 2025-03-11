@@ -11,6 +11,11 @@ export class AdminService {
   constructor(@InjectModel(Admin.name) private readonly adminModel: Model<Admin>) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
+    if (createAdminDto.email !== undefined) {
+      const alreadyRegistered = await this.adminModel.findOne({ email: createAdminDto.email });
+      if (alreadyRegistered) throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    }
+
     const admin = await this.adminModel.create(createAdminDto);
     if (!admin) throw new HttpException('Failed to create admin', HttpStatus.BAD_REQUEST);
 
