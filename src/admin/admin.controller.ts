@@ -15,7 +15,7 @@ export class AdminController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<IResponse<Admin[]>> {
     return this.adminService.findAll();
   }
 
