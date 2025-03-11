@@ -1,6 +1,7 @@
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AdminModule } from '@admin/admin.module';
 import { AppointmentsModule } from '@appointments/appointments.module';
 import { AreasModule } from '@areas/areas.module';
 import { DashboardModule } from '@dashboard/dashboard.module';
@@ -18,6 +19,7 @@ import { UsersModule } from '@users/users.module';
       dbName: process.env.DATABASE,
       autoCreate: false,
     }),
+    AdminModule,
     AppointmentsModule,
     AreasModule,
     DashboardModule,
