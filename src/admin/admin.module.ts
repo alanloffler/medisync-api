@@ -9,7 +9,8 @@ import { AdminService } from '@admin/admin.service';
   imports: [
     MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      global: true,
+      secret: 'process.env.JWT_SECRET',
       signOptions: { expiresIn: '1h' },
     }),
   ],
