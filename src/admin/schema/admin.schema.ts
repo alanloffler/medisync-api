@@ -12,19 +12,19 @@ export class Admin {
   })
   _id: string;
 
-  @Prop({ lowercase: true, trim: true, required: true })
+  @Prop({ lowercase: true, required: true, trim: true })
   firstName: string;
 
-  @Prop({ lowercase: true, trim: true, required: true })
+  @Prop({ lowercase: true, required: true, trim: true })
   lastName: string;
 
-  @Prop({ lowercase: true, trim: true, unique: true, required: true })
+  @Prop({ lowercase: true, required: true, trim: true, unique: true })
   email: string;
 
   @Prop({ required: true, trim: true })
   password: string;
 
-  @Prop({ required: true, trim: true })
+  @Prop({ enum: ERole, required: true, type: String })
   role: ERole;
 }
 
