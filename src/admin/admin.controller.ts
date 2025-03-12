@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import type { ILogin } from '@admin/interface/login.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { AdminService } from '@admin/admin.service';
@@ -36,7 +37,7 @@ export class AdminController {
   }
 
   @Post('login')
-  login(@Body() loginDto: LoginDto): Promise<IResponse<any>> {
+  login(@Body() loginDto: LoginDto): Promise<IResponse<ILogin>> {
     return this.adminService.login(loginDto);
   }
 }
