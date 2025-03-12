@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { ERole } from '@common/enums/role.enum';
 
 export class CreateAdminDto {
   @IsString({ message: 'First name must be a string' })
@@ -21,4 +22,8 @@ export class CreateAdminDto {
   @MaxLength(100, { message: 'Password must be at most 100 characters long' })
   @Transform(({ value }) => value.trim())
   password: string;
+
+  @IsString()
+  @Transform(({ value }) => value.trim())
+  role: ERole;
 }
