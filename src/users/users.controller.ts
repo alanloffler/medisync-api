@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
+import { ERole } from '@common/enums/role.enum';
+import { Roles } from '@common/decorators/roles.decorator';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
 import { UsersService } from '@users/users.service';
@@ -9,6 +11,7 @@ import { UsersService } from '@users/users.service';
 // Checked: all
 // Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 
+@Roles(ERole.Admin)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
