@@ -1,5 +1,5 @@
 import { APP_GUARD } from '@nestjs/core/constants';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminModule } from '@admin/admin.module';
@@ -17,9 +17,14 @@ import { UsersModule } from '@users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      dbName: process.env.DATABASE,
-      autoCreate: false,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+        dbName: configService.get<string>('DATABASE'),
+        autoCreate: false,
+      }),
     }),
     AdminModule,
     AppointmentsModule,
