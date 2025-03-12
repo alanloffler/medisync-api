@@ -20,7 +20,7 @@ export class Admin {
   @Prop({ lowercase: true, trim: true, unique: true, required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   password: string;
 }
 
