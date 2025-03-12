@@ -1,5 +1,6 @@
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ERole } from '@common/enums/role.enum';
 
 export type AdminDocument = HydratedDocument<Admin>;
 
@@ -22,6 +23,9 @@ export class Admin {
 
   @Prop({ required: true, trim: true })
   password: string;
+
+  @Prop({ required: true, trim: true })
+  role: ERole;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
