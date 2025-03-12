@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { ERole } from '@common/enums/role.enum';
 
 export class CreateAdminDto {
@@ -23,7 +23,9 @@ export class CreateAdminDto {
   @Transform(({ value }) => value.trim())
   password: string;
 
-  @IsString()
   @Transform(({ value }) => value.trim())
+  @IsEnum(ERole, {
+    message: (args) => `Invalid role: ${args.constraints[1].join(' | ')} is required`,
+  })
   role: ERole;
 }
