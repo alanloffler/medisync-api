@@ -12,6 +12,9 @@ import { StatisticsModule } from '@statistics/statistics.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
 
+import { APP_GUARD } from '@nestjs/core/constants';
+import { RolesGuard } from '@common/guards/roles.guard';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -31,6 +34,11 @@ import { UsersModule } from '@users/users.module';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
