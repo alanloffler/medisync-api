@@ -2,6 +2,7 @@ import * as bcryptjs from 'bcryptjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import type { ILogin } from '@admin/interface/login.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
@@ -77,7 +78,7 @@ export class AdminService {
     return { data: adminToRemove, message: 'Admin removed successfully', statusCode: HttpStatus.OK };
   }
 
-  async login(loginDto: LoginDto): Promise<IResponse<any>> {
+  async login(loginDto: LoginDto): Promise<IResponse<ILogin>> {
     const { email, password } = loginDto;
 
     const admin: Admin = await this.adminModel.findOne({ email });
@@ -86,7 +87,7 @@ export class AdminService {
     const passwordIsValid: boolean = await bcryptjs.compare(password, admin.password);
     if (!passwordIsValid) throw new HttpException('Failed to login admin, invalid password', HttpStatus.UNAUTHORIZED);
 
-    const data: any = { id: admin._id };
+    const data: ILogin = { _id: admin._id, email: admin.email };
 
     return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK };
   }
