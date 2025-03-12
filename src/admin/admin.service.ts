@@ -5,6 +5,7 @@ import { Model, isValidObjectId } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
+import { LoginDto } from '@admin/dto/login.dto';
 import { UpdateAdminDto } from '@admin/dto/update-admin.dto';
 
 @Injectable()
@@ -74,5 +75,19 @@ export class AdminService {
     if (!adminToRemove) throw new HttpException('Failed to remove admin', HttpStatus.BAD_REQUEST);
 
     return { data: adminToRemove, message: 'Admin removed successfully', statusCode: HttpStatus.OK };
+  }
+
+  async login(loginDto: LoginDto): Promise<IResponse<any>> {
+    const { email, password } = loginDto;
+
+    const admin: Admin = await this.adminModel.findOne({ email });
+    if (!admin) throw new HttpException('Failed to login admin, invalid email', HttpStatus.UNAUTHORIZED);
+
+    const passwordIsValid: boolean = await bcryptjs.compare(password, admin.password);
+    if (!passwordIsValid) throw new HttpException('Failed to login admin, invalid password', HttpStatus.UNAUTHORIZED);
+
+    const data: any = { id: admin._id };
+
+    return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK };
   }
 }
