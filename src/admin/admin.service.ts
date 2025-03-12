@@ -1,6 +1,7 @@
 import * as bcryptjs from 'bcryptjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 import { Model, isValidObjectId } from 'mongoose';
 import type { ILogin } from '@admin/interface/login.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
@@ -11,7 +12,10 @@ import { UpdateAdminDto } from '@admin/dto/update-admin.dto';
 
 @Injectable()
 export class AdminService {
-  constructor(@InjectModel(Admin.name) private readonly adminModel: Model<Admin>) {}
+  constructor(
+    @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
     if (createAdminDto.email !== undefined) {
@@ -80,6 +84,7 @@ export class AdminService {
 
   async login(loginDto: LoginDto): Promise<IResponse<ILogin>> {
     const { email, password } = loginDto;
+    console.log(process.env.JWT_SECRET);
 
     const admin: Admin = await this.adminModel.findOne({ email });
     if (!admin) throw new HttpException('Failed to login admin, invalid email', HttpStatus.UNAUTHORIZED);
@@ -87,7 +92,10 @@ export class AdminService {
     const passwordIsValid: boolean = await bcryptjs.compare(password, admin.password);
     if (!passwordIsValid) throw new HttpException('Failed to login admin, invalid password', HttpStatus.UNAUTHORIZED);
 
-    const data: ILogin = { _id: admin._id, email: admin.email };
+    const payload = { _id: admin._id, email: admin.email, role: admin.role };
+    const token: string = await this.jwtService.signAsync(payload);
+
+    const data: ILogin = { _id: admin._id, email: admin.email, token };
 
     return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK };
   }
