@@ -1,4 +1,3 @@
-import { APP_GUARD } from '@nestjs/core/constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,15 +7,19 @@ import { AreasModule } from '@areas/areas.module';
 import { DashboardModule } from '@dashboard/dashboard.module';
 import { EmailModule } from '@email/email.module';
 import { ProfessionalsModule } from '@professionals/professionals.module';
-import { RolesGuard } from '@common/guards/roles.guard';
 import { SpecializationsModule } from '@specializations/specializations.module';
 import { StatisticsModule } from '@statistics/statistics.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      cache: true,
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,6 +27,17 @@ import { UsersModule } from '@users/users.module';
         uri: configService.get<string>('MONGODB_URI'),
         dbName: configService.get<string>('DATABASE'),
         autoCreate: false,
+      }),
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+        },
       }),
     }),
     AdminModule,
@@ -38,11 +52,7 @@ import { UsersModule } from '@users/users.module';
     UsersModule,
   ],
   controllers: [],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+  providers: [],
+  exports: [],
 })
 export class AppModule {}
