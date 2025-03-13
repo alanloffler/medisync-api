@@ -1,7 +1,6 @@
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { formatValidationError } from '@common/validators/format-error';
 import { json, raw, urlencoded } from 'express';
 
 async function bootstrap() {
@@ -11,11 +10,16 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [process.env.FRONTEND_URL.toString(), process.env.PREVIEW_URL.toString()],
+    allowedHeaders: '*',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
 
   app.useGlobalPipes(
     new ValidationPipe({
-      exceptionFactory: formatValidationError,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
