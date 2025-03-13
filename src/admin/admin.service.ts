@@ -95,8 +95,7 @@ export class AdminService {
 
     const payload = { _id: admin._id, email: admin.email, role: admin.role };
     const token: string = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('JWT_SECRET'),
-      expiresIn: this.configService.get('JWT_EXPIRES_IN'),
+      secret: this.configService.get<string>('JWT_SECRET'),
     });
 
     const data: ILogin = { _id: admin._id, email: admin.email, role: admin.role, token };
