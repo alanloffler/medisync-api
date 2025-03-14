@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,7 +9,7 @@ import { UsersService } from '@users/users.service';
 @Module({
   imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
   controllers: [UsersController],
-  providers: [JwtService, UsersService],
+  providers: [ConfigService, JwtService, UsersService],
   exports: [MongooseModule],
 })
 export class UsersModule {}
