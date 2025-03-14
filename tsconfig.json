@@ -14,6 +14,7 @@
       "@admin/*": ["./src/admin/*"],
       "@appointments/*": ["./src/appointments/*"],
       "@areas/*": ["./src/areas/*"],
+      "@auth/*": ["./src/auth/*"],
       "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
       "@dashboard/*": ["./src/dashboard/*"],
