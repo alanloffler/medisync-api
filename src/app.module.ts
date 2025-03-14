@@ -17,7 +17,6 @@ import { UsersModule } from '@users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
       envFilePath: '.env',
       cache: true,
     }),
@@ -34,7 +33,6 @@ import { UsersModule } from '@users/users.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        global: true,
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
           expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
