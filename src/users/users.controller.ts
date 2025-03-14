@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from './interfaces/user-stats.interface';
-// import { Auth } from '@common/decorators/auth.decorator';
+import { Auth } from '@common/decorators/auth.decorator';
 // import { AuthGuard } from '@common/guards/auth.guard';
 import { CreateUserDto } from '@users/dto/create-user.dto';
-// import { ERole } from '@common/enums/role.enum';
+import { ERole } from '@common/enums/role.enum';
 // import { Roles } from '@common/decorators/roles.decorator';
 // import { RolesGuard } from '@common/guards/roles.guard';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
@@ -14,7 +14,7 @@ import { UsersService } from '@users/users.service';
 // Checked: all
 // Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 // @UseGuards(AuthGuard)
-// @Auth([ERole.Admin])
+@Auth([ERole.Super, ERole.Admin])
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
