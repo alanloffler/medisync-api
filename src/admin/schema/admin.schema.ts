@@ -26,6 +26,9 @@ export class Admin {
 
   @Prop({ enum: ERole, required: true, type: String })
   role: ERole;
+
+  @Prop({ type: String })
+  refreshToken?: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
