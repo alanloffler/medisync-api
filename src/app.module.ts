@@ -12,6 +12,7 @@ import { StatisticsModule } from '@statistics/statistics.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { JwtModule } from '@nestjs/jwt';
     StatisticsModule,
     TitlesModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
