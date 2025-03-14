@@ -1,10 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import type { ILogin } from '@admin/interface/login.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { AdminService } from '@admin/admin.service';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
-import { LoginDto } from '@admin/dto/login.dto';
 import { UpdateAdminDto } from '@admin/dto/update-admin.dto';
 
 @Controller('admin')
@@ -34,10 +32,5 @@ export class AdminController {
   @Delete(':id')
   remove(@Param('id') id: string): Promise<IResponse<Admin>> {
     return this.adminService.remove(id);
-  }
-
-  @Post('login')
-  login(@Body() loginDto: LoginDto): Promise<IResponse<ILogin>> {
-    return this.adminService.login(loginDto);
   }
 }
