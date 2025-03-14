@@ -1,9 +1,11 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminModule } from '@admin/admin.module';
 import { AppointmentsModule } from '@appointments/appointments.module';
 import { AreasModule } from '@areas/areas.module';
+import { AuthModule } from '@auth/auth.module';
 import { DashboardModule } from '@dashboard/dashboard.module';
 import { EmailModule } from '@email/email.module';
 import { ProfessionalsModule } from '@professionals/professionals.module';
@@ -11,8 +13,6 @@ import { SpecializationsModule } from '@specializations/specializations.module';
 import { StatisticsModule } from '@statistics/statistics.module';
 import { TitlesModule } from '@titles/titles.module';
 import { UsersModule } from '@users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,6 +44,7 @@ import { AuthModule } from './auth/auth.module';
     AdminModule,
     AppointmentsModule,
     AreasModule,
+    AuthModule,
     DashboardModule,
     EmailModule,
     ProfessionalsModule,
@@ -51,7 +52,6 @@ import { AuthModule } from './auth/auth.module';
     StatisticsModule,
     TitlesModule,
     UsersModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [],
