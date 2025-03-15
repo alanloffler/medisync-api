@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEmail, IsEnum, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { ERole } from '@common/enums/role.enum';
 
 export class CreateAdminDto {
@@ -28,4 +28,8 @@ export class CreateAdminDto {
     message: (args) => `Invalid role: ${args.constraints[1].join(' | ')} is required`,
   })
   role: ERole;
+
+  @IsOptional()
+  @IsString({ message: 'Refresh token must be a string' })
+  refreshToken?: string;
 }
