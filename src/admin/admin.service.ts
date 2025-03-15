@@ -3,13 +3,18 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
+import type { ITokens } from '@auth/interface/login.interface';
 import { Admin } from '@admin/schema/admin.schema';
+import { AuthService } from '@auth/auth.service';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
 import { UpdateAdminDto } from '@admin/dto/update-admin.dto';
 
 @Injectable()
 export class AdminService {
-  constructor(@InjectModel(Admin.name) private readonly adminModel: Model<Admin>) {}
+  constructor(
+    @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
+    private readonly authService: AuthService,
+  ) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<IResponse<Admin>> {
     if (createAdminDto.email !== undefined) {
@@ -23,7 +28,12 @@ export class AdminService {
     const admin: Admin = await this.adminModel.create(createAdminDto);
     if (!admin) throw new HttpException('Failed to create admin', HttpStatus.BAD_REQUEST);
 
-    return { data: admin, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
+    const tokens: ITokens = await this.authService.getTokens({ _id: admin._id, email: admin.email, role: admin.role });
+    await this.authService.updateRefreshToken(admin._id, tokens.refreshToken);
+
+    // Here send by http-only cookie
+
+    return { data: admin, tokens, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
   }
 
   async findAll(): Promise<IResponse<Admin[]>> {
