@@ -28,7 +28,7 @@ export class Admin {
   role: ERole;
 
   @Prop({ type: String })
-  refreshToken?: string;
+  refreshToken: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
