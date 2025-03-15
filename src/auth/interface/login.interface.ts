@@ -2,5 +2,10 @@ export interface ILogin {
   _id: string;
   email: string;
   role: string;
-  token: string;
+  tokens: ITokens;
+}
+
+export interface ITokens {
+  accessToken: string;
+  refreshToken: string;
 }
