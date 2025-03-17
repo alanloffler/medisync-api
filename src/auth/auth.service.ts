@@ -4,7 +4,8 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
-import type { ILogin, ITokens } from '@auth/interface/login.interface';
+import type { IPayload, ITokens } from '@auth/interface/payload.interface';
+import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { LoginDto } from '@auth/dto/login.dto';
@@ -19,7 +20,7 @@ export class AuthService {
 
   private readonly logger: Logger = new Logger(AuthService.name);
 
-  public async login(loginDto: LoginDto): Promise<IResponse<ILogin>> {
+  public async login(loginDto: LoginDto): Promise<IResponse<IPayload>> {
     const { email, password } = loginDto;
 
     const admin: Admin = await this.adminModel.findOne({ email });
@@ -33,7 +34,7 @@ export class AuthService {
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
-    const data: ILogin = { _id: admin._id, email: admin.email, role: admin.role, tokens };
+    const data: IPayload = { _id: admin._id, email: admin.email, role: admin.role, tokens };
 
     return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK };
   }
@@ -58,7 +59,13 @@ export class AuthService {
     const tokenUpdate: Admin = await this.adminModel.findByIdAndUpdate(id, { refreshToken });
     if (!tokenUpdate) throw new HttpException('Failed to update refresh token', HttpStatus.BAD_REQUEST);
 
-    this.logger.log(`Refresh token updated for admin with id ${id}. Token: ${refreshToken.slice(0, -10)}...`);
+    this.logger.log(`Refresh token updated for admin with id ${id}. Token: ${refreshToken?.slice(0, -10)}...`);
     return;
+  }
+
+  public async logout(req: IRequest): Promise<IResponse<IPayload>> {
+    const id: string = req.user._id;
+    await this.updateRefreshToken(id, null);
+    return { data: null, message: 'Admin logged out successfully', statusCode: HttpStatus.OK };
   }
 }
