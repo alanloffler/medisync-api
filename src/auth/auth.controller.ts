@@ -19,6 +19,12 @@ export class AuthController {
   @Auth([ERole.Admin, ERole.Super])
   @Get('logout')
   logout(@Req() req: IRequest): Promise<IResponse<IPayload>> {
-    return this.authService.logout(req);
+    return this.authService.logout(req.user);
+  }
+
+  @Auth([ERole.Admin, ERole.Super])
+  @Get('refreshTokens')
+  refreshTokens(@Req() req: IRequest): Promise<IResponse<IPayload>> {
+    return this.authService.refreshTokens(req.user);
   }
 }
