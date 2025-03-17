@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import type { IResponse } from '@common/interfaces/response.interface';
-import type { ITokens } from '@auth/interface/payload.interface';
+import type { ITokens } from '@auth/interface/tokens.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { AuthService } from '@auth/auth.service';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
