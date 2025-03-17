@@ -4,8 +4,9 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
-import type { IPayload, ITokens } from '@auth/interface/payload.interface';
+import type { IPayload } from '@auth/interface/payload.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
+import type { ITokens } from '@auth/interface/tokens.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { LoginDto } from '@auth/dto/login.dto';
 
@@ -33,12 +34,12 @@ export class AuthService {
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
-    const data: IPayload = { _id: admin._id, email: admin.email, role: admin.role, tokens };
+    const data: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
 
-    return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK };
+    return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK, tokens };
   }
 
-  public async getTokens(payload: any): Promise<ITokens> {
+  public async getTokens(payload: IPayload): Promise<ITokens> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
@@ -50,7 +51,7 @@ export class AuthService {
       }),
     ]);
 
-    this.logger.log(`Tokens generated for admin with id ${payload._id}. \nAccess Token: ${accessToken.slice(0, 10)}..., \nRefresh Token: ${refreshToken.slice(0, 10)}...`);
+    this.logger.log(`Tokens generated for admin with id ${payload._id}. \nAccess Token: ${accessToken.slice(0, -10)}..., \nRefresh Token: ${refreshToken.slice(0, 10)}...`);
     return { accessToken, refreshToken };
   }
 
@@ -68,8 +69,15 @@ export class AuthService {
     return { data: null, message: 'Admin logged out successfully', statusCode: HttpStatus.OK };
   }
 
-  public async refreshTokens(user: IPayload): Promise<IResponse<IPayload>> {
-    console.log('Refresh tokens payload', user);
-    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK };
+  public async refreshTokens(user: IPayload, _tokens: ITokens): Promise<IResponse<IPayload>> {
+    const admin: Admin = await this.adminModel.findById(user._id);
+    if (!admin || !admin.refreshToken) throw new HttpException('Unauthorized, invalid refresh token', HttpStatus.UNAUTHORIZED);
+    if (admin.refreshToken !== _tokens.refreshToken) throw new HttpException('Unauthorized, the token could not be verified', HttpStatus.UNAUTHORIZED);
+
+    const payload: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
+    const tokens: ITokens = await this.getTokens(payload);
+    await this.updateRefreshToken(admin._id, tokens.refreshToken);
+
+    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK, tokens };
   }
 }
