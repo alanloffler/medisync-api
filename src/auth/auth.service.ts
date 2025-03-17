@@ -40,26 +40,31 @@ export class AuthService {
   }
 
   public async getTokens(payload: IPayload): Promise<ITokens> {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRES_IN'),
-      }),
-      this.jwtService.signAsync(payload, {
-        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
-      }),
-    ]);
+    try {
+      const [accessToken, refreshToken] = await Promise.all([
+        this.jwtService.signAsync(payload, {
+          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+          expiresIn: this.configService.get<string>('JWT_ACCESS_EXPIRES_IN'),
+        }),
+        this.jwtService.signAsync(payload, {
+          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+          expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN'),
+        }),
+      ]);
 
-    this.logger.log(`Tokens generated for admin with id ${payload._id}. \nAccess Token: ${accessToken.slice(0, -10)}..., \nRefresh Token: ${refreshToken.slice(0, 10)}...`);
-    return { accessToken, refreshToken };
+      this.logger.log(`Tokens generated for admin with id ${payload._id}. \nAccess Token: ${accessToken.slice(-10)}\nRefresh Token: ${refreshToken.slice(-10)}`);
+      return { accessToken, refreshToken };
+    } catch (error) {
+      this.logger.error(`Failed to generate tokens for admin with id ${payload._id}. Error: ${error.message}`);
+      throw new HttpException('Failed to generate tokens', HttpStatus.BAD_REQUEST);
+    }
   }
 
   public async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
     const tokenUpdate: Admin = await this.adminModel.findByIdAndUpdate(id, { refreshToken });
     if (!tokenUpdate) throw new HttpException('Failed to update refresh token', HttpStatus.BAD_REQUEST);
 
-    this.logger.log(`Refresh token updated for admin with id ${id}. Token: ${refreshToken?.slice(0, -10)}...`);
+    this.logger.log(`Refresh token updated for admin with id ${id}. Token: ${refreshToken?.slice(-10)}`);
     return;
   }
 
