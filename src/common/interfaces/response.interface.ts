@@ -1,4 +1,4 @@
-import type { ITokens } from '@auth/interface/login.interface';
+import type { ITokens } from '@auth/interface/payload.interface';
 
 export interface IResponse<T = any> {
   data?: T;
