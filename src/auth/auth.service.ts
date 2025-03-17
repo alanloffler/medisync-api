@@ -5,7 +5,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import type { IPayload, ITokens } from '@auth/interface/payload.interface';
-import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { LoginDto } from '@auth/dto/login.dto';
@@ -63,9 +62,14 @@ export class AuthService {
     return;
   }
 
-  public async logout(req: IRequest): Promise<IResponse<IPayload>> {
-    const id: string = req.user._id;
+  public async logout(user: IPayload): Promise<IResponse<IPayload>> {
+    const id: string = user._id;
     await this.updateRefreshToken(id, null);
     return { data: null, message: 'Admin logged out successfully', statusCode: HttpStatus.OK };
+  }
+
+  public async refreshTokens(user: IPayload): Promise<IResponse<IPayload>> {
+    console.log('Refresh tokens payload', user);
+    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK };
   }
 }
