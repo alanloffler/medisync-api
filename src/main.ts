@@ -1,3 +1,4 @@
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -8,9 +9,11 @@ async function bootstrap() {
 
   const app: INestApplication = await NestFactory.create(AppModule);
 
+  app.use(cookieParser());
+
   app.enableCors({
     origin: [process.env.FRONTEND_URL.toString(), process.env.PREVIEW_URL.toString()],
-    allowedHeaders: '*',
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   });
