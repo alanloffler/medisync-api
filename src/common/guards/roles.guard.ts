@@ -15,7 +15,7 @@ export class RolesGuard implements CanActivate {
     const roleExists = roles.some((role) => user.role?.includes(role));
 
     if (!roleExists) {
-      throw new HttpException('Credentials are not valid', HttpStatus.FORBIDDEN);
+      throw new HttpException('Unauthorized - Credentials are not valid for role needed', HttpStatus.UNAUTHORIZED);
     } else {
       return true;
     }
