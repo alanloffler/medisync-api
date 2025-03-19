@@ -9,8 +9,6 @@ export interface IResponse<T = any> {
   };
   stats?: IStats;
   statusCode: number;
-  // TODO: remove when implement http-only cookie
-  tokens?: ITokens;
 }
 
 export interface IStats {
