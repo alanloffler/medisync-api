@@ -31,9 +31,9 @@ export class AdminService {
     const tokens: ITokens = await this.authService.getTokens({ _id: admin._id, email: admin.email, role: admin.role });
     await this.authService.updateRefreshToken(admin._id, tokens.refreshToken);
 
-    // Here send by http-only cookie
+    // TODO: Here send tokens by http-only cookie
 
-    return { data: admin, tokens, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
+    return { data: admin, message: 'Admin created successfully', statusCode: HttpStatus.CREATED };
   }
 
   async findAll(): Promise<IResponse<Admin[]>> {
