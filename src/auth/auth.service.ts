@@ -1,4 +1,5 @@
 import * as bcryptjs from 'bcryptjs';
+import type { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -19,7 +20,7 @@ export class AuthService {
 
   private readonly logger: Logger = new Logger(AuthService.name);
 
-  public async loginWithCredentials(admin: IPayload): Promise<IResponse<IPayload>> {
+  public async loginWithCredentials(admin: IPayload, res: Response): Promise<IResponse<IPayload>> {
     const payload: IPayload = {
       _id: admin._id,
       email: admin.email,
@@ -29,11 +30,12 @@ export class AuthService {
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
+    this.setTokenCookies(res, tokens);
+
     return {
       data: payload,
       message: 'Admin logged successfully',
       statusCode: HttpStatus.OK,
-      tokens,
     };
   }
 
@@ -76,21 +78,81 @@ export class AuthService {
     return;
   }
 
-  public async logout(user: IPayload): Promise<IResponse<IPayload>> {
+  public async logout(user: IPayload, res: Response): Promise<IResponse<IPayload>> {
     const id: string = user._id;
     await this.updateRefreshToken(id, null);
+
+    this.clearTokenCookies(res);
+
     return { data: null, message: 'Admin logged out successfully', statusCode: HttpStatus.OK };
   }
 
-  public async refreshTokens(user: IPayload, _tokens: ITokens): Promise<IResponse<IPayload>> {
+  public async refreshTokens(user: IPayload, refreshToken: string, res: Response): Promise<IResponse<IPayload>> {
     const admin: Admin = await this.adminModel.findById(user._id);
     if (!admin || !admin.refreshToken) throw new HttpException('Unauthorized, invalid refresh token', HttpStatus.UNAUTHORIZED);
-    if (admin.refreshToken !== _tokens.refreshToken) throw new HttpException('Unauthorized, the token could not be verified', HttpStatus.UNAUTHORIZED);
+    if (admin.refreshToken !== refreshToken) throw new HttpException('Unauthorized, the token could not be verified', HttpStatus.UNAUTHORIZED);
 
     const payload: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(admin._id, tokens.refreshToken);
 
-    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK, tokens };
+    this.setTokenCookies(res, tokens);
+
+    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK };
+  }
+
+  private setTokenCookies(res: Response, tokens: ITokens): void {
+    res.cookie('access_token', tokens.accessToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: this.getMiliseconds(this.configService.get<string>('JWT_ACCESS_EXPIRES_IN')),
+      path: '/',
+    });
+
+    res.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: this.getMiliseconds(this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')),
+      path: '/auth/refresh',
+    });
+  }
+
+  private clearTokenCookies(res: Response): void {
+    res.cookie('access_token', '', {
+      httpOnly: true,
+      secure: false,
+      maxAge: 0,
+      path: '/',
+    });
+
+    res.cookie('refresh_token', '', {
+      httpOnly: true,
+      secure: false,
+      maxAge: 0,
+      path: '/auth/refresh',
+    });
+  }
+
+  private getMiliseconds(time: string): number {
+    const match = time.match(/(\d+)([smhd])/);
+    if (!match) return 1000 * 60 * 60;
+
+    const value: number = parseInt(match[1]);
+    const unit: string = match[2];
+
+    switch (unit) {
+      case 's':
+        return value * 1000;
+      case 'm':
+        return value * 1000 * 60;
+      case 'h':
+        return value * 1000 * 60 * 60;
+      case 'd':
+        return value * 1000 * 60 * 60 * 24;
+      default:
+        return 1000 * 60 * 60;
+    }
   }
 }
