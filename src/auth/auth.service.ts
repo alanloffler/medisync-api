@@ -8,7 +8,6 @@ import type { IPayload } from '@auth/interface/payload.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { ITokens } from '@auth/interface/tokens.interface';
 import { Admin } from '@admin/schema/admin.schema';
-import { LoginDto } from '@auth/dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,23 +19,32 @@ export class AuthService {
 
   private readonly logger: Logger = new Logger(AuthService.name);
 
-  public async login(loginDto: LoginDto): Promise<IResponse<IPayload>> {
-    const { email, password } = loginDto;
-
-    const admin: Admin = await this.adminModel.findOne({ email });
-    if (!admin) throw new HttpException('Failed to login admin, invalid email', HttpStatus.UNAUTHORIZED);
-
-    const passwordIsValid: boolean = await bcryptjs.compare(password, admin.password);
-    if (!passwordIsValid) throw new HttpException('Failed to login admin, invalid password', HttpStatus.UNAUTHORIZED);
-
-    const payload = { _id: admin._id, email: admin.email, role: admin.role };
+  public async loginWithCredentials(admin: IPayload): Promise<IResponse<IPayload>> {
+    const payload: IPayload = {
+      _id: admin._id,
+      email: admin.email,
+      role: admin.role,
+    };
 
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
-    const data: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
+    return {
+      data: payload,
+      message: 'Admin logged successfully',
+      statusCode: HttpStatus.OK,
+      tokens,
+    };
+  }
 
-    return { data, message: 'Admin logged in successfully', statusCode: HttpStatus.OK, tokens };
+  public async validateAdmin(email: string, password: string): Promise<Admin | null> {
+    const admin: Admin = await this.adminModel.findOne({ email });
+    if (!admin) return null;
+
+    const passwordIsValid: boolean = await bcryptjs.compare(password, admin.password);
+    if (!passwordIsValid) return null;
+
+    return admin;
   }
 
   public async getTokens(payload: IPayload): Promise<ITokens> {
