@@ -1,3 +1,4 @@
+import type { Response } from 'express';
 import { Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type { IPayload } from '@auth/interface/payload.interface';
 import type { IRequest } from '@auth/interface/request.interface';
