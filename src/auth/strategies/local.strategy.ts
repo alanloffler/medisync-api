@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   public async validate(email: string, password: string): Promise<IPayload> {
     const admin: Admin = await this.authService.validateAdmin(email, password);
-    if (!admin) throw new HttpException("Couldn't validate admin, invalid credentials", HttpStatus.UNAUTHORIZED);
+    if (!admin) throw new HttpException("Couldn't validate admin, invalid credentials (Local strategy)", HttpStatus.UNAUTHORIZED);
 
     return {
       _id: admin._id,
