@@ -74,7 +74,7 @@ export class AuthService {
     const tokenUpdate: Admin = await this.adminModel.findByIdAndUpdate(id, { refreshToken });
     if (!tokenUpdate) throw new HttpException('Failed to update refresh token', HttpStatus.BAD_REQUEST);
 
-    this.logger.log(`Refresh token updated for admin with id ${id}. Token: ${refreshToken?.slice(-10)}`);
+    this.logger.log(`Refresh token updated for admin with id ${id}. \nToken: ${refreshToken}`); //${refreshToken?.slice(-10)}`);
     return;
   }
 
@@ -104,16 +104,16 @@ export class AuthService {
   private setTokenCookies(res: Response, tokens: ITokens): void {
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: this.getMiliseconds(this.configService.get<string>('JWT_ACCESS_EXPIRES_IN')),
       path: '/',
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: this.getMiliseconds(this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')),
       path: '/auth/refresh',
     });
@@ -122,16 +122,16 @@ export class AuthService {
   private clearTokenCookies(res: Response): void {
     res.cookie('accessToken', '', {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 0,
       path: '/',
     });
 
     res.cookie('refreshToken', '', {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 0,
       path: '/auth/refresh',
     });
