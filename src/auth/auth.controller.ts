@@ -6,6 +6,9 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { AuthService } from '@auth/auth.service';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from '@auth/guards/local-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@common/decorators/roles.decorator';
+import { ERole } from '@common/enums/role.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -23,10 +26,12 @@ export class AuthController {
     return this.authService.logout(req.user, res);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  @Get('refresh')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles([ERole.Super, ERole.Admin])
+  @Post('refresh')
   refreshTokens(@Req() req: IRequest, @Res({ passthrough: true }) res: Response): Promise<IResponse<IPayload>> {
-    const refreshToken = req.cookies?.refresh_token;
+    const refreshToken = req.cookies?.refreshToken;
+    console.log('Refresh token at controller', refreshToken);
     if (!refreshToken) throw new HttpException('Refresh token is required', HttpStatus.BAD_REQUEST);
 
     return this.authService.refreshTokens(req.user, refreshToken, res);
