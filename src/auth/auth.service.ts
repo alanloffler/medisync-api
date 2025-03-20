@@ -102,34 +102,36 @@ export class AuthService {
   }
 
   private setTokenCookies(res: Response, tokens: ITokens): void {
-    res.cookie('access_token', tokens.accessToken, {
+    res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
       secure: false,
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: this.getMiliseconds(this.configService.get<string>('JWT_ACCESS_EXPIRES_IN')),
       path: '/',
     });
 
-    res.cookie('refresh_token', tokens.refreshToken, {
+    res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: false,
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: this.getMiliseconds(this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')),
       path: '/auth/refresh',
     });
   }
 
   private clearTokenCookies(res: Response): void {
-    res.cookie('access_token', '', {
+    res.cookie('accessToken', '', {
       httpOnly: true,
       secure: false,
+      sameSite: 'lax',
       maxAge: 0,
       path: '/',
     });
 
-    res.cookie('refresh_token', '', {
+    res.cookie('refreshToken', '', {
       httpOnly: true,
       secure: false,
+      sameSite: 'lax',
       maxAge: 0,
       path: '/auth/refresh',
     });
