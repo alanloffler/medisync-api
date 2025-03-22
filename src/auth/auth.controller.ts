@@ -7,6 +7,7 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { AuthService } from '@auth/auth.service';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { JwtRefreshAuthGuard } from '@auth/guards/jwr-refresh-auth.guard';
 import { LocalAuthGuard } from '@auth/guards/local-auth.guard';
 
 @Controller('auth')
@@ -25,7 +26,7 @@ export class AuthController {
     return this.authService.logout(req.user, res);
   }
 
-  @UseGuards(AuthGuard('jwt-refresh'))
+  @UseGuards(JwtRefreshAuthGuard)
   @Post('refresh')
   refreshTokens(@Req() req: IRequest, @Res({ passthrough: true }) res: Response): Promise<IResponse<IPayload>> {
     const refreshToken = req.cookies?.refreshToken;
