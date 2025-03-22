@@ -39,6 +39,18 @@ export class AuthService {
     };
   }
 
+  public async getAdmin(user: IPayload): Promise<IResponse<Admin>> {
+    if (!user._id) throw new HttpException('Invalid payload information', HttpStatus.BAD_REQUEST);
+    const admin: Admin = await this.adminModel.findById(user._id, { password: false, refreshToken: false });
+    if (!admin) throw new HttpException('Admin not found', HttpStatus.NOT_FOUND);
+
+    return {
+      data: admin,
+      message: 'Admin retrieved successfully',
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   public async validateAdmin(email: string, password: string): Promise<Admin | null> {
     const admin: Admin = await this.adminModel.findOne({ email });
     if (!admin) return null;
