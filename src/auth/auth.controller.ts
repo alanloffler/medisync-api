@@ -1,5 +1,4 @@
 import type { Response } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 import { Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type { IPayload } from '@auth/interface/payload.interface';
 import type { IRequest } from '@auth/interface/request.interface';
@@ -17,7 +16,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Req() req: IRequest, @Res({ passthrough: true }) res: Response): Promise<IResponse<IPayload>> {
-    return this.authService.loginWithCredentials(req.user, res);
+    return this.authService.loginWithCredentials(req, res);
   }
 
   @UseGuards(JwtAuthGuard)
