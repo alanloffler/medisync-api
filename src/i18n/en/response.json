@@ -1,5 +1,6 @@
 {
   "auth": {
-    "login": "Admin logged successfully"
+    "login": "Admin logged successfully",
+    "admin": "Admin information retrieved successfully"
   }
 }

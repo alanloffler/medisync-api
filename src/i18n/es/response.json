@@ -1,5 +1,6 @@
 {
   "auth": {
-    "login": "El administrador ha iniciado sesión correctamente"
+    "login": "El administrador ha iniciado sesión correctamente",
+    "admin": "Información de administrador recuperada exitosamente"
   }
 }
