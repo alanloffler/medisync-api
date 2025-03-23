@@ -1,5 +1,6 @@
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { json, raw, urlencoded } from 'express';
@@ -24,7 +25,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true,
     }),
+    new I18nValidationPipe(),
   );
+
+  app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 
   app.use(json({ limit: '10mb' }));
   app.use(raw({ limit: '10mb' }));
