@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import type { IPayload } from '@auth/interface/payload.interface';
+import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { ITokens } from '@auth/interface/tokens.interface';
 import { Admin } from '@admin/schema/admin.schema';
@@ -22,21 +23,21 @@ export class AuthService {
 
   private readonly logger: Logger = new Logger(AuthService.name);
 
-  public async loginWithCredentials(admin: IPayload, res: Response): Promise<IResponse<IPayload>> {
+  public async loginWithCredentials(req: IRequest, res: Response): Promise<IResponse<IPayload>> {
     const payload: IPayload = {
-      _id: admin._id,
-      email: admin.email,
-      role: admin.role,
+      _id: req.user._id,
+      email: req.user.email,
+      role: req.user.role,
     };
 
     const tokens: ITokens = await this.getTokens(payload);
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
     this.setTokenCookies(res, tokens);
-
+    console.log(res.header('x-lang'));
     return {
       data: payload,
-      message: this.i18nService.t('response.auth.login', { lang: I18nContext.current().lang }),
+      message: this.i18nService.t('response.auth.login'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -48,7 +49,7 @@ export class AuthService {
 
     return {
       data: admin,
-      message: 'Admin retrieved successfully',
+      message: this.i18nService.t('response.auth.admin', { lang: I18nContext.current().lang }),
       statusCode: HttpStatus.OK,
     };
   }
