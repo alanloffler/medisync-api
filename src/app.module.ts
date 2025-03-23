@@ -49,6 +49,7 @@ import { UsersModule } from '@users/users.module';
         loaderOptions: {
           path: configService.get<string>('NODE_ENV') === 'development' ? join(process.cwd(), 'src/i18n/') : join(__dirname, '/i18n/'),
           watch: true,
+          infer: true,
         },
       }),
       resolvers: [new HeaderResolver(['x-lang']), AcceptLanguageResolver],
