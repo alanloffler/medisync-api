@@ -1,5 +1,5 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
+import { AcceptLanguageResolver, HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -51,7 +51,7 @@ import { UsersModule } from '@users/users.module';
           watch: true,
         },
       }),
-      resolvers: [{ use: QueryResolver, options: ['lang'] }, AcceptLanguageResolver, new HeaderResolver(['x-lang'])],
+      resolvers: [new HeaderResolver(['x-lang']), AcceptLanguageResolver],
     }),
     AdminModule,
     AppointmentsModule,
