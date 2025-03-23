@@ -2,6 +2,7 @@ import * as bcryptjs from 'bcryptjs';
 import type { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
@@ -15,6 +16,7 @@ export class AuthService {
   constructor(
     @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
     private readonly configService: ConfigService,
+    private readonly i18nService: I18nService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -34,7 +36,7 @@ export class AuthService {
 
     return {
       data: payload,
-      message: 'Admin logged successfully',
+      message: this.i18nService.t('response.auth.login', { lang: I18nContext.current().lang }),
       statusCode: HttpStatus.OK,
     };
   }
