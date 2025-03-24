@@ -34,7 +34,7 @@ export class AuthService {
     await this.updateRefreshToken(payload._id, tokens.refreshToken);
 
     this.setTokenCookies(res, tokens);
-    console.log(res.header('x-lang'));
+
     return {
       data: payload,
       message: this.i18nService.t('response.auth.login'),
