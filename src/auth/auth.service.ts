@@ -1,11 +1,12 @@
 import * as bcryptjs from 'bcryptjs';
 import type { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IPayload } from '@auth/interface/payload.interface';
 import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
@@ -17,11 +18,9 @@ export class AuthService {
   constructor(
     @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
     private readonly configService: ConfigService,
-    private readonly i18nService: I18nService,
+    private readonly i18nService: I18nService<I18nTranslations>,
     private readonly jwtService: JwtService,
   ) {}
-
-  private readonly logger: Logger = new Logger(AuthService.name);
 
   public async loginWithCredentials(req: IRequest, res: Response): Promise<IResponse<IPayload>> {
     const payload: IPayload = {
@@ -43,9 +42,8 @@ export class AuthService {
   }
 
   public async getAdmin(user: IPayload): Promise<IResponse<Admin>> {
-    if (!user._id) throw new HttpException('Invalid payload information', HttpStatus.BAD_REQUEST);
     const admin: Admin = await this.adminModel.findById(user._id, { password: false, refreshToken: false });
-    if (!admin) throw new HttpException('Admin not found', HttpStatus.NOT_FOUND);
+    if (!admin) throw new HttpException(this.i18nService.t('exception.auth.notFound'), HttpStatus.NOT_FOUND);
 
     return {
       data: admin,
@@ -77,19 +75,16 @@ export class AuthService {
         }),
       ]);
 
-      this.logger.log(`Tokens generated for admin with id ${payload._id}. \nAccess Token: ${accessToken.slice(-10)}\nRefresh Token: ${refreshToken.slice(-10)}`);
       return { accessToken, refreshToken };
     } catch (error) {
-      this.logger.error(`Failed to generate tokens for admin with id ${payload._id}. Error: ${error.message}`);
-      throw new HttpException('Failed to generate tokens', HttpStatus.BAD_REQUEST);
+      throw new HttpException(this.i18nService.translate('exception.auth.failedTokens'), HttpStatus.BAD_REQUEST);
     }
   }
 
   public async updateRefreshToken(id: string, refreshToken: string): Promise<void> {
     const tokenUpdate: Admin = await this.adminModel.findByIdAndUpdate(id, { refreshToken });
-    if (!tokenUpdate) throw new HttpException('Failed to update refresh token', HttpStatus.BAD_REQUEST);
+    if (!tokenUpdate) throw new HttpException(this.i18nService.translate('exception.auth.failedRefreshToken'), HttpStatus.BAD_REQUEST);
 
-    this.logger.log(`Refresh token updated for admin with id ${id}. \nToken: ${refreshToken}`); //${refreshToken?.slice(-10)}`);
     return;
   }
 
@@ -99,13 +94,17 @@ export class AuthService {
 
     this.clearTokenCookies(res);
 
-    return { data: null, message: 'Admin logged out successfully', statusCode: HttpStatus.OK };
+    return {
+      data: null,
+      message: this.i18nService.translate('response.auth.logout'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   public async refreshTokens(user: IPayload, refreshToken: string, res: Response): Promise<IResponse<IPayload>> {
     const admin: Admin = await this.adminModel.findById(user._id);
-    if (!admin || !admin.refreshToken) throw new HttpException('Unauthorized, invalid refresh token', HttpStatus.UNAUTHORIZED);
-    if (admin.refreshToken !== refreshToken) throw new HttpException('Unauthorized, the token could not be verified', HttpStatus.UNAUTHORIZED);
+    if (!admin || !admin.refreshToken) throw new HttpException(this.i18nService.translate('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
+    if (admin.refreshToken !== refreshToken) throw new HttpException(this.i18nService.translate('exception.auth.unauthorized.notVerified'), HttpStatus.UNAUTHORIZED);
 
     const payload: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
     const tokens: ITokens = await this.getTokens(payload);
@@ -113,7 +112,11 @@ export class AuthService {
 
     this.setTokenCookies(res, tokens);
 
-    return { data: user, message: 'Tokens refreshed successfully', statusCode: HttpStatus.OK };
+    return {
+      data: user,
+      message: this.i18nService.translate('response.auth.refreshTokens'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   private setTokenCookies(res: Response, tokens: ITokens): void {
