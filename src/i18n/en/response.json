@@ -1,6 +1,8 @@
 {
   "auth": {
+    "admin": "Admin information retrieved successfully",
     "login": "Admin logged successfully",
-    "admin": "Admin information retrieved successfully"
+    "logout": "Admin logged out successfully",
+    "refreshTokens": "Tokens refreshed successfully"
   }
 }

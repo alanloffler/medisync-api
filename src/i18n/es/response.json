@@ -1,6 +1,8 @@
 {
   "auth": {
+    "admin": "Información de administrador recuperada exitosamente",
     "login": "El administrador ha iniciado sesión correctamente",
-    "admin": "Información de administrador recuperada exitosamente"
+    "logout": "El administrador ha cerrado sesión correctamente",
+    "refreshTokens": "Los tokens se actualizaron correctamente"
   }
 }
