@@ -19,6 +19,7 @@
       "@config/*": ["./src/config/*"],
       "@dashboard/*": ["./src/dashboard/*"],
       "@email/*": ["./src/email/*"],
+      "@i18n/*": ["./src/i18n/*"],
       "@professionals/*": ["./src/professionals/*"],
       "@specializations/*": ["./src/specializations/*"],
       "@statistics/*": ["./src/statistics/*"],
