@@ -1,5 +1,12 @@
 {
   "auth": {
-    "login": "Couldn't validate admin, invalid credentials"
+    "failedRefreshToken": "Failed to update the refresh token",
+    "failedTokens": "Failed to generate the tokens",
+    "login": "Couldn't validate admin, invalid credentials",
+    "notFound": "Admin not found",
+    "unauthorized": {
+      "notVerified": "Unauthorized, the token could not be verified",
+      "refreshToken": "Unauthorized, invalid refresh token"
+    }
   }
 }

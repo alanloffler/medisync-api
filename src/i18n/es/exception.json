@@ -1,5 +1,12 @@
 {
   "auth": {
-    "login": "No se pudo validar el administrador, credenciales inválidas"
+    "failedRefreshToken": "No se pudo actualizar el token de actualización",
+    "failedTokens": "No se pudieron generar los tokens",
+    "login": "No se pudo validar el administrador, credenciales inválidas",
+    "notFound": "Administrador no encontrado",
+    "unauthorized": {
+      "notVerified": "No autorizado, no se pudo verificar el token",
+      "refreshToken": "No autorizado, token de actualización inválido"
+    }
   }
 }
