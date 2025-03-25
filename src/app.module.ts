@@ -51,6 +51,7 @@ import { UsersModule } from '@users/users.module';
           watch: true,
           infer: true,
         },
+        typesOutputPath: join(__dirname, '../src/i18n/i18n.generated.ts'),
       }),
       resolvers: [new HeaderResolver(['x-lang']), AcceptLanguageResolver],
     }),
