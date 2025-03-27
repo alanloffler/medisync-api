@@ -4,5 +4,12 @@
     "login": "El administrador ha iniciado sesión correctamente",
     "logout": "El administrador ha cerrado sesión correctamente",
     "refreshTokens": "Los tokens se actualizaron correctamente"
+  },
+  "admin": {
+    "created": "Administrador creado exitosamente",
+    "found": "Administrador encontrado exitosamente",
+    "foundPlural": "Administradores encontrados con éxito",
+    "removed": "Administrador eliminado exitosamente",
+    "updated": "Administrador actualizado exitosamente"
   }
 }

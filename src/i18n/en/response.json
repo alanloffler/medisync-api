@@ -4,5 +4,12 @@
     "login": "Admin logged successfully",
     "logout": "Admin logged out successfully",
     "refreshTokens": "Tokens refreshed successfully"
+  },
+  "admin": {
+    "created": "Admin created successfully",
+    "found": "Admin found successfully",
+    "foundPlural": "Admins found successfully",
+    "removed": "Admin removed successfully",
+    "updated": "Admin updated successfully"
   }
 }
