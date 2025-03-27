@@ -15,13 +15,13 @@ export class CreateAdminDto {
   @MaxLength(30, { message: i18nValidationMessage<I18nTranslations>('validation.admin.lastName.maxLength') })
   lastName: string;
 
-  @IsNotEmpty({ message: 'Email is required' })
-  @IsEmail({}, { message: 'Invalid email address' })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.admin.email.required') })
+  @IsEmail({}, { message: i18nValidationMessage<I18nTranslations>('validation.admin.email.invalid') })
   email: string;
 
-  @IsString({ message: 'Password must be a string' })
-  @MinLength(8, { message: 'Password must be at least 8 characters long' })
-  @MaxLength(100, { message: 'Password must be at most 100 characters long' })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.admin.password.isString') })
+  @MinLength(8, { message: i18nValidationMessage<I18nTranslations>('validation.admin.password.minLength') })
+  @MaxLength(100, { message: i18nValidationMessage<I18nTranslations>('validation.admin.password.maxLength') })
   @Transform(({ value }) => value.trim())
   password: string;
 
@@ -32,6 +32,6 @@ export class CreateAdminDto {
   role: ERole;
 
   @IsOptional()
-  @IsString({ message: 'Refresh token must be a string' })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.admin.refreshToken.isString') })
   refreshToken?: string;
 }
