@@ -1,0 +1,9 @@
+{
+  "firstName": "First name must be a string",
+
+  "auth": {
+    "email": {
+      "required": "Email is required"
+    }
+  }
+}
