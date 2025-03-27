@@ -4,6 +4,23 @@
       "isString": "El nombre debe ser una cadena de texto",
       "minLength": "El nombre debe tener al menos 3 caracteres",
       "maxLength": "El nombre debe tener como máximo 30 caracteres"
+    },
+    "lastName": {
+      "isString": "El apellido debe ser una cadena de texto",
+      "minLength": "El apellido debe tener al menos 3 caracteres",
+      "maxLength": "El apellido debe tener como máximo 30 caracteres"
+    },
+    "email": {
+      "required": "El correo electrónico es obligatorio",
+      "invalid": "Formato de correo electrónico inválido"
+    },
+    "password": {
+      "isString": "La contraseña debe ser una cadena de texto",
+      "minLength": "La contraseña debe tener al menos 8 caracteres",
+      "maxLength": "La contraseña debe tener como máximo 100 caracteres"
+    },
+    "refreshToken": {
+      "isString": "El token de actualización debe ser una cadena de texto"
     }
   }
 }

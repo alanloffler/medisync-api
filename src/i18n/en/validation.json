@@ -9,6 +9,18 @@
       "isString": "Last name must be a string",
       "minLength": "Last name must be at least 3 characters long",
       "maxLength": "Last name must be at most 30 characters long"
+    },
+    "email": {
+      "required": "Email is required",
+      "invalid": "Invalid email format"
+    },
+    "password": {
+      "isString": "Password must be a string",
+      "minLength": "Password must be at least 8 characters long",
+      "maxLength": "Password must be at most 100 characters long"
+    },
+    "refreshToken": {
+      "isString": "Refresh token must be a string"
     }
   }
 }

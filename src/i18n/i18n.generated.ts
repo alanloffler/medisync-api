@@ -37,6 +37,18 @@ export type I18nTranslations = {
                 "minLength": string;
                 "maxLength": string;
             };
+            "email": {
+                "required": string;
+                "invalid": string;
+            };
+            "password": {
+                "isString": string;
+                "minLength": string;
+                "maxLength": string;
+            };
+            "refreshToken": {
+                "isString": string;
+            };
         };
     };
 };
