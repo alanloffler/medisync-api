@@ -6,6 +6,16 @@ import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
     "exception": {
+        "admin": {
+            "alreadyRegisteredCreate": string;
+            "alreadyRegisteredUpdate": string;
+            "failedCreate": string;
+            "failedRemove": string;
+            "failedRemoveNotFound": string;
+            "failedUpdate": string;
+            "notFound": string;
+            "notFoundPlural": string;
+        };
         "auth": {
             "failedRefreshToken": string;
             "failedTokens": string;
@@ -16,6 +26,9 @@ export type I18nTranslations = {
                 "refreshToken": string;
             };
         };
+        "common": {
+            "invalidId": string;
+        };
     };
     "response": {
         "auth": {
@@ -23,6 +36,13 @@ export type I18nTranslations = {
             "login": string;
             "logout": string;
             "refreshTokens": string;
+        };
+        "admin": {
+            "created": string;
+            "found": string;
+            "foundPlural": string;
+            "removed": string;
+            "updated": string;
         };
     };
     "validation": {
