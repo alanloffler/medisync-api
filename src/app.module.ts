@@ -1,5 +1,5 @@
+import { AcceptLanguageResolver, HeaderResolver, I18n, I18nModule } from 'nestjs-i18n';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AcceptLanguageResolver, HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -49,7 +49,6 @@ import { UsersModule } from '@users/users.module';
         loaderOptions: {
           path: configService.get<string>('NODE_ENV') === 'development' ? join(process.cwd(), 'src/i18n/') : join(__dirname, '/i18n/'),
           watch: true,
-          infer: true,
         },
         typesOutputPath: join(__dirname, '../src/i18n/i18n.generated.ts'),
       }),
