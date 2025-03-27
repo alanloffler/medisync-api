@@ -1,5 +1,5 @@
 import type { I18nTranslations } from '@i18n/i18n.generated';
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength, ValidationArguments } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { ERole } from '@common/enums/role.enum';
@@ -27,7 +27,10 @@ export class CreateAdminDto {
 
   @Transform(({ value }) => value.trim())
   @IsEnum(ERole, {
-    message: (args) => `Invalid role: ${args.constraints[1].join(' | ')} is required`,
+    message: (args: ValidationArguments) =>
+      i18nValidationMessage<I18nTranslations>('validation.admin.role', {
+        roles: args.constraints[1].join(', '),
+      })(args),
   })
   role: ERole;
 
