@@ -1,4 +1,14 @@
 {
+  "admin": {
+    "alreadyRegisteredCreate": "Failed to create admin, email already exists",
+    "alreadyRegisteredUpdate": "Failed to update admin, email already exists",
+    "failedCreate": "Failed to create admin",
+    "failedRemove": "Failed to remove admin",
+    "failedRemoveNotFound": "Failed to remove admin, not found",
+    "failedUpdate": "Failed to update admin",
+    "notFound": "Admin not found",
+    "notFoundPlural": "Admins not found"
+  },
   "auth": {
     "failedRefreshToken": "Failed to update the refresh token",
     "failedTokens": "Failed to generate the tokens",
@@ -8,5 +18,8 @@
       "notVerified": "Unauthorized, the token could not be verified",
       "refreshToken": "Unauthorized, invalid refresh token"
     }
+  },
+  "common": {
+    "invalidId": "Invalid ID"
   }
 }
