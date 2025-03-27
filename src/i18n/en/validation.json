@@ -23,5 +23,29 @@
     "refreshToken": {
       "isString": "Refresh token must be a string"
     }
+  },
+  "appointments": {
+    "day": {
+      "isNotEmpty": "The date is required",
+      "isString": "The date must be a string"
+    },
+    "hour": {
+      "isNotEmpty": "The hour is required",
+      "isString": "The hour must be a string"
+    },
+    "professional": {
+      "isNotEmpty": "The professional ID is required",
+      "isString": "The professional ID must be a string"
+    },
+    "slot": {
+      "isInt": "The slot must be an integer"
+    },
+    "status": {
+      "isString": "The status must be a string"
+    },
+    "user": {
+      "isNotEmpty": "The user ID is required",
+      "isString": "The user ID must be a string"
+    }
   }
 }
