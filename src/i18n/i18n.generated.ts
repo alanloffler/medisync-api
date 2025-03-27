@@ -25,6 +25,14 @@ export type I18nTranslations = {
             "refreshTokens": string;
         };
     };
+    "validation": {
+        "firstName": string;
+        "auth": {
+            "email": {
+                "required": string;
+            };
+        };
+    };
 };
 /* prettier-ignore */
 export type I18nPath = Path<I18nTranslations>;
