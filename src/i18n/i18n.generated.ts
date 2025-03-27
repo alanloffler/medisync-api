@@ -32,6 +32,11 @@ export type I18nTranslations = {
                 "minLength": string;
                 "maxLength": string;
             };
+            "lastName": {
+                "isString": string;
+                "minLength": string;
+                "maxLength": string;
+            };
         };
     };
 };
