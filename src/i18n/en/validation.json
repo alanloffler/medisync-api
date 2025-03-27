@@ -19,6 +19,7 @@
       "minLength": "Password must be at least 8 characters long",
       "maxLength": "Password must be at most 100 characters long"
     },
+    "role": "Invalid role: {roles} is required",
     "refreshToken": {
       "isString": "Refresh token must be a string"
     }

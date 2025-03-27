@@ -46,6 +46,7 @@ export type I18nTranslations = {
                 "minLength": string;
                 "maxLength": string;
             };
+            "role": string;
             "refreshToken": {
                 "isString": string;
             };

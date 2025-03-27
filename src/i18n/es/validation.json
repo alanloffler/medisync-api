@@ -19,6 +19,7 @@
       "minLength": "La contraseña debe tener al menos 8 caracteres",
       "maxLength": "La contraseña debe tener como máximo 100 caracteres"
     },
+    "role": "Rol inválido: {roles} es requerido",
     "refreshToken": {
       "isString": "El token de actualización debe ser una cadena de texto"
     }
