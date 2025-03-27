@@ -71,6 +71,30 @@ export type I18nTranslations = {
                 "isString": string;
             };
         };
+        "appointments": {
+            "day": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "hour": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "professional": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "slot": {
+                "isInt": string;
+            };
+            "status": {
+                "isString": string;
+            };
+            "user": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+        };
     };
 };
 /* prettier-ignore */
