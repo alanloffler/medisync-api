@@ -26,10 +26,11 @@ export type I18nTranslations = {
         };
     };
     "validation": {
-        "firstName": string;
-        "auth": {
-            "email": {
-                "required": string;
+        "admin": {
+            "firstName": {
+                "isString": string;
+                "minLength": string;
+                "maxLength": string;
             };
         };
     };
