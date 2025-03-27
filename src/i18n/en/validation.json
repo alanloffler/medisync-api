@@ -4,6 +4,11 @@
       "isString": "First name must be a string",
       "minLength": "First name must be at least 3 characters long",
       "maxLength": "First name must be at most 30 characters long"
+    },
+    "lastName": {
+      "isString": "Last name must be a string",
+      "minLength": "Last name must be at least 3 characters long",
+      "maxLength": "Last name must be at most 30 characters long"
     }
   }
 }
