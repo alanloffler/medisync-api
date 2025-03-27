@@ -1,3 +1,9 @@
 {
-  "firstName": "El nombre debe ser una cadena"
+  "admin": {
+    "firstName": {
+      "isString": "El nombre debe ser una cadena de texto",
+      "minLength": "El nombre debe tener al menos 3 caracteres",
+      "maxLength": "El nombre debe tener como máximo 30 caracteres"
+    }
+  }
 }
