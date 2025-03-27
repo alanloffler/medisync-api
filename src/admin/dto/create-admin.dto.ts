@@ -1,16 +1,18 @@
-import { Transform } from 'class-transformer';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { i18nValidationMessage } from 'nestjs-i18n';
 import { ERole } from '@common/enums/role.enum';
 
 export class CreateAdminDto {
-  @IsString({ message: 'First name must be a string' })
-  @MinLength(3, { message: 'First name must be at least 3 characters long' })
-  @MaxLength(30, { message: 'First name must be at most 30 characters long' })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.admin.firstName.isString') })
+  @MinLength(3, { message: i18nValidationMessage<I18nTranslations>('validation.admin.firstName.minLength') })
+  @MaxLength(30, { message: i18nValidationMessage<I18nTranslations>('validation.admin.firstName.maxLength') })
   firstName: string;
 
-  @IsString({ message: 'Last name must be a string' })
-  @MinLength(3, { message: 'Last name must be at least 3 characters long' })
-  @MaxLength(30, { message: 'Last name must be at most 30 characters long' })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.admin.lastName.isString') })
+  @MinLength(3, { message: i18nValidationMessage<I18nTranslations>('validation.admin.lastName.minLength') })
+  @MaxLength(30, { message: i18nValidationMessage<I18nTranslations>('validation.admin.lastName.maxLength') })
   lastName: string;
 
   @IsNotEmpty({ message: 'Email is required' })
