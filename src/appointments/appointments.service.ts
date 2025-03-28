@@ -301,14 +301,14 @@ export class AppointmentsService {
   async findApposYearsByUser(user: string): Promise<IResponse<string[]>> {
     const years = await this.appointmentModel.find({ user: user }).distinct('day');
 
-    if (!years) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundYears, data: [] };
-    if (years.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyYears, data: [] };
+    if (!years) return { data: [], message: this.i18nService.t('exception.appointments.errorYearsWithAppos'), statusCode: HttpStatus.BAD_REQUEST };
+    if (years.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyYearsWithAppos'), statusCode: HttpStatus.NOT_FOUND };
 
     const uniqueYears = [...new Set(years.map((year: string) => year.substring(0, 4)))];
 
     return {
       data: uniqueYears,
-      message: APPOINTMENTS_CONFIG.response.success.foundYears,
+      message: this.i18nService.t('response.appointments.foundYearsWithAppos'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -324,7 +324,7 @@ export class AppointmentsService {
     if (sortingKey === 'day') sorting = { day: -1, hour: -1 };
 
     const emptyDatabase = await this.appointmentModel.find().countDocuments();
-    if (emptyDatabase === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDatabase, data: [] };
+    if (emptyDatabase === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyDatabase'), statusCode: HttpStatus.NOT_FOUND };
 
     let queryValue = {};
 
@@ -343,7 +343,7 @@ export class AppointmentsService {
     }
 
     if (search[0].type !== ESearchType.NAME && search[1].type !== ESearchType.DAY) {
-      throw new HttpException(APPOINTMENTS_CONFIG.response.error.invalidSearchType, HttpStatus.BAD_REQUEST);
+      throw new HttpException(this.i18nService.t('exception.common.invalidSearchType'), HttpStatus.BAD_REQUEST);
     }
 
     const appointments = await this.appointmentModel
@@ -355,17 +355,17 @@ export class AppointmentsService {
       .limit(parseInt(limit))
       .exec();
 
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearchError, HttpStatus.NOT_FOUND);
-    if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposSearch, HttpStatus.NOT_FOUND);
+    if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.errorApposSearch'), HttpStatus.BAD_REQUEST);
+    if (appointments.length === 0) throw new HttpException(this.i18nService.t('response.appointments.emptyApposSearch'), HttpStatus.NOT_FOUND);
 
-    const count = await this.appointmentModel.find(queryValue).countDocuments();
+    const count: number = await this.appointmentModel.find(queryValue).countDocuments();
 
-    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
+    const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data = { total: pageTotal, count: count, data: appointments };
 
     return {
       data: data,
-      message: APPOINTMENTS_CONFIG.response.success.foundPlural,
+      message: this.i18nService.t('response.appointments.foundPlural'),
       statusCode: HttpStatus.OK,
     };
   }
