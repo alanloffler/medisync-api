@@ -17,6 +17,7 @@ export type I18nTranslations = {
             "notFoundPlural": string;
         };
         "appointments": {
+            "attendanceError": string;
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
@@ -51,6 +52,7 @@ export type I18nTranslations = {
             "updated": string;
         };
         "appointments": {
+            "attendance": string;
             "created": string;
             "emptyByUserAndProfessional": string;
             "emptyByUserAndYear": string;
