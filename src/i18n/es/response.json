@@ -21,6 +21,7 @@
     "emptyUniqueProfessionals": "No se encontraron profesionales únicos",
     "emptyYearsWithAppos": "No se encontraron años con turnos",
     "found": "Turno encontrado exitosamente",
+    "foundApposStatistics": "Estadísticas de turnos obtenidas exitosamente",
     "foundByUser": "Turnos por paciente encontrados exitosamente",
     "foundByUserAndProfessional": "Turnos por paciente y profesional encontrados exitosamente",
     "foundByUserAndYear": "Turnos por paciente y año encontrados exitosamente",

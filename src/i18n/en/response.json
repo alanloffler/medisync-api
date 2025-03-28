@@ -21,6 +21,7 @@
     "emptyUniqueProfessionals": "No unique professionals were found",
     "emptyYearsWithAppos": "No years with appointments were found",
     "found": "Appointment found successfully",
+    "foundApposStatistics": "Appointments statistics obtained successfully",
     "foundByUser": "Appointments found by user successfully",
     "foundByUserAndProfessional": "Appointments found by user and professional successfully",
     "foundByUserAndYear": "Appointments found by user and year successfully",
