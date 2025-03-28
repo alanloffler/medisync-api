@@ -1,15 +1,33 @@
 {
-  "auth": {
-    "admin": "Información de administrador recuperada exitosamente",
-    "login": "El administrador ha iniciado sesión correctamente",
-    "logout": "El administrador ha cerrado sesión correctamente",
-    "refreshTokens": "Los tokens se actualizaron correctamente"
-  },
   "admin": {
     "created": "Administrador creado exitosamente",
     "found": "Administrador encontrado exitosamente",
     "foundPlural": "Administradores encontrados con éxito",
     "removed": "Administrador eliminado exitosamente",
     "updated": "Administrador actualizado exitosamente"
+  },
+  "appointments": {
+    "created": "Turno creado exitosamente",
+    "emptyByUser": "El paciente aún no posee turnos",
+    "emptyByUserAndProfessional": "No se encontraron turnos por profesional",
+    "emptyByUserAndYear": "No se encontraron turnos por año",
+    "emptyByUserProfessionalAndYear": "No se encontraron turnos por profesional y año",
+    "emptyFoundPluralFilterNone": "No se encontraron turnos",
+    "emptyUniqueProfessionals": "No se encontraron profesionales únicos",
+    "found": "Turno encontrado exitosamente",
+    "foundByUser": "Turnos por paciente encontrados exitosamente",
+    "foundByUserAndProfessional": "Turnos por paciente y profesional encontrados exitosamente",
+    "foundByUserAndYear": "Turnos por paciente y año encontrados exitosamente",
+    "foundByUserProfessionalAndYear": "Turnos por paciente, profesional y año encontrados exitosamente",
+    "foundPlural": "Turnos encontrados exitosamente",
+    "foundUniqueProfessionals": "Se encontraron los profesionales únicos",
+    "removed": "Turno eliminado exitosamente",
+    "updated": "Turno actualizado exitosamente"
+  },
+  "auth": {
+    "admin": "Información de administrador recuperada exitosamente",
+    "login": "El administrador ha iniciado sesión correctamente",
+    "logout": "El administrador ha cerrado sesión correctamente",
+    "refreshTokens": "Los tokens se actualizaron correctamente"
   }
 }

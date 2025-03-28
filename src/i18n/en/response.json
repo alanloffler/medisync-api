@@ -1,15 +1,33 @@
 {
-  "auth": {
-    "admin": "Admin information retrieved successfully",
-    "login": "Admin logged successfully",
-    "logout": "Admin logged out successfully",
-    "refreshTokens": "Tokens refreshed successfully"
-  },
   "admin": {
     "created": "Admin created successfully",
     "found": "Admin found successfully",
     "foundPlural": "Admins found successfully",
     "removed": "Admin removed successfully",
     "updated": "Admin updated successfully"
+  },
+  "appointments": {
+    "created": "Appointment created successfully",
+    "emptyByUser": "The patient does not yet have an appointment",
+    "emptyByUserAndProfessional": "No appointments found by professional",
+    "emptyByUserAndYear": "No appointments found by year",
+    "emptyByUserProfessionalAndYear": "No appointments found by professional and year",
+    "emptyFoundPluralFilterNone": "No appointments found",
+    "emptyUniqueProfessionals": "No unique professionals were found",
+    "found": "Appointment found successfully",
+    "foundByUser": "Appointments found by user successfully",
+    "foundByUserAndProfessional": "Appointments found by user and professional successfully",
+    "foundByUserAndYear": "Appointments found by user and year successfully",
+    "foundByUserProfessionalAndYear": "Appointments found by user, professional and year successfully",
+    "foundPlural": "Appointments found successfully",
+    "foundUniqueProfessionals": "The unique professionals were found",
+    "removed": "Appointment removed successfully",
+    "updated": "Appointment updated successfully"
+  },
+  "auth": {
+    "admin": "Admin information retrieved successfully",
+    "login": "Admin logged successfully",
+    "logout": "Admin logged out successfully",
+    "refreshTokens": "Tokens refreshed successfully"
   }
 }
