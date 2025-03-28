@@ -17,7 +17,9 @@ export type I18nTranslations = {
             "notFoundPlural": string;
         };
         "appointments": {
-            "attendanceError": string;
+            "errorApposCount": string;
+            "errorAttendance": string;
+            "errorDaysWithAppos": string;
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
@@ -52,11 +54,14 @@ export type I18nTranslations = {
             "updated": string;
         };
         "appointments": {
+            "apposCount": string;
             "attendance": string;
             "created": string;
+            "daysWithAppos": string;
             "emptyByUserAndProfessional": string;
             "emptyByUserAndYear": string;
             "emptyByUserProfessionalAndYear": string;
+            "emptyDaysWithAppos": string;
             "emptyFoundPluralFilterNone": string;
             "emptyUniqueProfessionals": string;
             "found": string;
