@@ -10,7 +10,9 @@
     "notFoundPlural": "Administradores no encontrados"
   },
   "appointments": {
-    "attendanceError": "Error al buscar datos estadísticos",
+    "errorApposCount": "Error al contar turnos",
+    "errorAttendance": "Error al buscar datos estadísticos",
+    "errorDaysWithAppos": "Error al buscar días con turnos",
     "failedCreate": "No se pudo crear el turno",
     "failedRemove": "No se pudo eliminar el turno",
     "failedUpdate": "No se pudo actualizar el turno",
