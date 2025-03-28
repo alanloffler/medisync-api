@@ -12,6 +12,7 @@
   "appointments": {
     "errorApposCount": "Error counting appointments",
     "errorApposSearch": "Error searching for appointments",
+    "errorApposStatistics": "Error getting statistical data of the appointments",
     "errorAttendance": "Error searching for statistical data",
     "errorDaysWithAppos": "Error searching for days with appointments",
     "errorYearsWithAppos": "Error searching for years with appointments",

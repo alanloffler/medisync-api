@@ -12,6 +12,7 @@
   "appointments": {
     "errorApposCount": "Error al contar turnos",
     "errorApposSearch": "Error al buscar turnos",
+    "errorApposStatistics": "Error al obtener datos estadísticos de los turnos",
     "errorAttendance": "Error al buscar datos estadísticos",
     "errorDaysWithAppos": "Error al buscar días con turnos",
     "errorYearsWithAppos": "Error al buscar los años con turnos",
