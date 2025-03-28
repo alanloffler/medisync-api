@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { parse } from '@formkit/tempo';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
-import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
@@ -16,6 +17,7 @@ export class ProfessionalsService {
   constructor(
     @InjectModel(Professional.name) private readonly professionalModel: Model<Professional>,
     @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
+    private readonly i18nService: I18nService<I18nTranslations>,
   ) {}
 
   // CHECKED:
@@ -160,7 +162,7 @@ export class ProfessionalsService {
     if (!hourRegex.test(hour)) throw new HttpException(PROF_CONFIG.validation.arguments.hour, HttpStatus.BAD_REQUEST);
 
     const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
-    
+
     const professionalsOnWorkingDays: Professional[] = await this.professionalModel
       .find({
         'configuration.workingDays': {
@@ -179,8 +181,8 @@ export class ProfessionalsService {
     if (!professionalsOnWorkingDays) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
     const appointmentsInSlot: Appointment[] = await this.appointmentModel.find({ day: day, hour: hour }).exec();
-    if (appointmentsInSlot.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.success.emptyDatabase, HttpStatus.NOT_FOUND);
-    if (!appointmentsInSlot) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (appointmentsInSlot.length === 0) throw new HttpException(this.i18nService.t('response.appointments.emptyDatabase'), HttpStatus.NOT_FOUND);
+    if (appointmentsInSlot === undefined || appointmentsInSlot === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     const appointmentProfessionalIds: string[] = appointmentsInSlot.map((appointment) => appointment.professional.toString());
     const filteredProfessionals: Professional[] = professionalsOnWorkingDays.filter((professional) => !appointmentProfessionalIds.includes(professional._id.toString()));
