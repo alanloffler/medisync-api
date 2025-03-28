@@ -9,6 +9,22 @@
     "notFound": "Administrador no encontrado",
     "notFoundPlural": "Administradores no encontrados"
   },
+  "appointments": {
+    "failedCreate": "No se pudo crear el turno",
+    "failedRemove": "No se pudo eliminar el turno",
+    "failedUpdate": "No se pudo actualizar el turno",
+    "notFound": "Turno no encontrado",
+    "notFoundByProfessional": "Turnos no encontrados por profesional",
+    "notFoundByProfessionalAndYear": "Turnos no encontrados por profesional y año",
+    "notFoundByYear": "Turnos no encontrados por año",
+    "notFoundPlural": "Turnos no encontrados",
+    "notFoundPluralFilterNone": "Error en la búsqueda de turnos sin filtros",
+    "notFoundUniqueProfessionals": "Error al buscar profesionales únicos",
+    "validation": {
+      "limit": "El límite debe ser un número entero mayor o igual a 0",
+      "page": "La página debe ser un número entero mayor o igual a 0"
+    }
+  },
   "auth": {
     "failedRefreshToken": "No se pudo actualizar el token de actualización",
     "failedTokens": "No se pudieron generar los tokens",

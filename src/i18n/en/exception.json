@@ -9,6 +9,22 @@
     "notFound": "Admin not found",
     "notFoundPlural": "Admins not found"
   },
+  "appointments": {
+    "failedCreate": "Failed to create appointment",
+    "failedRemove": "Failed to remove appointment",
+    "failedUpdate": "Failed to update appointment",
+    "notFound": "Appointment not found",
+    "notFoundByProfessional": "Appointments not found by professional",
+    "notFoundByProfessionalAndYear": "Appointments not found by professional and year",
+    "notFoundByYear": "Appointments not found by year",
+    "notFoundPlural": "Appointments not found",
+    "notFoundPluralFilterNone": "Error searching appointments without filters",
+    "notFoundUniqueProfessionals": "Error when searching for unique professionals",
+    "validation": {
+      "limit": "The limit must be an integer greater than or equal to 0",
+      "page": "The page must be an integer greater than or equal to 0"
+    }
+  },
   "auth": {
     "failedRefreshToken": "Failed to update the refresh token",
     "failedTokens": "Failed to generate the tokens",
