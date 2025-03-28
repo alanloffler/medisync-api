@@ -1,8 +1,10 @@
 import mongoose, { isValidObjectId, Model } from 'mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
 import { z } from 'zod';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IAppoAttendance } from '@appointments/interfaces/appo-attendance.interface';
 import type { IResponse, IStats } from '@common/interfaces/response.interface';
 import type { IStatistic } from '@common/interfaces/statistic.interface';
@@ -19,13 +21,18 @@ export class AppointmentsService {
   constructor(
     @InjectModel('Appointment') private appointmentModel: Model<Appointment>,
     @InjectModel('User') private userModel: Model<User>,
+    private readonly i18nService: I18nService<I18nTranslations>,
   ) {}
   // CHECKED: used on DialogReserve.tsx
   async create(createAppointmentDto: CreateAppointmentDto): Promise<IResponse<Appointment>> {
     const appointment = await this.appointmentModel.create(createAppointmentDto);
-    if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
+    if (!appointment) throw new HttpException(this.i18nService.t('exception.appointments.failedCreate'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.created, data: appointment };
+    return {
+      data: appointment,
+      message: this.i18nService.t('response.appointments.created'),
+      statusCode: HttpStatus.CREATED,
+    };
   }
 
   async findAll(page: string, limit: string): Promise<IResponse<Appointment[]>> {
@@ -34,8 +41,8 @@ export class AppointmentsService {
 
     const schema = z.number().min(0).int();
 
-    if (!schema.safeParse(_page).success) throw new HttpException(APPOINTMENTS_CONFIG.inlineValidation.page, HttpStatus.BAD_REQUEST);
-    if (!schema.safeParse(_limit).success) throw new HttpException(APPOINTMENTS_CONFIG.inlineValidation.limit, HttpStatus.BAD_REQUEST);
+    if (!schema.safeParse(_page).success) throw new HttpException(this.i18nService.t('exception.appointments.validation.page'), HttpStatus.BAD_REQUEST);
+    if (!schema.safeParse(_limit).success) throw new HttpException(this.i18nService.t('exception.appointments.validation.limit'), HttpStatus.BAD_REQUEST);
 
     const appointments = await this.appointmentModel
       .find()
@@ -52,25 +59,34 @@ export class AppointmentsService {
         ],
       });
 
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
-    if (appointments.length === 0) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
+    if (appointments.length === 0) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.NOT_FOUND);
 
     const hasMore: boolean = appointments.length > _limit;
     const appointmentsResult = hasMore ? appointments.slice(0, -1) : appointments;
 
     const totalItems = await this.appointmentModel.countDocuments();
-    if (!totalItems) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (!totalItems) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointmentsResult, pagination: { hasMore, totalItems } };
+    return {
+      data: appointmentsResult,
+      message: this.i18nService.t('response.appointments.foundPlural'),
+      pagination: { hasMore, totalItems },
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findAllByProfessional(id: string, day: string): Promise<IResponse> {
     const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
 
-    if (appointments.length === 0) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
-    if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (appointments.length === 0) return { data: [], message: this.i18nService.t('exception.appointments.notFoundPlural'), statusCode: HttpStatus.NOT_FOUND };
+    if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
+    return {
+      data: appointments,
+      message: this.i18nService.t('response.appointments.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findAllByUser(id: string): Promise<IResponse> {
@@ -79,10 +95,14 @@ export class AppointmentsService {
       .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .populate({ path: 'user', select: '_id firstName lastName dni' });
 
-    if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
-    if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
+    if (!appointments) return { data: [], message: this.i18nService.t('exception.appointments.notFoundPlural'), statusCode: HttpStatus.NOT_FOUND };
+    if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUser'), statusCode: HttpStatus.OK };
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
+    return {
+      data: appointments,
+      message: this.i18nService.t('response.appointments.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findUniqueProfessionalsByUser(id: string): Promise<IResponse> {
@@ -123,10 +143,14 @@ export class AppointmentsService {
       .sort({ lastName: 'asc' })
       .exec();
 
-    if (!professionals) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundUniqueProfessionals, data: [] };
-    if (professionals.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyUniqueProfessionals, data: [] };
+    if (!professionals) return { data: [], message: this.i18nService.t('exception.appointments.notFoundUniqueProfessionals'), statusCode: HttpStatus.NOT_FOUND };
+    if (professionals.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyUniqueProfessionals'), statusCode: HttpStatus.OK };
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundUniqueProfessionals, data: professionals };
+    return {
+      data: professionals,
+      message: this.i18nService.t('response.appointments.foundUniqueProfessionals'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // CHECKED:
@@ -162,10 +186,10 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterNone, HttpStatus.BAD_REQUEST);
-        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterNone, data: [], statusCode: 404 };
+        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPluralFilterNone'), HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyFoundPluralFilterNone'), statusCode: HttpStatus.NOT_FOUND };
 
-        response = { statusCode: 200, message: 'Appointments found by user' };
+        response = { message: this.i18nService.t('response.appointments.foundByUser'), statusCode: HttpStatus.OK };
       } else {
         // Searching appointments without professional Id but with year
         filter = { user: userId, day: { $regex: year } };
@@ -185,10 +209,10 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterYear, HttpStatus.BAD_REQUEST);
-        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterYear, data: [], statusCode: 404 };
+        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByYear'), HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserAndYear'), statusCode: HttpStatus.NOT_FOUND };
 
-        response = { statusCode: 200, message: 'find by user and year' };
+        response = { message: this.i18nService.t('response.appointments.foundByUserAndYear'), statusCode: HttpStatus.OK };
       }
       // Searching appointments with professional Id
     } else {
@@ -211,10 +235,10 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterProfessional, HttpStatus.BAD_REQUEST);
-        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterProfessional, data: [], statusCode: 404 };
+        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessional'), HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserAndProfessional'), statusCode: HttpStatus.NOT_FOUND };
 
-        response = { statusCode: 200, message: 'find by professional' };
+        response = { message: this.i18nService.t('response.appointments.foundByUserAndProfessional'), statusCode: HttpStatus.OK };
       } else {
         // Searching appointments with professional Id and with year
         filter = { user: userId, professional: professionalId, day: { $regex: year } };
@@ -234,10 +258,10 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundPluralFilterAll, HttpStatus.BAD_REQUEST);
-        if (appointments.length === 0) return { message: APPOINTMENTS_CONFIG.response.success.emptyFoundPluralFilterAll, data: [], statusCode: 404 };
+        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessionalAndYear'), HttpStatus.BAD_REQUEST);
+        if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserProfessionalAndYear'), statusCode: HttpStatus.NOT_FOUND };
 
-        response = { statusCode: 200, message: 'find by professional and year' };
+        response = { message: this.i18nService.t('response.appointments.foundByUserProfessionalAndYear'), statusCode: HttpStatus.OK };
       }
     }
 
@@ -267,23 +291,29 @@ export class AppointmentsService {
     apposStats = { attended, notAttended, notStatus, total, waiting };
     apposStats = { ...apposStats, notStatus: apposStats.notStatus - apposStats.waiting };
 
-    return { statusCode: response.statusCode, message: response.message, data: appointmentsResult, pagination: { hasMore, totalItems: paginationTotalItems }, stats: apposStats };
+    return {
+      data: appointmentsResult,
+      message: response.message,
+      pagination: { hasMore, totalItems: paginationTotalItems },
+      stats: apposStats,
+      statusCode: response.statusCode,
+    };
   }
-
+  // RETOMAR DESDE ACÁ!
   async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
     const appointments = await this.appointmentModel
       .find({ user: userId, professional: professionalId })
       .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .populate({ path: 'user', select: '_id firstName lastName dni' });
 
-    if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+    if (!appointments) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
     if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
   }
 
   async findAllByUserAndYear(user: string, year: string, month: string | undefined): Promise<IResponse> {
-    if (year === undefined) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+    if (year === undefined) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
 
     let regex: RegExp;
     month === undefined ? (regex = new RegExp(year)) : (regex = new RegExp(`^${year}-${month}`));
@@ -293,7 +323,7 @@ export class AppointmentsService {
       .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
       .populate({ path: 'user', select: '_id firstName lastName dni' });
 
-    if (!appointments) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundPlural, data: [] };
+    if (!appointments) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
     if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
 
     return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundPlural, data: appointments };
@@ -312,9 +342,13 @@ export class AppointmentsService {
       })
       .populate({ path: 'user', select: '_id firstName lastName dni email phone' });
 
-    if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
+    if (!appointment) throw new HttpException(this.i18nService.t('exception.appointments.notFound'), HttpStatus.NOT_FOUND);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.foundSingular, data: appointment };
+    return {
+      data: appointment,
+      message: this.i18nService.t('response.appointments.found'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // CHECKED:
@@ -324,20 +358,28 @@ export class AppointmentsService {
     const { professional, status } = dto;
 
     const update = await this.appointmentModel.findByIdAndUpdate(id, { professional, status }, { new: true });
-    if (!update) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+    if (!update) throw new HttpException(this.i18nService.t('exception.appointments.failedUpdate'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.updated, data: update };
+    return {
+      data: update,
+      message: this.i18nService.t('response.appointments.updated'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // CHECKED: used on DialogReserve.tsx
   async remove(id: string): Promise<IResponse> {
     const isValidId = isValidObjectId(id);
-    if (!isValidId) throw new HttpException(APPOINTMENTS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const appointment = await this.appointmentModel.findByIdAndDelete(id);
-    if (!appointment) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
+    if (!appointment) throw new HttpException(this.i18nService.t('exception.appointments.failedRemove'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.removed, data: appointment };
+    return {
+      data: appointment,
+      message: this.i18nService.t('response.appointments.removed'),
+      statusCode: HttpStatus.OK,
+    };
   }
   // Used on UI select user appos by year
   async findApposYearsByUser(user: string): Promise<IResponse> {
