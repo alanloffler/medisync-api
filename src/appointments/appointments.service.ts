@@ -3,9 +3,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { format } from '@formkit/tempo';
-import { z } from 'zod';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IAppoAttendance } from '@appointments/interfaces/appo-attendance.interface';
+import type { IApposDays } from '@appointments/interfaces/appos-days.interface';
 import type { IResponse, IStats } from '@common/interfaces/response.interface';
 import type { IStatistic } from '@common/interfaces/statistic.interface';
 import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
@@ -16,7 +16,6 @@ import { ESearchType } from '@common/enums/search-type.enum';
 import { EStatus } from '@common/enums/status.enum';
 import { Professional } from '@professionals/schema/professional.schema';
 import { User } from '@users/schema/user.schema';
-import { IApposDays } from './interfaces/appos-days.interface';
 
 @Injectable()
 export class AppointmentsService {
@@ -38,47 +37,6 @@ export class AppointmentsService {
     };
   }
 
-  // async findAll(page: string, limit: string): Promise<IResponse<Appointment[]>> {
-  //   const _page: number = Number(page);
-  //   const _limit: number = Number(limit);
-
-  //   const schema = z.number().min(0).int();
-
-  //   if (!schema.safeParse(_page).success) throw new HttpException(this.i18nService.t('exception.appointments.validation.page'), HttpStatus.BAD_REQUEST);
-  //   if (!schema.safeParse(_limit).success) throw new HttpException(this.i18nService.t('exception.appointments.validation.limit'), HttpStatus.BAD_REQUEST);
-
-  //   const appointments = await this.appointmentModel
-  //     .find()
-  //     .sort({ day: -1, hour: 1 })
-  //     .skip(_page * _limit)
-  //     .limit(_limit + 1)
-  //     .populate({ path: 'user', select: '_id firstName lastName dni' })
-  //     .populate({
-  //       path: 'professional',
-  //       select: '_id title specialization firstName lastName',
-  //       populate: [
-  //         { path: 'title', select: 'abbreviation' },
-  //         { path: 'specialization', select: '_id name', strictPopulate: false },
-  //       ],
-  //     });
-
-  //   if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
-  //   if (appointments.length === 0) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.NOT_FOUND);
-
-  //   const hasMore: boolean = appointments.length > _limit;
-  //   const appointmentsResult = hasMore ? appointments.slice(0, -1) : appointments;
-
-  //   const totalItems = await this.appointmentModel.countDocuments();
-  //   if (!totalItems) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
-
-  //   return {
-  //     data: appointmentsResult,
-  //     message: this.i18nService.t('response.appointments.foundPlural'),
-  //     pagination: { hasMore, totalItems },
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
-
   // * CHECKED: used on Frontend
   async findAllByProfessional(id: string, day: string): Promise<IResponse<Appointment[]>> {
     const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
@@ -92,22 +50,6 @@ export class AppointmentsService {
       statusCode: HttpStatus.OK,
     };
   }
-
-  // async findAllByUser(id: string): Promise<IResponse> {
-  //   const appointments = await this.appointmentModel
-  //     .find({ user: id })
-  //     .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-  //     .populate({ path: 'user', select: '_id firstName lastName dni' });
-
-  //   if (!appointments) return { data: [], message: this.i18nService.t('exception.appointments.notFoundPlural'), statusCode: HttpStatus.NOT_FOUND };
-  //   if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUser'), statusCode: HttpStatus.OK };
-
-  //   return {
-  //     data: appointments,
-  //     message: this.i18nService.t('response.appointments.foundPlural'),
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
 
   // * CHECKED: used on Frontend
   async findUniqueProfessionalsByUser(id: string): Promise<IResponse<Professional[]>> {
@@ -304,43 +246,6 @@ export class AppointmentsService {
   }
 
   // RETOMAR DESDE ACÁ!
-  // async findAllByUserAndProfessional(userId: string, professionalId: string): Promise<IResponse> {
-  //   const appointments = await this.appointmentModel
-  //     .find({ user: userId, professional: professionalId })
-  //     .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-  //     .populate({ path: 'user', select: '_id firstName lastName dni' });
-
-  //   if (!appointments) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
-  //   if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
-
-  //   return {
-  //     data: appointments,
-  //     message: APPOINTMENTS_CONFIG.response.success.foundPlural,
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
-
-  // async findAllByUserAndYear(user: string, year: string, month: string | undefined): Promise<IResponse> {
-  //   if (year === undefined) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
-
-  //   let regex: RegExp;
-  //   month === undefined ? (regex = new RegExp(year)) : (regex = new RegExp(`^${year}-${month}`));
-
-  //   const appointments: Appointment[] = await this.appointmentModel
-  //     .find({ user: user, day: { $regex: regex } })
-  //     .populate({ path: 'professional', select: '_id firstName lastName', populate: { path: 'title', select: 'abbreviation' } })
-  //     .populate({ path: 'user', select: '_id firstName lastName dni' });
-
-  //   if (!appointments) return { statusCode: 404, message: this.i18nService.t('exception.appointments.notFoundPlural'), data: [] };
-  //   if (appointments.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.empty, data: [] };
-
-  //   return {
-  //     data: appointments,
-  //     message: APPOINTMENTS_CONFIG.response.success.foundPlural,
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
-
   // * CHECKED: used on Frontend
   async findOne(id: string): Promise<IResponse<Appointment>> {
     const appointment = await this.appointmentModel
@@ -408,21 +313,6 @@ export class AppointmentsService {
       statusCode: HttpStatus.OK,
     };
   }
-
-  // async findApposMonthsByUser(user: string, year: string): Promise<IResponse> {
-  //   const apposByYear = await this.appointmentModel.find({ user: user, day: { $regex: year } });
-
-  //   if (!apposByYear) return { statusCode: 404, message: APPOINTMENTS_CONFIG.response.error.notFoundMonths, data: [] };
-  //   if (apposByYear.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyMonths, data: [] };
-
-  //   const uniqueMonths = [...new Set(apposByYear.map((appo) => appo.day.substring(5, 7)))];
-
-  //   return {
-  //     data: uniqueMonths,
-  //     message: APPOINTMENTS_CONFIG.response.success.foundMonths,
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
 
   // CHECKED: used on Frontend
   // TODO: see type of response
