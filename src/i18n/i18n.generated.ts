@@ -19,6 +19,7 @@ export type I18nTranslations = {
         "appointments": {
             "errorApposCount": string;
             "errorApposSearch": string;
+            "errorApposStatistics": string;
             "errorAttendance": string;
             "errorDaysWithAppos": string;
             "errorYearsWithAppos": string;
@@ -71,6 +72,7 @@ export type I18nTranslations = {
             "emptyUniqueProfessionals": string;
             "emptyYearsWithAppos": string;
             "found": string;
+            "foundApposStatistics": string;
             "foundByUser": string;
             "foundByUserAndProfessional": string;
             "foundByUserAndYear": string;
