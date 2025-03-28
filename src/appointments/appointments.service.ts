@@ -373,11 +373,11 @@ export class AppointmentsService {
   // * CHECKED: used on Frontend
   async countAppointments(): Promise<IResponse<number>> {
     const count = await this.appointmentModel.find().countDocuments();
-    if (!count) throw new HttpException(APPOINTMENTS_CONFIG.response.error.notCount, HttpStatus.NOT_FOUND);
+    if (count === undefined || count === null) throw new HttpException(this.i18nService.t('exception.appointments.errorApposCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: count,
-      message: APPOINTMENTS_CONFIG.response.success.count,
+      message: this.i18nService.t('response.appointments.apposCount'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -386,8 +386,8 @@ export class AppointmentsService {
   async daysWithAppos(professionalId: string, year: string, month: string): Promise<IResponse<IApposDays[]>> {
     const apposByMonth = await this.appointmentModel.find({ professional: professionalId, day: { $regex: year + '-' + month } }).distinct('day');
 
-    if (apposByMonth.length === 0) return { statusCode: 200, message: APPOINTMENTS_CONFIG.response.success.emptyDaysWithAppos, data: [] };
-    if (!apposByMonth) throw new HttpException(APPOINTMENTS_CONFIG.response.error.daysWithAppos, HttpStatus.BAD_REQUEST);
+    if (apposByMonth.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyDaysWithAppos'), statusCode: HttpStatus.NOT_FOUND };
+    if (!apposByMonth) throw new HttpException(this.i18nService.t('exception.appointments.errorDaysWithAppos'), HttpStatus.BAD_REQUEST);
 
     const formattedData: IApposDays[] = [];
     apposByMonth.forEach((date) => {
@@ -396,7 +396,7 @@ export class AppointmentsService {
 
     return {
       data: formattedData,
-      message: APPOINTMENTS_CONFIG.response.success.daysWithAppos,
+      message: this.i18nService.t('response.appointments.daysWithAppos'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -454,7 +454,7 @@ export class AppointmentsService {
     const notAttended: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_ATTENDED }).exec();
     const notStatus: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_STATUS }).exec();
 
-    if (total === null || total === undefined) throw new HttpException(this.i18nService.t('exception.appointments.attendanceError'), HttpStatus.BAD_REQUEST);
+    if (total === null || total === undefined) throw new HttpException(this.i18nService.t('exception.appointments.errorAttendance'), HttpStatus.BAD_REQUEST);
 
     const hour: string = new Date().getHours().toString();
     const minutes: string = new Date().getMinutes().toString();
@@ -468,7 +468,7 @@ export class AppointmentsService {
       .countDocuments()
       .exec();
 
-    if (waiting === null || waiting === undefined) throw new HttpException(this.i18nService.t('exception.appointments.attendanceError'), HttpStatus.BAD_REQUEST);
+    if (waiting === null || waiting === undefined) throw new HttpException(this.i18nService.t('exception.appointments.errorAttendance'), HttpStatus.BAD_REQUEST);
 
     data.push({ attendance: EAttendance.ATTENDED, value: (attended * 100) / total });
     data.push({ attendance: EAttendance.NOT_ATTENDED, value: (notAttended * 100) / total });
