@@ -18,8 +18,10 @@ export type I18nTranslations = {
         };
         "appointments": {
             "errorApposCount": string;
+            "errorApposSearch": string;
             "errorAttendance": string;
             "errorDaysWithAppos": string;
+            "errorYearsWithAppos": string;
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
@@ -43,6 +45,7 @@ export type I18nTranslations = {
         };
         "common": {
             "invalidId": string;
+            "invalidSearchType": string;
         };
     };
     "response": {
@@ -58,12 +61,15 @@ export type I18nTranslations = {
             "attendance": string;
             "created": string;
             "daysWithAppos": string;
+            "emptyApposSearch": string;
             "emptyByUserAndProfessional": string;
             "emptyByUserAndYear": string;
             "emptyByUserProfessionalAndYear": string;
+            "emptyDatabase": string;
             "emptyDaysWithAppos": string;
             "emptyFoundPluralFilterNone": string;
             "emptyUniqueProfessionals": string;
+            "emptyYearsWithAppos": string;
             "found": string;
             "foundByUser": string;
             "foundByUserAndProfessional": string;
@@ -71,6 +77,7 @@ export type I18nTranslations = {
             "foundByUserProfessionalAndYear": string;
             "foundPlural": string;
             "foundUniqueProfessionals": string;
+            "foundYearsWithAppos": string;
             "removed": string;
             "updated": string;
         };
