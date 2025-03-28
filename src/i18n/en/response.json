@@ -8,7 +8,6 @@
   },
   "appointments": {
     "created": "Appointment created successfully",
-    "emptyByUser": "The patient does not yet have an appointment",
     "emptyByUserAndProfessional": "No appointments found by professional",
     "emptyByUserAndYear": "No appointments found by year",
     "emptyByUserProfessionalAndYear": "No appointments found by professional and year",

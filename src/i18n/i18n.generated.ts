@@ -27,10 +27,6 @@ export type I18nTranslations = {
             "notFoundPlural": string;
             "notFoundPluralFilterNone": string;
             "notFoundUniqueProfessionals": string;
-            "validation": {
-                "limit": string;
-                "page": string;
-            };
         };
         "auth": {
             "failedRefreshToken": string;
@@ -56,7 +52,6 @@ export type I18nTranslations = {
         };
         "appointments": {
             "created": string;
-            "emptyByUser": string;
             "emptyByUserAndProfessional": string;
             "emptyByUserAndYear": string;
             "emptyByUserProfessionalAndYear": string;

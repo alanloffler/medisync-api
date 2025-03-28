@@ -8,7 +8,6 @@
   },
   "appointments": {
     "created": "Turno creado exitosamente",
-    "emptyByUser": "El paciente aún no posee turnos",
     "emptyByUserAndProfessional": "No se encontraron turnos por profesional",
     "emptyByUserAndYear": "No se encontraron turnos por año",
     "emptyByUserProfessionalAndYear": "No se encontraron turnos por profesional y año",
