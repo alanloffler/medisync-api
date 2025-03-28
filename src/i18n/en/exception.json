@@ -10,6 +10,7 @@
     "notFoundPlural": "Admins not found"
   },
   "appointments": {
+    "attendanceError": "Error searching for statistical data",
     "failedCreate": "Failed to create appointment",
     "failedRemove": "Failed to remove appointment",
     "failedUpdate": "Failed to update appointment",
