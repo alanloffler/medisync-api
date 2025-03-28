@@ -8,7 +8,6 @@ import type { IAppoAttendance } from '@appointments/interfaces/appo-attendance.i
 import type { IApposDays } from '@appointments/interfaces/appos-days.interface';
 import type { IResponse, IStats } from '@common/interfaces/response.interface';
 import type { IStatistic } from '@common/interfaces/statistic.interface';
-import { APPOINTMENTS_CONFIG } from '@config/appointments.config';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
 import { EAttendance } from '@appointments/enums/attendance.enum';
@@ -418,7 +417,7 @@ export class AppointmentsService {
       const month = await this.appointmentModel.find({ day: { $gte: startMonthFormatted, $lte: todayFormatted } }).countDocuments();
 
       // OBS: take care with labels, they have highly dependence on translation
-      // Each key must exist on translation files
+      // Each key must exist on translation files (Frontend)
       const data: IStatistic[] = [
         {
           count: { label: 'today', value: today },
@@ -438,11 +437,11 @@ export class AppointmentsService {
 
       return {
         data: data,
-        message: APPOINTMENTS_CONFIG.response.success.apposStatistics,
+        message: this.i18nService.t('response.appointments.foundApposStatistics'),
         statusCode: HttpStatus.OK,
       };
     } catch (error) {
-      throw new HttpException(APPOINTMENTS_CONFIG.response.error.apposStatistics, HttpStatus.BAD_REQUEST);
+      throw new HttpException(this.i18nService.t('exception.appointments.errorApposStatistics'), HttpStatus.BAD_REQUEST);
     }
   }
 
