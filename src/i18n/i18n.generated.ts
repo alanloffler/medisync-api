@@ -16,6 +16,22 @@ export type I18nTranslations = {
             "notFound": string;
             "notFoundPlural": string;
         };
+        "appointments": {
+            "failedCreate": string;
+            "failedRemove": string;
+            "failedUpdate": string;
+            "notFound": string;
+            "notFoundByProfessional": string;
+            "notFoundByProfessionalAndYear": string;
+            "notFoundByYear": string;
+            "notFoundPlural": string;
+            "notFoundPluralFilterNone": string;
+            "notFoundUniqueProfessionals": string;
+            "validation": {
+                "limit": string;
+                "page": string;
+            };
+        };
         "auth": {
             "failedRefreshToken": string;
             "failedTokens": string;
@@ -31,18 +47,36 @@ export type I18nTranslations = {
         };
     };
     "response": {
-        "auth": {
-            "admin": string;
-            "login": string;
-            "logout": string;
-            "refreshTokens": string;
-        };
         "admin": {
             "created": string;
             "found": string;
             "foundPlural": string;
             "removed": string;
             "updated": string;
+        };
+        "appointments": {
+            "created": string;
+            "emptyByUser": string;
+            "emptyByUserAndProfessional": string;
+            "emptyByUserAndYear": string;
+            "emptyByUserProfessionalAndYear": string;
+            "emptyFoundPluralFilterNone": string;
+            "emptyUniqueProfessionals": string;
+            "found": string;
+            "foundByUser": string;
+            "foundByUserAndProfessional": string;
+            "foundByUserAndYear": string;
+            "foundByUserProfessionalAndYear": string;
+            "foundPlural": string;
+            "foundUniqueProfessionals": string;
+            "removed": string;
+            "updated": string;
+        };
+        "auth": {
+            "admin": string;
+            "login": string;
+            "logout": string;
+            "refreshTokens": string;
         };
     };
     "validation": {
