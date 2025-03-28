@@ -7,11 +7,14 @@
     "updated": "Admin updated successfully"
   },
   "appointments": {
+    "apposCount": "Count of appointments obtained successfully",
     "attendance": "Attendance data obtained successfully",
     "created": "Appointment created successfully",
+    "daysWithAppos": "Days with appointments obtained successfully",
     "emptyByUserAndProfessional": "No appointments found by professional",
     "emptyByUserAndYear": "No appointments found by year",
     "emptyByUserProfessionalAndYear": "No appointments found by professional and year",
+    "emptyDaysWithAppos": "No days with appointments were found",
     "emptyFoundPluralFilterNone": "No appointments found",
     "emptyUniqueProfessionals": "No unique professionals were found",
     "found": "Appointment found successfully",
