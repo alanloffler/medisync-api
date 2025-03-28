@@ -11,8 +11,10 @@
   },
   "appointments": {
     "errorApposCount": "Error al contar turnos",
+    "errorApposSearch": "Error al buscar turnos",
     "errorAttendance": "Error al buscar datos estadísticos",
     "errorDaysWithAppos": "Error al buscar días con turnos",
+    "errorYearsWithAppos": "Error al buscar los años con turnos",
     "failedCreate": "No se pudo crear el turno",
     "failedRemove": "No se pudo eliminar el turno",
     "failedUpdate": "No se pudo actualizar el turno",
@@ -35,6 +37,7 @@
     }
   },
   "common": {
-    "invalidId": "ID inválida"
+    "invalidId": "ID inválida",
+    "invalidSearchType": "Tipo de búsqueda no válido"
   }
 }
