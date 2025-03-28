@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Param, Delete, Query, Patch } from '@nestj
 import type { IAppoAttendance } from './interfaces/appo-attendance.interface';
 import type { IApposDays } from '@appointments/interfaces/appos-days.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
+import type { IStatistic } from '@common/interfaces/statistic.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { AppointmentsService } from '@appointments/appointments.service';
 import { CreateAppointmentDto } from '@appointments/dto/create-appointment.dto';
 import { Professional } from '@professionals/schema/professional.schema';
-import { IStatistic } from '@common/interfaces/statistic.interface';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -24,21 +24,11 @@ export class AppointmentsController {
     return this.appointmentsService.findSearch(dto);
   }
 
-  // @Get()
-  // findAll(@Query('p') page: string, @Query('l') limit: string): Promise<IResponse<Appointment[]>> {
-  //   return this.appointmentsService.findAll(page, limit);
-  // }
-
   // * CHECKED: used on Frontend
   @Get('byProfessional')
   findAllByProfessional(@Query('id') id: string, @Query('day') day: string): Promise<IResponse<Appointment[]>> {
     return this.appointmentsService.findAllByProfessional(id, day);
   }
-
-  // @Get('byUser')
-  // findAllByUser(@Query('id') id: string): Promise<IResponse> {
-  //   return this.appointmentsService.findAllByUser(id);
-  // }
 
   // * CHECKED: used on Frontend
   @Get('uniqueProfessionalsByUser')
@@ -76,27 +66,11 @@ export class AppointmentsController {
     return this.appointmentsService.getAttendance();
   }
 
-  // FIXME: both methods will be replaced by an unified method (previous method)
-  // @Get('byUserAndProfessional')
-  // findAllByUserAndProfessional(@Query('user') userId: string, @Query('professional') professionalId: string): Promise<IResponse> {
-  //   return this.appointmentsService.findAllByUserAndProfessional(userId, professionalId);
-  // }
-
-  // @Get('byUserAndYear')
-  // findAllByUserAndYear(@Query('u') user: string, @Query('y') year: string, @Query('m') month: string): Promise<IResponse> {
-  //   return this.appointmentsService.findAllByUserAndYear(user, year, month);
-  // }
-
   // * CHECKED: used on Frontend
   @Get('yearsByUser')
   findApposYearsByUser(@Query('u') user: string): Promise<IResponse<string[]>> {
     return this.appointmentsService.findApposYearsByUser(user);
   }
-
-  // @Get('monthsByUser')
-  // findApposMonthsByUser(@Query('u') user: string, @Query('y') year: string): Promise<IResponse> {
-  //   return this.appointmentsService.findApposMonthsByUser(user, year);
-  // }
 
   // * CHECKED: used on Frontend
   @Get(':id')
