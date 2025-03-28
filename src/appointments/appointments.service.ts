@@ -41,7 +41,7 @@ export class AppointmentsService {
     const appointments = await this.appointmentModel.find({ professional: id, day: day }).populate({ path: 'user', select: '_id firstName lastName dni' });
 
     if (appointments.length === 0) return { data: [], message: this.i18nService.t('exception.appointments.notFoundPlural'), statusCode: HttpStatus.NOT_FOUND };
-    if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
       data: appointments,
@@ -89,8 +89,8 @@ export class AppointmentsService {
       .sort({ lastName: 'asc' })
       .exec();
 
-    if (!professionals) return { data: [], message: this.i18nService.t('exception.appointments.notFoundUniqueProfessionals'), statusCode: HttpStatus.NOT_FOUND };
-    if (professionals.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyUniqueProfessionals'), statusCode: HttpStatus.OK };
+    if (professionals.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyUniqueProfessionals'), statusCode: HttpStatus.NOT_FOUND };
+    if (professionals === undefined || professionals === null) return { data: [], message: this.i18nService.t('exception.appointments.notFoundUniqueProfessionals'), statusCode: HttpStatus.BAD_REQUEST };
 
     return {
       data: professionals,
@@ -130,8 +130,8 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPluralFilterNone'), HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyFoundPluralFilterNone'), statusCode: HttpStatus.NOT_FOUND };
+        if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPluralFilterNone'), HttpStatus.BAD_REQUEST);
 
         response = { message: this.i18nService.t('response.appointments.foundByUser'), statusCode: HttpStatus.OK };
       } else {
@@ -153,8 +153,8 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByYear'), HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserAndYear'), statusCode: HttpStatus.NOT_FOUND };
+        if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByYear'), HttpStatus.BAD_REQUEST);
 
         response = { message: this.i18nService.t('response.appointments.foundByUserAndYear'), statusCode: HttpStatus.OK };
       }
@@ -179,8 +179,8 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessional'), HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserAndProfessional'), statusCode: HttpStatus.NOT_FOUND };
+        if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessional'), HttpStatus.BAD_REQUEST);
 
         response = { message: this.i18nService.t('response.appointments.foundByUserAndProfessional'), statusCode: HttpStatus.OK };
       } else {
@@ -202,8 +202,8 @@ export class AppointmentsService {
           })
           .populate({ path: 'user', select: '_id firstName lastName dni email' });
 
-        if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessionalAndYear'), HttpStatus.BAD_REQUEST);
         if (appointments.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyByUserProfessionalAndYear'), statusCode: HttpStatus.NOT_FOUND };
+        if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundByProfessionalAndYear'), HttpStatus.BAD_REQUEST);
 
         response = { message: this.i18nService.t('response.appointments.foundByUserProfessionalAndYear'), statusCode: HttpStatus.OK };
       }
@@ -258,7 +258,7 @@ export class AppointmentsService {
       })
       .populate({ path: 'user', select: '_id firstName lastName dni email phone' });
 
-    if (!appointment) throw new HttpException(this.i18nService.t('exception.appointments.notFound'), HttpStatus.NOT_FOUND);
+    if (!appointment) throw new HttpException(this.i18nService.t('exception.appointments.notFound'), HttpStatus.BAD_REQUEST);
 
     return {
       data: appointment,
@@ -300,8 +300,8 @@ export class AppointmentsService {
   async findApposYearsByUser(user: string): Promise<IResponse<string[]>> {
     const years = await this.appointmentModel.find({ user: user }).distinct('day');
 
-    if (!years) return { data: [], message: this.i18nService.t('exception.appointments.errorYearsWithAppos'), statusCode: HttpStatus.BAD_REQUEST };
     if (years.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyYearsWithAppos'), statusCode: HttpStatus.NOT_FOUND };
+    if (years === undefined || years === null) return { data: [], message: this.i18nService.t('exception.appointments.errorYearsWithAppos'), statusCode: HttpStatus.BAD_REQUEST };
 
     const uniqueYears = [...new Set(years.map((year: string) => year.substring(0, 4)))];
 
@@ -354,8 +354,8 @@ export class AppointmentsService {
       .limit(parseInt(limit))
       .exec();
 
-    if (!appointments) throw new HttpException(this.i18nService.t('exception.appointments.errorApposSearch'), HttpStatus.BAD_REQUEST);
     if (appointments.length === 0) throw new HttpException(this.i18nService.t('response.appointments.emptyApposSearch'), HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.appointments.errorApposSearch'), HttpStatus.BAD_REQUEST);
 
     const count: number = await this.appointmentModel.find(queryValue).countDocuments();
 
@@ -386,7 +386,7 @@ export class AppointmentsService {
     const apposByMonth = await this.appointmentModel.find({ professional: professionalId, day: { $regex: year + '-' + month } }).distinct('day');
 
     if (apposByMonth.length === 0) return { data: [], message: this.i18nService.t('response.appointments.emptyDaysWithAppos'), statusCode: HttpStatus.NOT_FOUND };
-    if (!apposByMonth) throw new HttpException(this.i18nService.t('exception.appointments.errorDaysWithAppos'), HttpStatus.BAD_REQUEST);
+    if (apposByMonth === undefined || apposByMonth === null) throw new HttpException(this.i18nService.t('exception.appointments.errorDaysWithAppos'), HttpStatus.BAD_REQUEST);
 
     const formattedData: IApposDays[] = [];
     apposByMonth.forEach((date) => {
