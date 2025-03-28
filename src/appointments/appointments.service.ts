@@ -245,7 +245,6 @@ export class AppointmentsService {
     };
   }
 
-  // RETOMAR DESDE ACÁ!
   // * CHECKED: used on Frontend
   async findOne(id: string): Promise<IResponse<Appointment>> {
     const appointment = await this.appointmentModel
@@ -455,6 +454,8 @@ export class AppointmentsService {
     const notAttended: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_ATTENDED }).exec();
     const notStatus: number = await this.appointmentModel.countDocuments({ status: EAttendance.NOT_STATUS }).exec();
 
+    if (total === null || total === undefined) throw new HttpException(this.i18nService.t('exception.appointments.attendanceError'), HttpStatus.BAD_REQUEST);
+
     const hour: string = new Date().getHours().toString();
     const minutes: string = new Date().getMinutes().toString();
     const fullHour: string = `${hour}:${minutes}`;
@@ -467,15 +468,16 @@ export class AppointmentsService {
       .countDocuments()
       .exec();
 
+    if (waiting === null || waiting === undefined) throw new HttpException(this.i18nService.t('exception.appointments.attendanceError'), HttpStatus.BAD_REQUEST);
+
     data.push({ attendance: EAttendance.ATTENDED, value: (attended * 100) / total });
     data.push({ attendance: EAttendance.NOT_ATTENDED, value: (notAttended * 100) / total });
     data.push({ attendance: EAttendance.NOT_STATUS, value: ((notStatus - waiting) * 100) / total });
     data.push({ attendance: EAttendance.WAITING, value: (waiting * 100) / total });
 
-    // throw new HttpException('Error fetching attendance information', HttpStatus.BAD_REQUEST);
     return {
       data: data,
-      message: 'Attendance obtained successfully',
+      message: this.i18nService.t('response.appointments.attendance'),
       statusCode: HttpStatus.OK,
     };
   }
