@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IPayload } from '@auth/interface/payload.interface';
 import { Admin } from '@admin/schema/admin.schema';
 import { AuthService } from '@auth/auth.service';
@@ -10,7 +11,7 @@ import { AuthService } from '@auth/auth.service';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly authService: AuthService,
-    private readonly i18nService: I18nService,
+    private readonly i18nService: I18nService<I18nTranslations>,
   ) {
     super({
       usernameField: 'email',
