@@ -34,6 +34,14 @@ export type I18nTranslations = {
             "notFoundPluralFilterNone": string;
             "notFoundUniqueProfessionals": string;
         };
+        "areas": {
+            "duplicated": string;
+            "failedCreate": string;
+            "failedRemove": string;
+            "failedUpdate": string;
+            "notFound": string;
+            "notFoundPlural": string;
+        };
         "auth": {
             "failedRefreshToken": string;
             "failedTokens": string;
@@ -82,6 +90,14 @@ export type I18nTranslations = {
             "foundPlural": string;
             "foundUniqueProfessionals": string;
             "foundYearsWithAppos": string;
+            "removed": string;
+            "updated": string;
+        };
+        "areas": {
+            "created": string;
+            "emptyPlural": string;
+            "found": string;
+            "foundPlural": string;
             "removed": string;
             "updated": string;
         };

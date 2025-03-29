@@ -32,6 +32,14 @@
     "removed": "Turno eliminado exitosamente",
     "updated": "Turno actualizado exitosamente"
   },
+  "areas": {
+    "created": "Área creada exitosamente",
+    "emptyPlural": "No se encontraron áreas",
+    "found": "Área encontrada exitosamente",
+    "foundPlural": "Áreas encontradas exitosamente",
+    "removed": "Área eliminada exitosamente",
+    "updated": "Área actualizada exitosamente"
+  },
   "auth": {
     "admin": "Información de administrador recuperada exitosamente",
     "login": "El administrador ha iniciado sesión correctamente",

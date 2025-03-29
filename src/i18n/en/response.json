@@ -32,6 +32,14 @@
     "removed": "Appointment removed successfully",
     "updated": "Appointment updated successfully"
   },
+  "areas": {
+    "created": "Area created successfully",
+    "emptyPlural": "No areas found",
+    "found": "Area found successfully",
+    "foundPlural": "Areas found successfully",
+    "removed": "Area removed successfully",
+    "updated": "Area updated successfully"
+  },
   "auth": {
     "admin": "Admin information retrieved successfully",
     "login": "Admin logged successfully",
