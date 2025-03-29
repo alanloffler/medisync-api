@@ -1,5 +1,7 @@
 import type { Response } from 'express';
 import { Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IPayload } from '@auth/interface/payload.interface';
 import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
@@ -11,7 +13,10 @@ import { LocalAuthGuard } from '@auth/guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly i18nService: I18nService<I18nTranslations>,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -29,7 +34,7 @@ export class AuthController {
   @Post('refresh')
   refreshTokens(@Req() req: IRequest, @Res({ passthrough: true }) res: Response): Promise<IResponse<IPayload>> {
     const refreshToken = req.cookies?.refreshToken;
-    if (!refreshToken) throw new HttpException('Refresh token is required', HttpStatus.BAD_REQUEST);
+    if (!refreshToken) throw new HttpException(this.i18nService.t('exception.auth.refreshTokenRequired'), HttpStatus.UNAUTHORIZED);
 
     return this.authService.refreshTokens(req.user, refreshToken, res);
   }
