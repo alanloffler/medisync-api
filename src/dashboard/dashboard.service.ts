@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import type { IApposChart } from '@dashboard/interfaces/appos-chart.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { DASHBOARD_CONFIG } from '@config/dashboard.config';
@@ -14,6 +15,65 @@ export class DashboardService {
     @InjectModel('Professional') private readonly professionalModel: Model<Professional>,
     @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
+
+  // * CHECKED: used on Frontend
+  async apposDaysCount(days: string): Promise<IResponse<IApposChart[]>> {
+    if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.BAD_REQUEST);
+
+    const _days: number = parseInt(days);
+    const daysAgo: Date = new Date();
+    let includedDaysCount: number = 0;
+    const validDates: string[] = [];
+
+    while (includedDaysCount < _days) {
+      if (daysAgo.getDay() !== 0) {
+        validDates.push(daysAgo.toISOString().split('T')[0]);
+        includedDaysCount++;
+      }
+      daysAgo.setDate(daysAgo.getDate() - 1);
+    }
+
+    const appointments: IApposChart[] = await this.appointmentModel.aggregate([
+      {
+        $match: {
+          day: {
+            $gte: validDates[validDates.length - 1],
+            $lte: validDates[0],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: { $dateFromString: { dateString: '$day', format: '%Y-%m-%d' } },
+            },
+          },
+          value: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          date: '$_id',
+          value: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
+
+    return {
+      data: appointments,
+      message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount,
+      statusCode: HttpStatus.OK,
+    };
+  }
 
   // * CHECKED: used on Frontend
   async countAppointments(): Promise<IResponse<number[]>> {
@@ -64,20 +124,29 @@ export class DashboardService {
     };
   }
 
-  async countUsers(): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async countUsers(): Promise<IResponse<number>> {
     const users = await this.userModel.countDocuments();
-    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.count, HttpStatus.NOT_FOUND);
+    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.count, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.count, data: users };
+    return {
+      data: users,
+      message: DASHBOARD_CONFIG.response.success.user.count,
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async countUsersLastMonth(): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async countUsersLastMonth(): Promise<IResponse<number>> {
     const users = await this.userModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
 
-    if (users === 0) return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: 0 };
-    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
+    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
+    return {
+      data: users,
+      message: DASHBOARD_CONFIG.response.success.user.foundLatest,
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // * CHECKED: used on Frontend
@@ -118,62 +187,5 @@ export class DashboardService {
       message: DASHBOARD_CONFIG.response.success.user.foundLatest,
       statusCode: HttpStatus.OK,
     };
-  }
-
-  async apposDaysCount(days: string): Promise<IResponse> {
-    if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.NOT_FOUND);
-
-    const _days: number = parseInt(days);
-    const daysAgo: Date = new Date();
-    // daysAgo.setDate(daysAgo.getDate() - (_days - 1));
-    let includedDaysCount = 0;
-    const validDates: string[] = [];
-
-    while (includedDaysCount < _days) {
-      if (daysAgo.getDay() !== 0) {
-        validDates.push(daysAgo.toISOString().split('T')[0]);
-        includedDaysCount++;
-      }
-      daysAgo.setDate(daysAgo.getDate() - 1);
-    }
-
-    const appointments = await this.appointmentModel.aggregate([
-      {
-        $match: {
-          day: {
-            $gte: validDates[validDates.length - 1],
-            $lte: validDates[0],
-            // $gte: daysAgo.toISOString().split('T')[0],
-            // $lte: new Date().toISOString().split('T')[0],
-          },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: { $dateFromString: { dateString: '$day', format: '%Y-%m-%d' } },
-            },
-          },
-          value: { $sum: 1 },
-        },
-      },
-      {
-        $sort: { _id: 1 },
-      },
-      {
-        $project: {
-          date: '$_id',
-          value: 1,
-          _id: 0,
-        },
-      },
-    ]);
-
-    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
-    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
-
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount, data: appointments };
   }
 }
