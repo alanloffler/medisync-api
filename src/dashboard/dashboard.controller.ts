@@ -20,6 +20,18 @@ export class DashboardController {
     return this.dashboardService.countAppointmentsLastMonth();
   }
 
+  // * CHECKED
+  @Get('countProfessionals')
+  countProfessionals(): Promise<IResponse<number>> {
+    return this.dashboardService.countProfessionals();
+  }
+
+  // * CHECKED
+  @Get('countProfessionalsLastMonth')
+  countProfessionalsLastMonth(): Promise<IResponse<number>> {
+    return this.dashboardService.countProfessionalsLastMonth();
+  }
+
   @Get('countUsers')
   countUsers() {
     return this.dashboardService.countUsers();
@@ -28,16 +40,6 @@ export class DashboardController {
   @Get('countUsersLastMonth')
   countUsersLastMonth() {
     return this.dashboardService.countUsersLastMonth();
-  }
-
-  @Get('countProfessionals')
-  countProfessionals() {
-    return this.dashboardService.countProfessionals();
-  }
-
-  @Get('countProfessionalsLastMonth')
-  countProfessionalsLastMonth() {
-    return this.dashboardService.countProfessionalsLastMonth();
   }
 
   // * CHECKED
