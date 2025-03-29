@@ -33,7 +33,7 @@
     "login": "Couldn't validate admin, invalid credentials",
     "notFound": "Admin not found",
     "unauthorized": {
-      "notVerified": "Unauthorized, the token could not be verified",
+      "notValidated": "Unauthorized, the token could not be validated",
       "refreshToken": "Unauthorized, invalid refresh token"
     }
   },

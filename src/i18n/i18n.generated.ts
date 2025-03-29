@@ -40,7 +40,7 @@ export type I18nTranslations = {
             "login": string;
             "notFound": string;
             "unauthorized": {
-                "notVerified": string;
+                "notValidated": string;
                 "refreshToken": string;
             };
         };
