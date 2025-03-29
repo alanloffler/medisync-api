@@ -39,6 +39,31 @@ export class DashboardService {
     };
   }
 
+  // * CHECKED: used on Frontend
+  async countProfessionals(): Promise<IResponse<number>> {
+    const professionals = await this.professionalModel.countDocuments();
+    if (professionals === undefined || professionals === null) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.count, HttpStatus.BAD_REQUEST);
+
+    return {
+      data: professionals,
+      message: DASHBOARD_CONFIG.response.success.professional.count,
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  // * CHECKED: used on Frontend
+  async countProfessionalsLastMonth(): Promise<IResponse<number>> {
+    const professionals = await this.professionalModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
+
+    if (professionals === undefined || professionals === null) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.notFoundLatest, HttpStatus.BAD_REQUEST);
+
+    return {
+      data: professionals,
+      message: DASHBOARD_CONFIG.response.success.professional.foundLatest,
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async countUsers(): Promise<IResponse> {
     const users = await this.userModel.countDocuments();
     if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.count, HttpStatus.NOT_FOUND);
@@ -53,22 +78,6 @@ export class DashboardService {
     if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
 
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
-  }
-
-  async countProfessionals(): Promise<IResponse> {
-    const professionals = await this.professionalModel.countDocuments();
-    if (!professionals) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.count, HttpStatus.NOT_FOUND);
-
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.count, data: professionals };
-  }
-
-  async countProfessionalsLastMonth(): Promise<IResponse> {
-    const professionals = await this.professionalModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
-
-    if (professionals === 0) return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: 0 };
-    if (!professionals) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.notFoundLatest, HttpStatus.NOT_FOUND);
-
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: professionals };
   }
 
   // * CHECKED: used on Frontend
