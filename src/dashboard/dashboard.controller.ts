@@ -1,12 +1,19 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import type { IApposChart } from '@dashboard/interfaces/appos-chart.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
+import { Appointment } from '@appointments/schema/appointment.schema';
 import { DashboardService } from '@dashboard/dashboard.service';
 import { User } from '@users/schema/user.schema';
-import { Appointment } from '@appointments/schema/appointment.schema';
 
 @Controller('dashboard')
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
+
+  // * CHECKED
+  @Get('apposDaysCount')
+  apposDaysCount(@Query('d') days: string): Promise<IResponse<IApposChart[]>> {
+    return this.dashboardService.apposDaysCount(days);
+  }
 
   // * CHECKED
   @Get('countAppointments')
@@ -32,13 +39,15 @@ export class DashboardController {
     return this.dashboardService.countProfessionalsLastMonth();
   }
 
+  // * CHECKED
   @Get('countUsers')
-  countUsers() {
+  countUsers(): Promise<IResponse<number>> {
     return this.dashboardService.countUsers();
   }
 
+  // * CHECKED
   @Get('countUsersLastMonth')
-  countUsersLastMonth() {
+  countUsersLastMonth(): Promise<IResponse<number>> {
     return this.dashboardService.countUsersLastMonth();
   }
 
@@ -52,10 +61,5 @@ export class DashboardController {
   @Get('latestUsers')
   latestUsers(@Query('l') limit: string): Promise<IResponse<User[]>> {
     return this.dashboardService.latestUsers(limit);
-  }
-
-  @Get('apposDaysCount')
-  apposDaysCount(@Query('d') days: string) {
-    return this.dashboardService.apposDaysCount(days);
   }
 }
