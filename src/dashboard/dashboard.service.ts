@@ -1,10 +1,11 @@
-import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IApposChart } from '@dashboard/interfaces/appos-chart.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
-import { DASHBOARD_CONFIG } from '@config/dashboard.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { User } from '@users/schema/user.schema';
 
@@ -14,13 +15,11 @@ export class DashboardService {
     @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
     @InjectModel('Professional') private readonly professionalModel: Model<Professional>,
     @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly i18nService: I18nService<I18nTranslations>,
   ) {}
 
-  // * CHECKED: used on Frontend
   async apposDaysCount(days: string): Promise<IResponse<IApposChart[]>> {
-    if (!days) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.daysNotFound, HttpStatus.BAD_REQUEST);
-
-    const _days: number = parseInt(days);
+    const _days: number = parseInt(days) || 7;
     const daysAgo: Date = new Date();
     let includedDaysCount: number = 0;
     const validDates: string[] = [];
@@ -65,91 +64,84 @@ export class DashboardService {
       },
     ]);
 
-    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.emptyDaysCount, HttpStatus.NOT_FOUND);
-    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundDaysCount, HttpStatus.BAD_REQUEST);
+    if (appointments.length === 0) throw new HttpException(this.i18nService.t('exception.dashboard.emptyDaysCount'), HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.dashboard.notFoundDaysCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: appointments,
-      message: DASHBOARD_CONFIG.response.success.appointment.foundDaysCount,
+      message: this.i18nService.t('response.dashboard.foundDaysCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countAppointments(): Promise<IResponse<number[]>> {
     const appointments = await this.appointmentModel.countDocuments();
-    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.count, HttpStatus.BAD_REQUEST);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorApposCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: [appointments],
-      message: DASHBOARD_CONFIG.response.success.appointment.count,
+      message: this.i18nService.t('response.dashboard.apposCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countAppointmentsLastMonth(): Promise<IResponse<number>> {
     const appointments = await this.appointmentModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
-    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.BAD_REQUEST);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorLatestApposCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: appointments,
-      message: DASHBOARD_CONFIG.response.success.appointment.count,
+      message: this.i18nService.t('response.dashboard.latestApposCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countProfessionals(): Promise<IResponse<number>> {
     const professionals = await this.professionalModel.countDocuments();
-    if (professionals === undefined || professionals === null) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.count, HttpStatus.BAD_REQUEST);
+    if (professionals === undefined || professionals === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorProfessionalsCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: professionals,
-      message: DASHBOARD_CONFIG.response.success.professional.count,
+      message: this.i18nService.t('response.dashboard.professionalsCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countProfessionalsLastMonth(): Promise<IResponse<number>> {
     const professionals = await this.professionalModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
 
-    if (professionals === undefined || professionals === null) throw new HttpException(DASHBOARD_CONFIG.response.error.professional.notFoundLatest, HttpStatus.BAD_REQUEST);
+    if (professionals === undefined || professionals === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorLatestProfessionalsCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: professionals,
-      message: DASHBOARD_CONFIG.response.success.professional.foundLatest,
+      message: this.i18nService.t('response.dashboard.latestProfessionalsCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countUsers(): Promise<IResponse<number>> {
     const users = await this.userModel.countDocuments();
-    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.count, HttpStatus.BAD_REQUEST);
+    if (users === undefined || users === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorUsersCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: users,
-      message: DASHBOARD_CONFIG.response.success.user.count,
+      message: this.i18nService.t('response.dashboard.usersCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async countUsersLastMonth(): Promise<IResponse<number>> {
     const users = await this.userModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
 
-    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.BAD_REQUEST);
+    if (users === undefined || users === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorLatestUsersCount'), HttpStatus.BAD_REQUEST);
 
     return {
       data: users,
-      message: DASHBOARD_CONFIG.response.success.user.foundLatest,
+      message: this.i18nService.t('response.dashboard.latestUsersCount'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async latestAppointments(limit: string): Promise<IResponse<Appointment[]>> {
     const appointments = await this.appointmentModel
       .find()
@@ -165,26 +157,25 @@ export class DashboardService {
         ],
       });
 
-    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.success.appointment.foundLatest, HttpStatus.NOT_FOUND);
-    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.BAD_REQUEST);
+    if (appointments.length === 0) throw new HttpException(this.i18nService.t('exception.dashboard.emptyLatestAppos'), HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorLatestAppos'), HttpStatus.BAD_REQUEST);
 
     return {
       data: appointments,
-      message: DASHBOARD_CONFIG.response.success.appointment.foundLatest,
+      message: this.i18nService.t('response.dashboard.latestAppos'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // * CHECKED: used on Frontend
   async latestUsers(limit: string): Promise<IResponse<User[]>> {
     const users = await this.userModel.find().sort({ createdAt: -1 }).limit(parseInt(limit));
 
-    if (users.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
-    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.BAD_REQUEST);
+    if (users.length === 0) throw new HttpException(this.i18nService.t('exception.dashboard.emptyLatestUsers'), HttpStatus.NOT_FOUND);
+    if (users === undefined || users === null) throw new HttpException(this.i18nService.t('exception.dashboard.errorLatestUsers'), HttpStatus.BAD_REQUEST);
 
     return {
       data: users,
-      message: DASHBOARD_CONFIG.response.success.user.foundLatest,
+      message: this.i18nService.t('response.dashboard.latestUsers'),
       statusCode: HttpStatus.OK,
     };
   }
