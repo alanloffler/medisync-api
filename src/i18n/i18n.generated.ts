@@ -17,6 +17,15 @@ export type I18nTranslations = {
             "notFoundPlural": string;
         };
         "appointments": {
+            "emptyApposSearch": string;
+            "emptyByUserAndProfessional": string;
+            "emptyByUserAndYear": string;
+            "emptyByUserProfessionalAndYear": string;
+            "emptyDatabase": string;
+            "emptyDaysWithAppos": string;
+            "emptyFoundPluralFilterNone": string;
+            "emptyUniqueProfessionals": string;
+            "emptyYearsWithAppos": string;
             "errorApposCount": string;
             "errorApposSearch": string;
             "errorApposStatistics": string;
@@ -36,6 +45,7 @@ export type I18nTranslations = {
         };
         "areas": {
             "duplicated": string;
+            "emptyPlural": string;
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
@@ -86,15 +96,6 @@ export type I18nTranslations = {
             "attendance": string;
             "created": string;
             "daysWithAppos": string;
-            "emptyApposSearch": string;
-            "emptyByUserAndProfessional": string;
-            "emptyByUserAndYear": string;
-            "emptyByUserProfessionalAndYear": string;
-            "emptyDatabase": string;
-            "emptyDaysWithAppos": string;
-            "emptyFoundPluralFilterNone": string;
-            "emptyUniqueProfessionals": string;
-            "emptyYearsWithAppos": string;
             "found": string;
             "foundApposStatistics": string;
             "foundByUser": string;
@@ -109,7 +110,6 @@ export type I18nTranslations = {
         };
         "areas": {
             "created": string;
-            "emptyPlural": string;
             "found": string;
             "foundPlural": string;
             "removed": string;

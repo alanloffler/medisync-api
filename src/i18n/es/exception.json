@@ -10,6 +10,15 @@
     "notFoundPlural": "Administradores no encontrados"
   },
   "appointments": {
+    "emptyApposSearch": "Búsqueda de turnos sin resultados",
+    "emptyByUserAndProfessional": "No se encontraron turnos por profesional",
+    "emptyByUserAndYear": "No se encontraron turnos por año",
+    "emptyByUserProfessionalAndYear": "No se encontraron turnos por profesional y año",
+    "emptyDatabase": "No existen turnos en la base de datos",
+    "emptyDaysWithAppos": "No se encontraron días con turnos",
+    "emptyFoundPluralFilterNone": "No se encontraron turnos",
+    "emptyUniqueProfessionals": "No se encontraron profesionales únicos",
+    "emptyYearsWithAppos": "No se encontraron años con turnos",
     "errorApposCount": "Error al contar turnos",
     "errorApposSearch": "Error al buscar turnos",
     "errorApposStatistics": "Error al obtener datos estadísticos de los turnos",
@@ -41,6 +50,7 @@
   },
   "areas": {
     "duplicated": "No se pudo crear el área, ya existe",
+    "emptyPlural": "No se encontraron áreas",
     "failedCreate": "No se pudo crear el área",
     "failedRemove": "No se pudo eliminar el área",
     "failedUpdate": "No se pudo actualizar el área",

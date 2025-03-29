@@ -10,6 +10,15 @@
     "notFoundPlural": "Admins not found"
   },
   "appointments": {
+    "emptyApposSearch": "Búsqueda de turnos sin resultados",
+    "emptyByUserAndProfessional": "No appointments found by professional",
+    "emptyByUserAndYear": "No appointments found by year",
+    "emptyByUserProfessionalAndYear": "No appointments found by professional and year",
+    "emptyDatabase": "There are no appointments in the database",
+    "emptyDaysWithAppos": "No days with appointments were found",
+    "emptyFoundPluralFilterNone": "No appointments found",
+    "emptyUniqueProfessionals": "No unique professionals were found",
+    "emptyYearsWithAppos": "No years with appointments were found",
     "errorApposCount": "Error counting appointments",
     "errorApposSearch": "Error searching for appointments",
     "errorApposStatistics": "Error getting statistical data of the appointments",
@@ -29,6 +38,7 @@
   },
   "areas": {
     "duplicated": "Failed to create area, already exists",
+    "emptyPlural": "No areas found",
     "failedCreate": "Failed to create area",
     "failedRemove": "Failed to remove area",
     "failedUpdate": "Failed to update area",
