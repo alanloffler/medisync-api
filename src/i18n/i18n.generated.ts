@@ -37,6 +37,7 @@ export type I18nTranslations = {
         "auth": {
             "failedRefreshToken": string;
             "failedTokens": string;
+            "forbidden": string;
             "login": string;
             "notFound": string;
             "unauthorized": {

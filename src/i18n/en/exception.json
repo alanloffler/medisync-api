@@ -30,6 +30,7 @@
   "auth": {
     "failedRefreshToken": "Failed to update the refresh token",
     "failedTokens": "Failed to generate the tokens",
+    "forbidden": "Unauthorized, credentials are not valid for role needed",
     "login": "Couldn't validate admin, invalid credentials",
     "notFound": "Admin not found",
     "unauthorized": {

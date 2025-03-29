@@ -30,6 +30,7 @@
   "auth": {
     "failedRefreshToken": "No se pudo actualizar el token de actualización",
     "failedTokens": "No se pudieron generar los tokens",
+    "forbidden": "No autorizado, las credenciales no son válidas para el rol requerido",
     "login": "No se pudo validar el administrador, credenciales inválidas",
     "notFound": "Administrador no encontrado",
     "unauthorized": {
