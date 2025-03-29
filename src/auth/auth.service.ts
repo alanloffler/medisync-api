@@ -104,7 +104,7 @@ export class AuthService {
   public async refreshTokens(user: IPayload, refreshToken: string, res: Response): Promise<IResponse<IPayload>> {
     const admin: Admin = await this.adminModel.findById(user._id);
     if (!admin || !admin.refreshToken) throw new HttpException(this.i18nService.translate('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
-    if (admin.refreshToken !== refreshToken) throw new HttpException(this.i18nService.translate('exception.auth.unauthorized.notVerified'), HttpStatus.UNAUTHORIZED);
+    if (admin.refreshToken !== refreshToken) throw new HttpException(this.i18nService.translate('exception.auth.unauthorized.notValidated'), HttpStatus.UNAUTHORIZED);
 
     const payload: IPayload = { _id: admin._id, email: admin.email, role: admin.role };
     const tokens: ITokens = await this.getTokens(payload);
