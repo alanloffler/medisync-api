@@ -15,18 +15,28 @@ export class DashboardService {
     @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
 
-  async countAppointments(): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async countAppointments(): Promise<IResponse<number[]>> {
     const appointments = await this.appointmentModel.countDocuments();
-    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.count, HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.count, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.count, data: [appointments] };
+    return {
+      data: [appointments],
+      message: DASHBOARD_CONFIG.response.success.appointment.count,
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async countAppointmentsLastMonth(): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async countAppointmentsLastMonth(): Promise<IResponse<number>> {
     const appointments = await this.appointmentModel.countDocuments({ createdAt: { $gte: new Date(new Date().setMonth(new Date().getMonth() - 1)) } });
-    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.count, data: appointments };
+    return {
+      data: appointments,
+      message: DASHBOARD_CONFIG.response.success.appointment.count,
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async countUsers(): Promise<IResponse> {
@@ -61,7 +71,8 @@ export class DashboardService {
     return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.professional.foundLatest, data: professionals };
   }
 
-  async latestAppointments(limit: string): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async latestAppointments(limit: string): Promise<IResponse<Appointment[]>> {
     const appointments = await this.appointmentModel
       .find()
       .sort({ createdAt: -1 })
@@ -76,17 +87,28 @@ export class DashboardService {
         ],
       });
 
-    if (!appointments) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.NOT_FOUND);
-    if (appointments.length === 0) return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundLatest, data: [] };
+    if (appointments.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.success.appointment.foundLatest, HttpStatus.NOT_FOUND);
+    if (appointments === undefined || appointments === null) throw new HttpException(DASHBOARD_CONFIG.response.error.appointment.notFoundLatest, HttpStatus.BAD_REQUEST);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.appointment.foundLatest, data: appointments };
+    return {
+      data: appointments,
+      message: DASHBOARD_CONFIG.response.success.appointment.foundLatest,
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async latestUsers(limit: string): Promise<IResponse> {
+  // * CHECKED: used on Frontend
+  async latestUsers(limit: string): Promise<IResponse<User[]>> {
     const users = await this.userModel.find().sort({ createdAt: -1 }).limit(parseInt(limit));
-    if (!users) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
 
-    return { statusCode: HttpStatus.OK, message: DASHBOARD_CONFIG.response.success.user.foundLatest, data: users };
+    if (users.length === 0) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.NOT_FOUND);
+    if (users === undefined || users === null) throw new HttpException(DASHBOARD_CONFIG.response.error.user.notFoundLatest, HttpStatus.BAD_REQUEST);
+
+    return {
+      data: users,
+      message: DASHBOARD_CONFIG.response.success.user.foundLatest,
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async apposDaysCount(days: string): Promise<IResponse> {
