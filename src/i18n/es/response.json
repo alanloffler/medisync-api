@@ -45,5 +45,16 @@
     "login": "El administrador ha iniciado sesión correctamente",
     "logout": "El administrador ha cerrado sesión correctamente",
     "refreshTokens": "Los tokens se actualizaron correctamente"
+  },
+  "dashboard": {
+    "apposCount": "Total de turnos contados exitosamente",
+    "foundDaysCount": "Turnos por día encontrados exitosamente",
+    "latestAppos": "Turnos recientes encontrados exitosamente",
+    "latestApposCount": "Turnos recientes contados exitosamente",
+    "latestProfessionalsCount": "Profesionales recientes contados exitosamente",
+    "latestUsers": "Pacientes recientes encontrados exitosamente",
+    "latestUsersCount": "Pacientes recientes contados exitosamente",
+    "professionalsCount": "Profesionales contados exitosamente",
+    "usersCount": "Pacientes contados exitosamente"
   }
 }

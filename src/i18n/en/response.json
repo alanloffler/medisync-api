@@ -45,5 +45,16 @@
     "login": "Admin logged successfully",
     "logout": "Admin logged out successfully",
     "refreshTokens": "Tokens refreshed successfully"
+  },
+  "dashboard": {
+    "apposCount": "Total appointments counted successfully",
+    "foundDaysCount": "Appointments per day found successfully",
+    "latestAppos": "Recent appointments found successfully",
+    "latestApposCount": "Recent appointments counted successfully",
+    "latestProfessionalsCount": "Recent professionals counted successfully",
+    "latestUsers": "Recent patients found successfully",
+    "latestUsersCount": "Recent patients counted successfully",
+    "professionalsCount": "Professionals counted successfully",
+    "usersCount": "Patients counted successfully"
   }
 }
