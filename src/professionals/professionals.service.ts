@@ -181,7 +181,7 @@ export class ProfessionalsService {
     if (!professionalsOnWorkingDays) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
     const appointmentsInSlot: Appointment[] = await this.appointmentModel.find({ day: day, hour: hour }).exec();
-    if (appointmentsInSlot.length === 0) throw new HttpException(this.i18nService.t('response.appointments.emptyDatabase'), HttpStatus.NOT_FOUND);
+    if (appointmentsInSlot.length === 0) throw new HttpException(this.i18nService.t('exception.appointments.emptyDatabase'), HttpStatus.NOT_FOUND);
     if (appointmentsInSlot === undefined || appointmentsInSlot === null) throw new HttpException(this.i18nService.t('exception.appointments.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     const appointmentProfessionalIds: string[] = appointmentsInSlot.map((appointment) => appointment.professional.toString());

@@ -37,7 +37,7 @@ export class AreasService {
       strictPopulate: false,
     });
 
-    if (areas.length === 0) throw new HttpException(this.i18nService.t('response.areas.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (areas.length === 0) throw new HttpException(this.i18nService.t('exception.areas.emptyPlural'), HttpStatus.NOT_FOUND);
     if (areas === undefined || areas === null) throw new HttpException(this.i18nService.t('exception.areas.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
@@ -54,7 +54,7 @@ export class AreasService {
       strictPopulate: false,
     });
 
-    if (areas.length === 0) throw new HttpException(this.i18nService.t('response.areas.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (areas.length === 0) throw new HttpException(this.i18nService.t('exception.areas.emptyPlural'), HttpStatus.NOT_FOUND);
     if (areas === undefined || areas === null) throw new HttpException(this.i18nService.t('exception.areas.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
