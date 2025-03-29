@@ -33,6 +33,7 @@
     "forbidden": "No autorizado, las credenciales no son válidas para el rol requerido",
     "login": "No se pudo validar el administrador, credenciales inválidas",
     "notFound": "Administrador no encontrado",
+    "refreshTokenRequired": "Se requiere token de actualización",
     "unauthorized": {
       "notValidated": "No autorizado, no se pudo validar el token",
       "refreshToken": "No autorizado, token de actualización inválido"

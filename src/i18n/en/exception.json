@@ -33,6 +33,7 @@
     "forbidden": "Unauthorized, credentials are not valid for role needed",
     "login": "Couldn't validate admin, invalid credentials",
     "notFound": "Admin not found",
+    "refreshTokenRequired": "Refresh token is required",
     "unauthorized": {
       "notValidated": "Unauthorized, the token could not be validated",
       "refreshToken": "Unauthorized, invalid refresh token"
