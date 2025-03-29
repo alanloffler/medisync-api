@@ -50,5 +50,19 @@
   "common": {
     "invalidId": "ID inválida",
     "invalidSearchType": "Tipo de búsqueda no válido"
+  },
+  "dashboard": {
+    "emptyDaysCount": "Aún no existen turnos",
+    "emptyLatestAppos": "No existen turnos recientes",
+    "emptyLatestUsers": "No existen pacientes recientes",
+    "errorApposCount": "Error contando los turnos",
+    "errorLatestAppos": "Error contando los turnos recientes",
+    "errorLatestApposCount": "Error contando los turnos recientes",
+    "errorLatestProfessionalsCount": "Error contando los profesionales recientes",
+    "errorLatestUsers": "Error buscando los pacientes recientes",
+    "errorLatestUsersCount": "Error contando los pacientes recientes",
+    "errorProfessionalsCount": "Error contando los profesionales",
+    "errorUsersCount": "Error contando los usuarios",
+    "notFoundDaysCount": "Turnos por día no encontrados"
   }
 }

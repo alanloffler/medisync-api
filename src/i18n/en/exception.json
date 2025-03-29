@@ -50,5 +50,19 @@
   "common": {
     "invalidId": "Invalid ID",
     "invalidSearchType": "Invalid search type"
+  },
+  "dashboard": {
+    "emptyDaysCount": "No appointments scheduled yet",
+    "emptyLatestAppos": "No recent appointments found",
+    "emptyLatestUsers": "No recent patients found",
+    "errorApposCount": "Error counting appointments",
+    "errorLatestAppos": "Error searching recent appointments",
+    "errorLatestApposCount": "Error counting recent appointments",
+    "errorLatestProfessionalsCount": "Error counting recent professionals",
+    "errorLatestUsers": "Error searching for recent patients",
+    "errorLatestUsersCount": "Error counting recent patients",
+    "errorProfessionalsCount": "Error counting professionals",
+    "errorUsersCount": "Error counting users",
+    "notFoundDaysCount": "Daily appointments not found"
   }
 }
