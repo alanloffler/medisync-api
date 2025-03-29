@@ -142,6 +142,28 @@ export type I18nTranslations = {
                 "isString": string;
             };
         };
+        "areas": {
+            "active": {
+                "isIn": string;
+                "isNumber": string;
+            };
+            "description": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "icon": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "name": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "plural": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+        };
     };
 };
 /* prettier-ignore */

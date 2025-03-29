@@ -47,5 +47,27 @@
       "isNotEmpty": "The user ID is required",
       "isString": "The user ID must be a string"
     }
+  },
+  "areas": {
+    "active": {
+      "isIn": "The status must be 0 or 1",
+      "isNumber": "The status must be an integer"
+    },
+    "description": {
+      "isNotEmpty": "Description is required",
+      "isString": "Description must be a string"
+    },
+    "icon": {
+      "isNotEmpty": "Icon is required",
+      "isString": "Icon must be a string"
+    },
+    "name": {
+      "isNotEmpty": "Name is required",
+      "isString": "Name must be a string"
+    },
+    "plural": {
+      "isNotEmpty": "Plural is required",
+      "isString": "Plural must be a string"
+    }
   }
 }

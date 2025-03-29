@@ -47,5 +47,27 @@
       "isNotEmpty": "El ID del usuario es obligatorio",
       "isString": "El ID del usuario debe ser una cadena de texto"
     }
+  },
+  "areas": {
+    "active": {
+      "isIn": "El estado debe ser 0 o 1",
+      "isNumber": "El estado debe ser un número entero"
+    },
+    "description": {
+      "isNotEmpty": "La descripción es obligatoria",
+      "isString": "La descripción debe ser una cadena de texto"
+    },
+    "icon": {
+      "isNotEmpty": "El ícono es obligatorio",
+      "isString": "El ícono debe ser una cadena de texto"
+    },
+    "name": {
+      "isNotEmpty": "El nombre es obligatorio",
+      "isString": "El nombre debe ser una cadena de texto"
+    },
+    "plural": {
+      "isNotEmpty": "El plural es obligatorio",
+      "isString": "El plural debe ser una cadena de texto"
+    }
   }
 }
