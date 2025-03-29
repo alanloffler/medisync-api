@@ -58,6 +58,20 @@ export type I18nTranslations = {
             "invalidId": string;
             "invalidSearchType": string;
         };
+        "dashboard": {
+            "emptyDaysCount": string;
+            "emptyLatestAppos": string;
+            "emptyLatestUsers": string;
+            "errorApposCount": string;
+            "errorLatestAppos": string;
+            "errorLatestApposCount": string;
+            "errorLatestProfessionalsCount": string;
+            "errorLatestUsers": string;
+            "errorLatestUsersCount": string;
+            "errorProfessionalsCount": string;
+            "errorUsersCount": string;
+            "notFoundDaysCount": string;
+        };
     };
     "response": {
         "admin": {
@@ -106,6 +120,17 @@ export type I18nTranslations = {
             "login": string;
             "logout": string;
             "refreshTokens": string;
+        };
+        "dashboard": {
+            "apposCount": string;
+            "foundDaysCount": string;
+            "latestAppos": string;
+            "latestApposCount": string;
+            "latestProfessionalsCount": string;
+            "latestUsers": string;
+            "latestUsersCount": string;
+            "professionalsCount": string;
+            "usersCount": string;
         };
     };
     "validation": {
