@@ -39,6 +39,14 @@
       "refreshToken": "No autorizado, token de actualización inválido"
     }
   },
+  "areas": {
+    "duplicated": "No se pudo crear el área, ya existe",
+    "failedCreate": "No se pudo crear el área",
+    "failedRemove": "No se pudo eliminar el área",
+    "failedUpdate": "No se pudo actualizar el área",
+    "notFound": "Error al buscar área",
+    "notFoundPlural": "Error al buscar áreas"
+  },
   "common": {
     "invalidId": "ID inválida",
     "invalidSearchType": "Tipo de búsqueda no válido"

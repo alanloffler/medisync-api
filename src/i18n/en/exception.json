@@ -27,6 +27,14 @@
     "notFoundPluralFilterNone": "Error searching appointments without filters",
     "notFoundUniqueProfessionals": "Error when searching for unique professionals"
   },
+  "areas": {
+    "duplicated": "Failed to create area, already exists",
+    "failedCreate": "Failed to create area",
+    "failedRemove": "Failed to remove area",
+    "failedUpdate": "Failed to update area",
+    "notFound": "Area not found",
+    "notFoundPlural": "Areas not found"
+  },
   "auth": {
     "failedRefreshToken": "Failed to update the refresh token",
     "failedTokens": "Failed to generate the tokens",
