@@ -31,20 +31,20 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
   }
 
   async validate(req: Request, payload: IPayload): Promise<IPayload> {
-    console.log(req.cookies);
-    if (!payload) throw new HttpException('Invalid jwt', HttpStatus.BAD_REQUEST);
+    try {
+      if (!payload) throw new HttpException('Invalid jwt', HttpStatus.UNAUTHORIZED);
 
-    const refreshToken = req.cookies?.refreshToken;
-    if (!refreshToken) throw new HttpException('There is no refresh token', HttpStatus.BAD_REQUEST);
+      const refreshToken = req.cookies?.refreshToken;
+      if (!refreshToken) throw new HttpException('There is no refresh token', HttpStatus.BAD_REQUEST);
 
-    const admin: Admin = await this.adminModel.findById(payload._id);
-    if (!admin) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
+      const admin: Admin = await this.adminModel.findById(payload._id);
+      if (!admin) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
 
-    if (admin.refreshToken !== refreshToken) {
-      console.log('the refresh token doesnt match with database');
-      throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+      if (admin.refreshToken !== refreshToken) throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+
+      return payload;
+    } catch (error) {
+      throw error;
     }
-
-    return payload;
   }
 }
