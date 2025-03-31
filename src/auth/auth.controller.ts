@@ -1,17 +1,19 @@
 import type { Response } from 'express';
-import { Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseFilters, UseGuards } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IPayload } from '@auth/interface/payload.interface';
 import type { IRequest } from '@auth/interface/request.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Admin } from '@admin/schema/admin.schema';
+import { AuthExceptionFilter } from '@auth/filters/auth-exception.filter';
 import { AuthService } from '@auth/auth.service';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { JwtRefreshAuthGuard } from '@auth/guards/jwr-refresh-auth.guard';
 import { LocalAuthGuard } from '@auth/guards/local-auth.guard';
 
 @Controller('auth')
+@UseFilters(AuthExceptionFilter)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
