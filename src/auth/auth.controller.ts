@@ -34,7 +34,6 @@ export class AuthController {
   @Post('refresh')
   refreshTokens(@Req() req: IRequest, @Res({ passthrough: true }) res: Response): Promise<IResponse<IPayload>> {
     const refreshToken = req.cookies?.refreshToken;
-    console.log('cookie refresh token', refreshToken);
     if (!refreshToken) throw new HttpException(this.i18nService.t('exception.auth.refreshTokenRequired'), HttpStatus.UNAUTHORIZED);
 
     return this.authService.refreshTokens(req.user, refreshToken, res);
