@@ -1,3 +1,4 @@
+import { APP_FILTER } from '@nestjs/core';
 import { AcceptLanguageResolver, HeaderResolver, I18n, I18nModule } from 'nestjs-i18n';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -7,6 +8,7 @@ import { join } from 'path';
 import { AdminModule } from '@admin/admin.module';
 import { AppointmentsModule } from '@appointments/appointments.module';
 import { AreasModule } from '@areas/areas.module';
+import { AuthExceptionFilter } from '@auth/filters/auth-exception.filter';
 import { AuthModule } from '@auth/auth.module';
 import { DashboardModule } from '@dashboard/dashboard.module';
 import { EmailModule } from '@email/email.module';
@@ -67,7 +69,12 @@ import { UsersModule } from '@users/users.module';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AuthExceptionFilter,
+    },
+  ],
   exports: [],
 })
 export class AppModule {}
