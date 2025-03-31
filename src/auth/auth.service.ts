@@ -133,7 +133,7 @@ export class AuthService {
       secure: true,
       sameSite: 'none',
       maxAge: this.getMiliseconds(this.configService.get<string>('JWT_REFRESH_EXPIRES_IN')),
-      path: '/auth/refresh',
+      path: '/',
     });
   }
 
