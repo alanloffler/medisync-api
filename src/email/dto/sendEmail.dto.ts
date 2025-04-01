@@ -1,16 +1,17 @@
 import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { EMAIL_CONFIG } from '@config/email.config';
 import { MaxFileSize } from '@common/validators/max-size.validator';
+import { Type } from 'class-transformer';
+import { i18nValidationMessage } from 'nestjs-i18n';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 
 export class sendEmailDto {
-  @IsEmail({}, { message: EMAIL_CONFIG.validation.isEmail.to, each: true })
+  @IsEmail({}, { message: i18nValidationMessage<I18nTranslations>('validation.email.to'), each: true })
   to: string[];
 
-  @IsString({ message: EMAIL_CONFIG.validation.isString.subject })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.email.subject') })
   subject: string;
 
-  @IsString({ message: EMAIL_CONFIG.validation.isString.body })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.email.body') })
   body: string;
 
   @ValidateNested({ each: true })
@@ -19,12 +20,12 @@ export class sendEmailDto {
 }
 
 class AttachmentDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.email.attachment.filename.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.email.attachment.filename.isString') })
   filename: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxFileSize(10)
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.email.attachment.path.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.email.attachment.path.isString') })
+  @MaxFileSize(10, { message: i18nValidationMessage<I18nTranslations>('validation.email.attachment.path.maxFileSize') })
   path: string;
 }
