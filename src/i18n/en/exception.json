@@ -81,10 +81,19 @@
   "email": {
     "notSent": "Error sending email"
   },
+  "specializations": {
+    "emptyPlural": "No specializations were found",
+    "failedCreate": "Failed to create specialization",
+    "failedRemove": "Failed to remove specialization",
+    "failedUpdate": "Failed to update specialization",
+    "notFound": "Error finding specialization",
+    "notFoundPlural": "Error finding specializations"
+  },
   "statistics": {
     "processingError": "Error processing data for statistics"
   },
   "titles": {
+    "emptyPlural": "No titles found",
     "failedCreate": "Failed to create title",
     "failedRemove": "Failed to remove title",
     "failedUpdate": "Failed to update title",

@@ -81,10 +81,19 @@
   "email": {
     "notSent": "Error al enviar el email"
   },
+  "specializations": {
+    "emptyPlural": "No se encontraron especialidades",
+    "failedCreate": "No se pudo crear la especialización",
+    "failedRemove": "No se pudo eliminar la especialización",
+    "failedUpdate": "No se pudo actualizar la especialización",
+    "notFound": "Error al buscar la especialización",
+    "notFoundPlural": "Error al buscar las especializaciones"
+  },
   "statistics": {
     "processingError": "Error al procesar datos para estadísticas"
   },
   "titles": {
+    "emptyPlural": "No se encontraron títulos",
     "failedCreate": "No se pudo crear el título",
     "failedRemove": "No se pudo eliminar el título",
     "failedUpdate": "No se pudo crear el título",
