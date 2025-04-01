@@ -58,8 +58,11 @@ export class SpecializationsService {
   }
 
   async remove(id: string): Promise<IResponse<Specialization>> {
+    const specialization = await this.specializationModel.findByIdAndDelete(id);
+    if (!specialization) throw new HttpException('not removed', HttpStatus.BAD_REQUEST);
+
     return {
-      data: id,
+      data: specialization,
       message: SPEC_CONFIG.response.success.removed,
       statusCode: HttpStatus.OK,
     };
