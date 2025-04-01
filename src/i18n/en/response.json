@@ -49,5 +49,12 @@
   },
   "email": {
     "sent": "Email sent successfully"
+  },
+  "titles": {
+    "created": "Title created successfully",
+    "found": "Title found successfully",
+    "foundPlural": "Titles found successfully",
+    "removed": "Title removed successfully",
+    "updated": "Title updated successfully"
   }
 }

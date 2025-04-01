@@ -141,6 +141,13 @@ export type I18nTranslations = {
         "email": {
             "sent": string;
         };
+        "titles": {
+            "created": string;
+            "found": string;
+            "foundPlural": string;
+            "removed": string;
+            "updated": string;
+        };
     };
     "validation": {
         "admin": {
