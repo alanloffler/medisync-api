@@ -88,6 +88,13 @@ export type I18nTranslations = {
         "email": {
             "notSent": string;
         };
+        "titles": {
+            "failedCreate": string;
+            "failedRemove": string;
+            "failedUpdate": string;
+            "notFound": string;
+            "notFoundPlural": string;
+        };
     };
     "response": {
         "admin": {

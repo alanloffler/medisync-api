@@ -80,5 +80,12 @@
   },
   "email": {
     "notSent": "Error sending email"
+  },
+  "titles": {
+    "failedCreate": "Failed to create title",
+    "failedRemove": "Failed to remove title",
+    "failedUpdate": "Failed to update title",
+    "notFound": "Title not found",
+    "notFoundPlural": "Titles not found"
   }
 }
