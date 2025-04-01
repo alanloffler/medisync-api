@@ -32,15 +32,15 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
 
   async validate(req: Request, payload: IPayload): Promise<IPayload> {
     try {
-      if (!payload) throw new HttpException('Invalid jwt', HttpStatus.UNAUTHORIZED);
+      if (!payload) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.payload'), HttpStatus.UNAUTHORIZED);
 
       const refreshToken = req.cookies?.refreshToken;
-      if (!refreshToken) throw new HttpException('There is no refresh token', HttpStatus.BAD_REQUEST);
+      if (!refreshToken) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.requiredToken'), HttpStatus.UNAUTHORIZED);
 
       const admin: Admin = await this.adminModel.findById(payload._id);
-      if (!admin) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
+      if (!admin) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.notAdmin'), HttpStatus.UNAUTHORIZED);
 
-      if (admin.refreshToken !== refreshToken) throw new HttpException('Invalid refresh token', HttpStatus.UNAUTHORIZED);
+      if (admin.refreshToken !== refreshToken) throw new HttpException(this.i18nService.t('exception.auth.unauthorized.refreshToken'), HttpStatus.UNAUTHORIZED);
 
       return payload;
     } catch (error) {
