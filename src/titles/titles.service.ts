@@ -18,7 +18,7 @@ export class TitlesService {
 
   async create(createTitleDto: CreateTitleDto): Promise<IResponse<Title>> {
     const title = await this.titleModel.create(createTitleDto);
-    if (!title) throw new HttpException(TITLES_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
+    if (!title) throw new HttpException(this.i18nService.t('exception.titles.failedCreate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: title,
@@ -30,7 +30,7 @@ export class TitlesService {
   async findAll(): Promise<IResponse<Title[]>> {
     const titles = await this.titleModel.find().sort({ name: 'asc' });
     if (titles.length === 0) throw new HttpException('', HttpStatus.NOT_FOUND);
-    if (titles === undefined || titles === null) throw new HttpException(TITLES_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (titles === undefined || titles === null) throw new HttpException(this.i18nService.t('exception.titles.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
       data: titles,
@@ -41,7 +41,7 @@ export class TitlesService {
 
   async findOne(id: string): Promise<IResponse<Title>> {
     const title = await this.titleModel.findById(id);
-    if (!title) throw new HttpException(TITLES_CONFIG.response.error.notFoundSingular, HttpStatus.BAD_REQUEST);
+    if (!title) throw new HttpException(this.i18nService.t('exception.titles.notFound'), HttpStatus.BAD_REQUEST);
 
     return {
       data: title,
@@ -52,7 +52,7 @@ export class TitlesService {
 
   async update(id: string, updateTitleDto: UpdateTitleDto): Promise<IResponse<Title>> {
     const title = await this.titleModel.findByIdAndUpdate(id, updateTitleDto, { new: true });
-    if (!title) throw new HttpException('update ok', HttpStatus.BAD_REQUEST);
+    if (!title) throw new HttpException(this.i18nService.t('exception.titles.failedUpdate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: title,
@@ -63,7 +63,7 @@ export class TitlesService {
 
   async remove(id: string): Promise<IResponse<Title>> {
     const title = await this.titleModel.findByIdAndDelete(id);
-    if (!title) throw new HttpException('Removed not ok', HttpStatus.BAD_REQUEST);
+    if (!title) throw new HttpException(this.i18nService.t('exception.titles.failedRemove'), HttpStatus.BAD_REQUEST);
 
     return {
       data: title,
