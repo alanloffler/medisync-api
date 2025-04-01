@@ -1,12 +1,12 @@
 {
   "admin": {
     "firstName": {
-      "isString": "First name must be a string",
+      "isString": "First name must be a text string",
       "minLength": "First name must be at least 3 characters long",
       "maxLength": "First name must be at most 30 characters long"
     },
     "lastName": {
-      "isString": "Last name must be a string",
+      "isString": "Last name must be a text string",
       "minLength": "Last name must be at least 3 characters long",
       "maxLength": "Last name must be at most 30 characters long"
     },
@@ -15,37 +15,37 @@
       "invalid": "Invalid email format"
     },
     "password": {
-      "isString": "Password must be a string",
+      "isString": "Password must be a text string",
       "minLength": "Password must be at least 8 characters long",
       "maxLength": "Password must be at most 100 characters long"
     },
     "role": "Invalid role: {roles} is required",
     "refreshToken": {
-      "isString": "Refresh token must be a string"
+      "isString": "Refresh token must be a text string"
     }
   },
   "appointments": {
     "day": {
       "isNotEmpty": "The date is required",
-      "isString": "The date must be a string"
+      "isString": "The date must be a text string"
     },
     "hour": {
       "isNotEmpty": "The hour is required",
-      "isString": "The hour must be a string"
+      "isString": "The hour must be a text string"
     },
     "professional": {
       "isNotEmpty": "The professional ID is required",
-      "isString": "The professional ID must be a string"
+      "isString": "The professional ID must be a text string"
     },
     "slot": {
       "isInt": "The slot must be an integer"
     },
     "status": {
-      "isString": "The status must be a string"
+      "isString": "The status must be a text string"
     },
     "user": {
       "isNotEmpty": "The user ID is required",
-      "isString": "The user ID must be a string"
+      "isString": "The user ID must be a text string"
     }
   },
   "areas": {
@@ -69,5 +69,21 @@
       "isNotEmpty": "Plural is required",
       "isString": "Plural must be a string"
     }
+  },
+  "email": {
+    "attachment": {
+      "filename": {
+        "isNotEmpty": "File name is required",
+        "isString": "File name must be a text string"
+      },
+      "path": {
+        "isNotEmpty": "File path is required",
+        "isString": "File path must be a text string",
+        "maxFileSize": "Maximum file size exceeded"
+      }
+    },
+    "body": "Email body must be a text string",
+    "subject": "Email subject must be a text string",
+    "to": "Each recipient must be a valid email"
   }
 }

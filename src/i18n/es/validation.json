@@ -69,5 +69,21 @@
       "isNotEmpty": "El plural es obligatorio",
       "isString": "El plural debe ser una cadena de texto"
     }
+  },
+  "email": {
+    "attachment": {
+      "filename": {
+        "isNotEmpty": "El nombre del archivo es obligatorio",
+        "isString": "El nombre del archivo debe ser una cadena de texto"
+      },
+      "path": {
+        "isNotEmpty": "La ruta del archivo es obligatoria",
+        "isString": "La ruta del archivo debe ser una cadena de texto",
+        "maxFileSize": "Tamaño máximo de archivo excedido"
+      }
+    },
+    "body": "El contendido del email debe ser una cadena de texto",
+    "subject": "El sujeto del email debe ser una cadena de texto",
+    "to": "Cada contenido del recipiente debe ser un email"
   }
 }

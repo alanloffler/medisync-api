@@ -208,6 +208,22 @@ export type I18nTranslations = {
                 "isString": string;
             };
         };
+        "email": {
+            "attachment": {
+                "filename": {
+                    "isNotEmpty": string;
+                    "isString": string;
+                };
+                "path": {
+                    "isNotEmpty": string;
+                    "isString": string;
+                    "maxFileSize": string;
+                };
+            };
+            "body": string;
+            "subject": string;
+            "to": string;
+        };
     };
 };
 /* prettier-ignore */
