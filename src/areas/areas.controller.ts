@@ -5,7 +5,7 @@ import { AreasService } from '@areas/areas.service';
 import { CreateAreaDto } from '@areas/dto/create-area.dto';
 import { ERole } from '@common/enums/role.enum';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Roles } from '@auth/decorators/roles.decorator';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { UpdateAreaDto } from '@areas/dto/update-area.dto';
 

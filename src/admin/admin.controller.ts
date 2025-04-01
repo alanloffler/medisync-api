@@ -5,7 +5,7 @@ import { AdminService } from '@admin/admin.service';
 import { CreateAdminDto } from '@admin/dto/create-admin.dto';
 import { ERole } from '@common/enums/role.enum';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Roles } from '@auth/decorators/roles.decorator';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { UpdateAdminDto } from '@admin/dto/update-admin.dto';
 
