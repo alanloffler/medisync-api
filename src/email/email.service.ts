@@ -1,12 +1,16 @@
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { EMAIL_CONFIG } from '@config/email.config';
+import { I18nService } from 'nestjs-i18n';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import { sendEmailDto } from '@email/dto/sendEmail.dto';
 
 @Injectable()
 export class EmailService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly i18nService: I18nService<I18nTranslations>,
+  ) {}
 
   emailTransport() {
     const transporter = nodemailer.createTransport({
@@ -36,11 +40,10 @@ export class EmailService {
 
     try {
       await transport.sendMail(options);
-      console.log('Email sent successfully');
-      return { statusCode: 200, message: EMAIL_CONFIG.response.success.send };
+
+      return { message: this.i18nService.t('response.email.sent'), statusCode: HttpStatus.OK };
     } catch (error) {
-      console.log(`Error sending email: ${error}`);
-      throw new HttpException(EMAIL_CONFIG.response.error.notSend, HttpStatus.BAD_REQUEST);
+      throw new HttpException(this.i18nService.t('exception.email.notSent'), HttpStatus.BAD_REQUEST);
     }
   }
 }
