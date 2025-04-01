@@ -34,10 +34,13 @@ export class SpecializationsService {
       statusCode: HttpStatus.OK,
     };
   }
-  // TODO: add functionality on methods
+
   async findOne(id: string): Promise<IResponse<Specialization>> {
+    const specialization = await this.specializationModel.findById(id);
+    if (!specialization) throw new HttpException('not find', HttpStatus.BAD_REQUEST);
+
     return {
-      data: id,
+      data: specialization,
       message: SPEC_CONFIG.response.success.foundSingular,
       statusCode: HttpStatus.OK,
     };
