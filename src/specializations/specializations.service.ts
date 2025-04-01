@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateSpecializationDto } from '@specializations/dto/create-specialization.dto';
-import { SPECIALIZATIONS_CONFIG as SPEC_CONFIG } from '@config/specializations.config';
 import { Specialization } from '@specializations/schema/specializations.schema';
 import { UpdateSpecializationDto } from '@specializations/dto/update-specialization.dto';
 
