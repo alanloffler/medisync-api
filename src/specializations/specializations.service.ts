@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateSpecializationDto } from '@specializations/dto/create-specialization.dto';
 import { SPECIALIZATIONS_CONFIG as SPEC_CONFIG } from '@config/specializations.config';
@@ -9,7 +11,10 @@ import { UpdateSpecializationDto } from '@specializations/dto/update-specializat
 
 @Injectable()
 export class SpecializationsService {
-  constructor(@InjectModel(Specialization.name) private readonly specializationModel: Model<Specialization>) {}
+  constructor(
+    @InjectModel(Specialization.name) private readonly specializationModel: Model<Specialization>,
+    private readonly i18nService: I18nService<I18nTranslations>,
+  ) {}
 
   async create(createSpecializationDto: CreateSpecializationDto): Promise<IResponse<Specialization>> {
     const newSpecialization = new this.specializationModel(createSpecializationDto);
@@ -18,19 +23,19 @@ export class SpecializationsService {
 
     return {
       data: createSpecialization,
-      message: SPEC_CONFIG.response.success.created,
+      message: this.i18nService.t('response.specializations.created'),
       statusCode: HttpStatus.OK,
     };
   }
 
   async findAll(): Promise<IResponse<Specialization[]>> {
-    // return this.specializationModel.find().populate('area');ok
     const specializations = await this.specializationModel.find().sort({ name: 'asc' });
-    if (!specializations) throw new HttpException(SPEC_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (specializations.length === 0) throw new HttpException('not found', HttpStatus.NOT_FOUND);
+    if (specializations === undefined || specializations === null) throw new HttpException(SPEC_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
 
     return {
       data: specializations,
-      message: SPEC_CONFIG.response.success.foundPlural,
+      message: this.i18nService.t('response.specializations.foundPlural'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -41,7 +46,7 @@ export class SpecializationsService {
 
     return {
       data: specialization,
-      message: SPEC_CONFIG.response.success.foundSingular,
+      message: this.i18nService.t('response.specializations.found'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -52,7 +57,7 @@ export class SpecializationsService {
 
     return {
       data: updated,
-      message: SPEC_CONFIG.response.success.created,
+      message: this.i18nService.t('response.specializations.updated'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -63,7 +68,7 @@ export class SpecializationsService {
 
     return {
       data: specialization,
-      message: SPEC_CONFIG.response.success.removed,
+      message: this.i18nService.t('response.specializations.removed'),
       statusCode: HttpStatus.OK,
     };
   }
