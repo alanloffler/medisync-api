@@ -60,8 +60,11 @@ export type I18nTranslations = {
             "notFound": string;
             "refreshTokenRequired": string;
             "unauthorized": {
+                "notAdmin": string;
                 "notValidated": string;
+                "payload": string;
                 "refreshToken": string;
+                "requiredToken": string;
             };
         };
         "common": {

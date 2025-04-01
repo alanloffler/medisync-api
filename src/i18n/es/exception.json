@@ -44,8 +44,11 @@
     "notFound": "Administrador no encontrado",
     "refreshTokenRequired": "Se requiere token de actualización",
     "unauthorized": {
+      "notAdmin": "No autorizado, admin no encontrado",
       "notValidated": "No autorizado, no se pudo validar el token",
-      "refreshToken": "No autorizado, token de actualización inválido"
+      "payload": "No autorizado, se requieren datos del payload",
+      "refreshToken": "No autorizado, token de actualización inválido",
+      "requiredToken": "No autorizado, el token de actualización es requerido"
     }
   },
   "areas": {
