@@ -81,6 +81,9 @@
   "email": {
     "notSent": "Error al enviar el email"
   },
+  "statistics": {
+    "processingError": "Error al procesar datos para estadísticas"
+  },
   "titles": {
     "failedCreate": "No se pudo crear el título",
     "failedRemove": "No se pudo eliminar el título",

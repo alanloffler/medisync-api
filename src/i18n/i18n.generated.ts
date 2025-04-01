@@ -88,6 +88,9 @@ export type I18nTranslations = {
         "email": {
             "notSent": string;
         };
+        "statistics": {
+            "processingError": string;
+        };
         "titles": {
             "failedCreate": string;
             "failedRemove": string;
@@ -147,6 +150,9 @@ export type I18nTranslations = {
         };
         "email": {
             "sent": string;
+        };
+        "statistics": {
+            "obtained": string;
         };
         "titles": {
             "created": string;
