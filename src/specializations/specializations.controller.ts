@@ -1,10 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateSpecializationDto } from '@specializations/dto/create-specialization.dto';
+import { ERole } from '@common/enums/role.enum';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { RolesGuard } from '@auth/guards/roles.guard';
 import { Specialization } from '@specializations/schema/specializations.schema';
 import { SpecializationsService } from '@specializations/specializations.service';
 import { UpdateSpecializationDto } from '@specializations/dto/update-specialization.dto';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles([ERole.Super, ERole.Admin])
 @Controller('specializations')
 export class SpecializationsController {
   constructor(private readonly specializationsService: SpecializationsService) {}
