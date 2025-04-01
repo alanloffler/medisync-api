@@ -77,5 +77,8 @@
     "errorProfessionalsCount": "Error counting professionals",
     "errorUsersCount": "Error counting users",
     "notFoundDaysCount": "Daily appointments not found"
+  },
+  "email": {
+    "notSent": "Error sending email"
   }
 }

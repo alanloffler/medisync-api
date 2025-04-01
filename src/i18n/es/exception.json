@@ -36,6 +36,15 @@
     "notFoundPluralFilterNone": "Error en la búsqueda de turnos sin filtros",
     "notFoundUniqueProfessionals": "Error al buscar profesionales únicos"
   },
+  "areas": {
+    "duplicated": "No se pudo crear el área, ya existe",
+    "emptyPlural": "No se encontraron áreas",
+    "failedCreate": "No se pudo crear el área",
+    "failedRemove": "No se pudo eliminar el área",
+    "failedUpdate": "No se pudo actualizar el área",
+    "notFound": "Error al buscar área",
+    "notFoundPlural": "Error al buscar áreas"
+  },
   "auth": {
     "failedRefreshToken": "No se pudo actualizar el token de actualización",
     "failedTokens": "No se pudieron generar los tokens",
@@ -50,15 +59,6 @@
       "refreshToken": "No autorizado, token de actualización inválido",
       "requiredToken": "No autorizado, el token de actualización es requerido"
     }
-  },
-  "areas": {
-    "duplicated": "No se pudo crear el área, ya existe",
-    "emptyPlural": "No se encontraron áreas",
-    "failedCreate": "No se pudo crear el área",
-    "failedRemove": "No se pudo eliminar el área",
-    "failedUpdate": "No se pudo actualizar el área",
-    "notFound": "Error al buscar área",
-    "notFoundPlural": "Error al buscar áreas"
   },
   "common": {
     "invalidId": "ID inválida",
@@ -77,5 +77,8 @@
     "errorProfessionalsCount": "Error contando los profesionales",
     "errorUsersCount": "Error contando los usuarios",
     "notFoundDaysCount": "Turnos por día no encontrados"
+  },
+  "email": {
+    "notSent": "Error al enviar el email"
   }
 }
