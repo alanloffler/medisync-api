@@ -50,6 +50,13 @@
   "email": {
     "sent": "Email sent successfully"
   },
+  "specializations": {
+    "created": "Specialization created successfully",
+    "found": "Specialization found successfully",
+    "foundPlural": "Specializations found successfully",
+    "removed": "Specialization removed successfully",
+    "updated": "Specialization updated successfully"
+  },
   "statistics": {
     "obtained": "Statistical data successfully obtained"
   },
