@@ -3,7 +3,7 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import { ERole } from '@common/enums/role.enum';
 import { EmailService } from '@email/email.service';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Roles } from '@auth/decorators/roles.decorator';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { sendEmailDto } from '@email/dto/sendEmail.dto';
 
