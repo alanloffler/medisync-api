@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateTitleDto } from '@titles/dto/create-title.dto';
 import { TITLES_CONFIG } from '@config/titles.config';
@@ -9,7 +11,10 @@ import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
 @Injectable()
 export class TitlesService {
-  constructor(@InjectModel(Title.name) private readonly titleModel: Model<Title>) {}
+  constructor(
+    @InjectModel(Title.name) private readonly titleModel: Model<Title>,
+    private readonly i18nService: I18nService<I18nTranslations>,
+  ) {}
 
   async create(createTitleDto: CreateTitleDto): Promise<IResponse<Title>> {
     const title = await this.titleModel.create(createTitleDto);
@@ -17,7 +22,7 @@ export class TitlesService {
 
     return {
       data: title,
-      message: TITLES_CONFIG.response.success.created,
+      message: this.i18nService.t('response.titles.created'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -29,7 +34,7 @@ export class TitlesService {
 
     return {
       data: titles,
-      message: TITLES_CONFIG.response.success.foundPlural,
+      message: this.i18nService.t('response.titles.foundPlural'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -40,7 +45,7 @@ export class TitlesService {
 
     return {
       data: title,
-      message: TITLES_CONFIG.response.success.foundSingular,
+      message: this.i18nService.t('response.titles.found'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -51,7 +56,7 @@ export class TitlesService {
 
     return {
       data: title,
-      message: TITLES_CONFIG.response.success.updated,
+      message: this.i18nService.t('response.titles.updated'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -62,7 +67,7 @@ export class TitlesService {
 
     return {
       data: title,
-      message: TITLES_CONFIG.response.success.removed,
+      message: this.i18nService.t('response.titles.removed'),
       statusCode: HttpStatus.OK,
     };
   }
