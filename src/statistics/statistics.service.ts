@@ -1,6 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IStats } from '@statistics/interfaces/statistics.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
@@ -8,11 +10,14 @@ import { EStatus } from '@common/enums/status.enum';
 
 @Injectable()
 export class StatisticsService {
-  constructor(@InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>) {}
+  constructor(
+    @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
+    private readonly i18nService: I18nService<I18nTranslations>,
+  ) {}
 
   async countApposByProfessional(id: string): Promise<IResponse<IStats>> {
     const isValidId: boolean = isValidObjectId(id);
-    if (!isValidId) throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const total: number = await this.appointmentModel.countDocuments({ professional: id });
     const attended: number = await this.appointmentModel.countDocuments({ professional: id, status: EStatus.ATTENDED });
@@ -28,7 +33,7 @@ export class StatisticsService {
       $or: [{ day: { $gt: currentDateString } }, { day: currentDateString, hour: { $gt: currentHour } }],
     });
 
-    if (!total) throw new HttpException('Error finding historical statistics of appointments by professional', HttpStatus.BAD_REQUEST);
+    if (!total) throw new HttpException(this.i18nService.t('exception.statistics.processingError'), HttpStatus.BAD_REQUEST);
 
     const data: IStats = {
       total,
@@ -40,7 +45,7 @@ export class StatisticsService {
 
     return {
       data,
-      message: 'Historical statistics of appointments by professional',
+      message: this.i18nService.t('response.statistics.obtained'),
       statusCode: HttpStatus.OK,
     };
   }
