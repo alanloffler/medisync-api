@@ -50,6 +50,9 @@
   "email": {
     "sent": "Email enviado exitosamente"
   },
+  "statistics": {
+    "obtained": "Datos estadísticos obtenidos exitosamente"
+  },
   "titles": {
     "created": "Título creado exitosamente",
     "found": "Título encontrado exitosamente",
