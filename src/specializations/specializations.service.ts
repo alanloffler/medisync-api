@@ -19,7 +19,7 @@ export class SpecializationsService {
   async create(createSpecializationDto: CreateSpecializationDto): Promise<IResponse<Specialization>> {
     const newSpecialization = new this.specializationModel(createSpecializationDto);
     const createSpecialization = await this.specializationModel.create(newSpecialization);
-    if (!createSpecialization) throw new HttpException(SPEC_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
+    if (!createSpecialization) throw new HttpException(this.i18nService.t('exception.specializations.failedCreate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: createSpecialization,
@@ -30,8 +30,8 @@ export class SpecializationsService {
 
   async findAll(): Promise<IResponse<Specialization[]>> {
     const specializations = await this.specializationModel.find().sort({ name: 'asc' });
-    if (specializations.length === 0) throw new HttpException('not found', HttpStatus.NOT_FOUND);
-    if (specializations === undefined || specializations === null) throw new HttpException(SPEC_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (specializations.length === 0) throw new HttpException(this.i18nService.t('exception.specializations.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (specializations === undefined || specializations === null) throw new HttpException(this.i18nService.t('exception.specializations.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
       data: specializations,
@@ -42,7 +42,7 @@ export class SpecializationsService {
 
   async findOne(id: string): Promise<IResponse<Specialization>> {
     const specialization = await this.specializationModel.findById(id);
-    if (!specialization) throw new HttpException('not find', HttpStatus.BAD_REQUEST);
+    if (!specialization) throw new HttpException(this.i18nService.t('exception.specializations.notFound'), HttpStatus.BAD_REQUEST);
 
     return {
       data: specialization,
@@ -53,7 +53,7 @@ export class SpecializationsService {
 
   async update(id: string, updateSpecializationDto: UpdateSpecializationDto): Promise<IResponse<Specialization>> {
     const updated = await this.specializationModel.findByIdAndUpdate(id, updateSpecializationDto, { new: true });
-    if (!updated) throw new HttpException(SPEC_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+    if (!updated) throw new HttpException(this.i18nService.t('exception.specializations.failedUpdate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: updated,
@@ -64,7 +64,7 @@ export class SpecializationsService {
 
   async remove(id: string): Promise<IResponse<Specialization>> {
     const specialization = await this.specializationModel.findByIdAndDelete(id);
-    if (!specialization) throw new HttpException('not removed', HttpStatus.BAD_REQUEST);
+    if (!specialization) throw new HttpException(this.i18nService.t('exception.specializations.failedRemove'), HttpStatus.BAD_REQUEST);
 
     return {
       data: specialization,
