@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import type { I18nTranslations } from '@i18n/i18n.generated';
+import type { IResponse } from '@common/interfaces/response.interface';
 import { sendEmailDto } from '@email/dto/sendEmail.dto';
 
 @Injectable()
@@ -26,7 +27,7 @@ export class EmailService {
     return transporter;
   }
 
-  async sendEmail(dto: sendEmailDto) {
+  async sendEmail(dto: sendEmailDto): Promise<IResponse> {
     const { body, to, subject, attachments } = dto;
     const transport = this.emailTransport();
 
