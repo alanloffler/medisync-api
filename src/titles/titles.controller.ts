@@ -1,10 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateTitleDto } from '@titles/dto/create-title.dto';
+import { ERole } from '@common/enums/role.enum';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { RolesGuard } from '@auth/guards/roles.guard';
 import { Title } from '@titles/schema/title.schema';
 import { TitlesService } from '@titles/titles.service';
 import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles([ERole.Super, ERole.Admin])
 @Controller('titles')
 export class TitlesController {
   constructor(private readonly titlesService: TitlesService) {}
