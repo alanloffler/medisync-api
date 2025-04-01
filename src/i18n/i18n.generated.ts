@@ -250,6 +250,32 @@ export type I18nTranslations = {
             "subject": string;
             "to": string;
         };
+        "specializations": {
+            "active": {
+                "isIn": string;
+                "isNumber": string;
+            };
+            "area": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "description": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "icon": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "name": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "plural": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+        };
         "titles": {
             "abbreviation": {
                 "isNotEmpty": string;

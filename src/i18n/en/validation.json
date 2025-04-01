@@ -86,6 +86,32 @@
     "subject": "Email subject must be a text string",
     "to": "Each recipient must be a valid email"
   },
+  "specializations": {
+    "active": {
+      "isIn": "State must be 0 or 1",
+      "isNumber": "State must be an integer number"
+    },
+    "area": {
+      "isNotEmpty": "Area is required",
+      "isString": "Area must be a text string"
+    },
+    "description": {
+      "isNotEmpty": "Description is required",
+      "isString": "Description must be a text string"
+    },
+    "icon": {
+      "isNotEmpty": "Icon is required",
+      "isString": "Icon must be a text string"
+    },
+    "name": {
+      "isNotEmpty": "Name is required",
+      "isString": "Name must be a text string"
+    },
+    "plural": {
+      "isNotEmpty": "Plural is required",
+      "isString": "Plural must be a text string"
+    }
+  },
   "titles": {
     "abbreviation": {
       "isNotEmpty": "Abbreviation is required",

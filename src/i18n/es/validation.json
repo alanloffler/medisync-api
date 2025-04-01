@@ -86,6 +86,32 @@
     "subject": "El sujeto del email debe ser una cadena de texto",
     "to": "Cada contenido del recipiente debe ser un email"
   },
+  "specializations": {
+    "active": {
+      "isIn": "El estado debe ser 0 o 1",
+      "isNumber": "El estado debe ser un número entero"
+    },
+    "area": {
+      "isNotEmpty": "El área es obligatoria",
+      "isString": "El área es una cadena de texto"
+    },
+    "description": {
+      "isNotEmpty": "La descripción es obligatoria",
+      "isString": "La descripción es una cadena de texto"
+    },
+    "icon": {
+      "isNotEmpty": "El ícono es obligatorio",
+      "isString": "El ícono es una cadena de texto"
+    },
+    "name": {
+      "isNotEmpty": "El nombre es obligatorio",
+      "isString": "El nombre es una cadena de texto"
+    },
+    "plural": {
+      "isNotEmpty": "El plural es obligatorio",
+      "isString": "El plural es una cadena de texto"
+    }
+  },
   "titles": {
     "abbreviation": {
       "isNotEmpty": "La abreviación es obligatoria",
