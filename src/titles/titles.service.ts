@@ -5,7 +5,6 @@ import { Model } from 'mongoose';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateTitleDto } from '@titles/dto/create-title.dto';
-import { TITLES_CONFIG } from '@config/titles.config';
 import { Title } from '@titles/schema/title.schema';
 import { UpdateTitleDto } from '@titles/dto/update-title.dto';
 
