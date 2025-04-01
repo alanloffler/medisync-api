@@ -7,11 +7,6 @@ import { StatisticsService } from '@statistics/statistics.service';
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
 
-  @Get('countTodayApposByProfessional')
-  countTodayApposByProfessional(@Query('id') id: string): Promise<IResponse<IStats>> {
-    return this.statisticsService.countTodayApposByProfessional(id);
-  }
-
   @Get('countApposByProfessional')
   countApposByProfessional(@Query('id') id: string): Promise<IResponse<IStats>> {
     return this.statisticsService.countApposByProfessional(id);
