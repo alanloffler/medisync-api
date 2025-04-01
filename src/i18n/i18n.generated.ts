@@ -85,6 +85,9 @@ export type I18nTranslations = {
             "errorUsersCount": string;
             "notFoundDaysCount": string;
         };
+        "email": {
+            "notSent": string;
+        };
     };
     "response": {
         "admin": {
@@ -134,6 +137,9 @@ export type I18nTranslations = {
             "latestUsersCount": string;
             "professionalsCount": string;
             "usersCount": string;
+        };
+        "email": {
+            "sent": string;
         };
     };
     "validation": {

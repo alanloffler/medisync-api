@@ -46,5 +46,8 @@
     "latestUsersCount": "Pacientes recientes contados exitosamente",
     "professionalsCount": "Profesionales contados exitosamente",
     "usersCount": "Pacientes contados exitosamente"
+  },
+  "email": {
+    "sent": "Email enviado exitosamente"
   }
 }
