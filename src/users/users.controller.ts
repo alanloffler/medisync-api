@@ -4,7 +4,7 @@ import type { IUserStats } from './interfaces/user-stats.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { ERole } from '@common/enums/role.enum';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { Roles } from '@common/decorators/roles.decorator';
+import { Roles } from '@auth/decorators/roles.decorator';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
