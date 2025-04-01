@@ -85,5 +85,15 @@
     "body": "Email body must be a text string",
     "subject": "Email subject must be a text string",
     "to": "Each recipient must be a valid email"
+  },
+  "titles": {
+    "abbreviation": {
+      "isNotEmpty": "Abbreviation is required",
+      "isString": "Abbreviation must be a text string"
+    },
+    "name": {
+      "isNotEmpty": "Name is required",
+      "isString": "Name must be a text string"
+    }
   }
 }

@@ -85,5 +85,15 @@
     "body": "El contendido del email debe ser una cadena de texto",
     "subject": "El sujeto del email debe ser una cadena de texto",
     "to": "Cada contenido del recipiente debe ser un email"
+  },
+  "titles": {
+    "abbreviation": {
+      "isNotEmpty": "La abreviación es obligatoria",
+      "isString": "La abreviación debe ser una cadena de texto"
+    },
+    "name": {
+      "isNotEmpty": "El nombre es obligatorio",
+      "isString": "El nombre debe ser una cadena de texto"
+    }
   }
 }

@@ -230,6 +230,16 @@ export type I18nTranslations = {
             "subject": string;
             "to": string;
         };
+        "titles": {
+            "abbreviation": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "name": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+        };
     };
 };
 /* prettier-ignore */
