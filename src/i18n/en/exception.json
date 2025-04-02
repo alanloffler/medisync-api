@@ -81,6 +81,19 @@
   "email": {
     "notSent": "Error sending email"
   },
+  "professionals": {
+    "alreadyExists": "The ID is already registered as a professional",
+    "emptyPlural": "No professionals found",
+    "failedCreate": "Failed to create the professional",
+    "failedRemove": "Failed to delete the professional",
+    "failedUpdate": "Failed to update the professional",
+    "invalidDay": "Invalid day format or value (YYYY-MM-DD)",
+    "invalidHour": "Invalid hour format or value (hh:mm)",
+    "notDatabaseCount": "Error retrieving professionals count",
+    "notFound": "Error finding the professional",
+    "notFoundPlural": "Error finding professionals",
+    "notUpdateAvailability": "Error updating availability"
+  },
   "specializations": {
     "emptyPlural": "No specializations were found",
     "failedCreate": "Failed to create specialization",

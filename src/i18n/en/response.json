@@ -50,6 +50,15 @@
   "email": {
     "sent": "Email sent successfully"
   },
+  "professionals": {
+    "created": "Professional successfully created",
+    "databaseCount": "Professionals count retrieved successfully",
+    "found": "Professional found successfully",
+    "foundPlural": "Professionals found successfully",
+    "removed": "Professional successfully deleted",
+    "updateAvailability": "Availability successfully updated",
+    "updated": "Professional successfully updated"
+  },
   "specializations": {
     "created": "Specialization created successfully",
     "found": "Specialization found successfully",

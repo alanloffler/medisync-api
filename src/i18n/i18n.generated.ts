@@ -110,11 +110,11 @@ export type I18nTranslations = {
         "professionals": {
             "alreadyExists": string;
             "emptyPlural": string;
-            "invalidDay": string;
-            "invalidHour": string;
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
+            "invalidDay": string;
+            "invalidHour": string;
             "notDatabaseCount": string;
             "notFound": string;
             "notFoundPlural": string;
@@ -173,6 +173,15 @@ export type I18nTranslations = {
         "email": {
             "sent": string;
         };
+        "professionals": {
+            "created": string;
+            "databaseCount": string;
+            "found": string;
+            "foundPlural": string;
+            "removed": string;
+            "updateAvailability": string;
+            "updated": string;
+        };
         "specializations": {
             "created": string;
             "found": string;
@@ -188,15 +197,6 @@ export type I18nTranslations = {
             "found": string;
             "foundPlural": string;
             "removed": string;
-            "updated": string;
-        };
-        "professionals": {
-            "created": string;
-            "databaseCount": string;
-            "found": string;
-            "foundPlural": string;
-            "removed": string;
-            "updateAvailability": string;
             "updated": string;
         };
     };
