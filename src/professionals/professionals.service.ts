@@ -253,16 +253,20 @@ export class ProfessionalsService {
     return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: { id: update._id, available: update.available } };
   }
 
-  // CHECKED: used on ProfessionalsDataTable.tsx
+  // CHECKED: used on Frontend
   // TODO: remove appointments associated to the professional
-  async remove(id: string): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
+  async remove(id: string): Promise<IResponse<Professional>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
-    const remove = await this.professionalModel.findByIdAndDelete(id);
-    if (!remove) throw new HttpException(PROF_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
+    const remove: Professional = await this.professionalModel.findByIdAndDelete(id);
+    if (!remove) throw new HttpException(this.i18nService.t('exception.professionals.failedRemove'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.removed, data: remove };
+    return {
+      data: remove,
+      message: this.i18nService.t('response.professionals.removed'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // CHECKED:
