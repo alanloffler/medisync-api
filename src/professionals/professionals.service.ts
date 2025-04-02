@@ -4,23 +4,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, isValidObjectId } from 'mongoose';
 import { parse } from '@formkit/tempo';
 import type { I18nTranslations } from '@i18n/i18n.generated';
+import type { IAvailability } from '@professionals/interfaces/availability.interface';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
-import { PROFESSIONALS_CONFIG as PROF_CONFIG } from '@config/professionals.config';
 import { Professional } from '@professionals/schema/professional.schema';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
 @Injectable()
 export class ProfessionalsService {
   constructor(
-    @InjectModel(Professional.name) private readonly professionalModel: Model<Professional>,
     @InjectModel('Appointment') private readonly appointmentModel: Model<Appointment>,
+    @InjectModel(Professional.name) private readonly professionalModel: Model<Professional>,
     private readonly i18nService: I18nService<I18nTranslations>,
   ) {}
 
-  // CHECKED: used on Frontend
   async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse<Professional>> {
     const professionalExists: Professional = await this.professionalModel.findOne({ dni: createProfessionalDto.dni });
     if (professionalExists) throw new HttpException(this.i18nService.t('exception.professionals.alreadyExists'), HttpStatus.CONFLICT);
@@ -35,8 +34,7 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED: used on Frontend
-  // TODO: create interface for data
+  // TODO: set response type
   async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
@@ -66,7 +64,7 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED: used on Frontend
+  // TODO: set response type
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
@@ -147,7 +145,6 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED: Used on Frontend (maybe needs pagination?)
   async findAllActive(): Promise<IResponse<Professional[]>> {
     const professionals = await this.professionalModel
       .find({ available: true })
@@ -167,7 +164,6 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED: used on Frontend
   async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
     const dayRegex: RegExp = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
     const hourRegex: RegExp = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
@@ -207,7 +203,6 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED
   async findOne(id: string): Promise<IResponse<Professional>> {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
@@ -228,7 +223,6 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse<Professional>> {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
@@ -243,17 +237,20 @@ export class ProfessionalsService {
     };
   }
 
-  async updateAvailability(id: string, availability: boolean): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.NOT_FOUND);
+  async updateAvailability(id: string, availability: boolean): Promise<IResponse<IAvailability>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const update = await this.professionalModel.findByIdAndUpdate(id, { available: availability }, { new: true });
-    if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdatedAvailability, HttpStatus.BAD_REQUEST);
+    if (!update) throw new HttpException(this.i18nService.t('exception.professionals.notUpdateAvailability'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.updatedAvailability, data: { id: update._id, available: update.available } };
+    return {
+      data: { id: update._id, available: update.available },
+      message: this.i18nService.t('response.professionals.updateAvailability'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  // CHECKED: used on Frontend
   // TODO: remove appointments associated to the professional
   async remove(id: string): Promise<IResponse<Professional>> {
     const isValidId: boolean = isValidObjectId(id);
@@ -269,16 +266,17 @@ export class ProfessionalsService {
     };
   }
 
-  // CHECKED:
-  // used on service ProfessionalApiService.countAll()
-  // used on component DBCountProfessionals.tsx
   async databaseCount(): Promise<IResponse<IDBCount>> {
-    const count = await this.professionalModel.countDocuments();
-    const countAvailable = await this.professionalModel.countDocuments({ available: true });
-    const countNotAvailable = await this.professionalModel.countDocuments({ available: false });
+    const count: number = await this.professionalModel.countDocuments();
+    const countAvailable: number = await this.professionalModel.countDocuments({ available: true });
+    const countNotAvailable: number = await this.professionalModel.countDocuments({ available: false });
 
-    if (!count || !countAvailable || !countNotAvailable) throw new HttpException(PROF_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+    if (!count || !countAvailable || !countNotAvailable) throw new HttpException(this.i18nService.t('exception.professionals.notDatabaseCount'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.databaseCount, data: { total: count, available: countAvailable, notAvailable: countNotAvailable } };
+    return {
+      data: { total: count, available: countAvailable, notAvailable: countNotAvailable },
+      message: this.i18nService.t('response.professionals.databaseCount'),
+      statusCode: HttpStatus.OK,
+    };
   }
 }
