@@ -6,6 +6,7 @@ import { parse } from '@formkit/tempo';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IAvailability } from '@professionals/interfaces/availability.interface';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
+import type { IProfessionalsData } from '@professionals/interfaces/professionals-data.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { Appointment } from '@appointments/schema/appointment.schema';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
@@ -34,8 +35,7 @@ export class ProfessionalsService {
     };
   }
 
-  // TODO: set response type
-  async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
+  async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<IProfessionalsData>> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
@@ -58,14 +58,13 @@ export class ProfessionalsService {
     const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
 
     return {
-      data: { total: pageTotal, count: count, data: professionals },
+      data: { count: count, data: professionals, total: pageTotal },
       message: this.i18nService.t('response.professionals.foundPlural'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // TODO: set response type
-  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
+  async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<IProfessionalsData>> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
     if (sortingValue === 'asc') obj = { [sortingKey]: 1 };
@@ -139,7 +138,7 @@ export class ProfessionalsService {
     if (professionals === undefined || professionals === null) throw new HttpException(this.i18nService.t('exception.professionals.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
-      data: { total: pageTotal, count: count, data: professionals },
+      data: { count: count, data: professionals, total: pageTotal },
       message: this.i18nService.t('response.professionals.foundPlural'),
       statusCode: HttpStatus.OK,
     };

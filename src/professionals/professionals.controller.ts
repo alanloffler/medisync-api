@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import type { IAvailability } from '@professionals/interfaces/availability.interface';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
+import type { IProfessionalsData } from '@professionals/interfaces/professionals-data.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
 import { Professional } from '@professionals/schema/professional.schema';
@@ -16,15 +17,13 @@ export class ProfessionalsController {
     return this.professionalsService.create(createProfessionalDto);
   }
 
-  // TODO: set response type
   @Get('specialization')
-  findBySpecialization(@Query('id') id: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+  findBySpecialization(@Query('id') id: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse<IProfessionalsData>> {
     return this.professionalsService.findBySpecialization(id, limit, skip, sortingKey, sortingValue);
   }
 
-  // TODO: set response type
   @Get()
-  findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+  findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse<IProfessionalsData>> {
     return this.professionalsService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
