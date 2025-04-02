@@ -30,7 +30,7 @@ export class ProfessionalsService {
 
     return {
       data: professional,
-      message: PROF_CONFIG.response.success.created,
+      message: this.i18nService.t('response.professionals.created'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -61,12 +61,12 @@ export class ProfessionalsService {
 
     return {
       data: { total: pageTotal, count: count, data: professionals },
-      message: PROF_CONFIG.response.success.foundPlural,
+      message: this.i18nService.t('response.professionals.foundPlural'),
       statusCode: HttpStatus.OK,
     };
   }
 
-  // CHECKED: used on Professionals.tsx
+  // CHECKED: used on Frontend
   async findAll(search: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
     let obj = {};
@@ -137,9 +137,14 @@ export class ProfessionalsService {
 
     const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
 
-    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.searchNotFound, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(this.i18nService.t('exception.professionals.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (professionals === undefined || professionals === null) throw new HttpException(this.i18nService.t('exception.professionals.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
+    return {
+      data: { total: pageTotal, count: count, data: professionals },
+      message: this.i18nService.t('response.professionals.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async findAllActive(): Promise<IResponse<Professional[]>> {
