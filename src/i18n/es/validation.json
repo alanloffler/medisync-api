@@ -86,6 +86,93 @@
     "subject": "El sujeto del email debe ser una cadena de texto",
     "to": "Cada contenido del recipiente debe ser un email"
   },
+  "professionals": {
+    "area": {
+      "isNotEmpty": "El área es obligatoria",
+      "isString": "El área es una cadena de texto"
+    },
+    "areaCode": {
+      "isInt": "El código de area debe ser un número entero",
+      "max": "El código de area no debe superar los 3 dígitos",
+      "min": "El código de area debe poseer al menos 1 dígito"
+    },
+    "available": {
+      "isBoolean": "El estado de disponibilidad debe ser un booleano",
+      "isNotEmpty": "El estado de disponibilidad es obligatorio"
+    },
+    "configuration": {
+      "isNotEmpty": "La configuración es obligatoria",
+      "isObject": "La configuración debe ser un objeto",
+      "scheduleTimeEnd": {
+        "isNotEmpty": "La hora de fin es obligatoria",
+        "isString": "La hora de fin debe ser hh:mm",
+        "minLength": "La hora de fin debe poseer 5 caracteres"
+      },
+      "scheduleTimeInit": {
+        "isNotEmpty": "La hora de inicio es obligatoria",
+        "isString": "La hora de inicio debe ser hh:mm",
+        "minLength": "La hora de inicio debe poseer 5 caracteres"
+      },
+      "slotDuration": {
+        "isInt": "La duración de los turnos debe ser un número entero",
+        "isPositive": "La duración de los turnos debe ser un número positivo"
+      },
+      "timeSlotUnavailableEnd": {
+        "isString": "El fin de los turnos no disponibles debe ser hh:mm",
+        "minLength": "El fin de los turnos no disponibles debe poseer 5 caracteres"
+      },
+      "timeSlotUnavailableInit": {
+        "isString": "El inicio de los turnos no disponibles debe ser hh:mm",
+        "minLength": "El inicio de los turnos no disponibles debe poseer 5 caracteres"
+      },
+      "workingDays": {
+        "arrayNotEmpty": "Los dias laborales son obligatorios",
+        "arrayMaxSize": "Los días laborales deben ser menores o igual a 7"
+      }
+    },
+    "description": {
+      "isString": "La descripción es una cadena de texto"
+    },
+    "dni": {
+      "isNotEmpty": "El DNI es obligatorio",
+      "isNumber": "El DNI debe ser un número"
+    },
+    "email": {
+      "isEmail": "El email debe tener un formato válido",
+      "isNotEmpty": "El email es obligatorio",
+      "isString": "El email es una cadena de texto"
+    },
+    "firstName": {
+      "isNotEmpty": "El nombre es obligatorio",
+      "isString": "El nombre es una cadena de texto"
+    },
+    "lastName": {
+      "isNotEmpty": "El apellido es obligatorio",
+      "isString": "El apellido es una cadena de texto"
+    },
+    "phone": {
+      "isNotEmpty": "El teléfono es obligatorio",
+      "isNumber": "El teléfono debe ser un número"
+    },
+    "specialization": {
+      "isNotEmpty": "La especialización es obligatoria",
+      "isString": "La especialización es una cadena de texto"
+    },
+    "title": {
+      "isNotEmpty": "El título es obligatorio",
+      "isString": "El título es una cadena de texto"
+    },
+    "workingDay": {
+      "day": {
+        "isInt": "El día debe ser un número entero",
+        "max": "El día debe ser mayor o igual a cero (0)",
+        "min": "El día debe ser menor o igual a seis (6)"
+      },
+      "value": {
+        "isBoolean": "El valor debe ser un booleano"
+      }
+    }
+  },
   "specializations": {
     "active": {
       "isIn": "El estado debe ser 0 o 1",

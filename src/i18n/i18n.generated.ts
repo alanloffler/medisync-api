@@ -266,6 +266,93 @@ export type I18nTranslations = {
             "subject": string;
             "to": string;
         };
+        "professionals": {
+            "area": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "areaCode": {
+                "isInt": string;
+                "max": string;
+                "min": string;
+            };
+            "available": {
+                "isBoolean": string;
+                "isNotEmpty": string;
+            };
+            "configuration": {
+                "isNotEmpty": string;
+                "isObject": string;
+                "scheduleTimeEnd": {
+                    "isNotEmpty": string;
+                    "isString": string;
+                    "minLength": string;
+                };
+                "scheduleTimeInit": {
+                    "isNotEmpty": string;
+                    "isString": string;
+                    "minLength": string;
+                };
+                "slotDuration": {
+                    "isInt": string;
+                    "isPositive": string;
+                };
+                "timeSlotUnavailableEnd": {
+                    "isString": string;
+                    "minLength": string;
+                };
+                "timeSlotUnavailableInit": {
+                    "isString": string;
+                    "minLength": string;
+                };
+                "workingDays": {
+                    "arrayNotEmpty": string;
+                    "arrayMaxSize": string;
+                };
+            };
+            "description": {
+                "isString": string;
+            };
+            "dni": {
+                "isNotEmpty": string;
+                "isNumber": string;
+            };
+            "email": {
+                "isEmail": string;
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "firstName": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "lastName": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "phone": {
+                "isNotEmpty": string;
+                "isNumber": string;
+            };
+            "specialization": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "title": {
+                "isNotEmpty": string;
+                "isString": string;
+            };
+            "workingDay": {
+                "day": {
+                    "isInt": string;
+                    "max": string;
+                    "min": string;
+                };
+                "value": {
+                    "isBoolean": string;
+                };
+            };
+        };
         "specializations": {
             "active": {
                 "isIn": string;
