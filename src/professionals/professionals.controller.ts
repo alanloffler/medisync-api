@@ -1,13 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import type { IAvailability } from '@professionals/interfaces/availability.interface';
 import type { IDBCount } from '@professionals/interfaces/db-count.interface';
 import type { IProfessionalsData } from '@professionals/interfaces/professionals-data.interface';
 import type { IResponse } from '@common/interfaces/response.interface';
 import { CreateProfessionalDto } from '@professionals/dto/create-professional.dto';
+import { ERole } from '@common/enums/role.enum';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { Professional } from '@professionals/schema/professional.schema';
 import { ProfessionalsService } from '@professionals/professionals.service';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { RolesGuard } from '@auth/guards/roles.guard';
 import { UpdateProfessionalDto } from '@professionals/dto/update-professional.dto';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles([ERole.Super, ERole.Admin])
 @Controller('professionals')
 export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
