@@ -50,6 +50,11 @@
   "email": {
     "sent": "Email enviado exitosamente"
   },
+  "professionals": {
+    "created": "Profesional creado exitosamente",
+    "found": "Profesional encontrado exitosamente",
+    "foundPlural": "Profesionales encontrados exitosamente"
+  },
   "specializations": {
     "created": "Especialización creada exitosamente",
     "found": "Especialización encontrada exitosamente",

@@ -184,6 +184,11 @@ export type I18nTranslations = {
             "removed": string;
             "updated": string;
         };
+        "professionals": {
+            "created": string;
+            "found": string;
+            "foundPlural": string;
+        };
     };
     "validation": {
         "admin": {
