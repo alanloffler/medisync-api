@@ -20,22 +20,22 @@ export class ProfessionalsService {
     private readonly i18nService: I18nService<I18nTranslations>,
   ) {}
 
-  // CHECKED:
-  // Used on service ProfessionalApiService.create()
-  // Used on component CreateProfessional.tsx
+  // CHECKED: used on Frontend
   async create(createProfessionalDto: CreateProfessionalDto): Promise<IResponse<Professional>> {
     const professionalExists: Professional = await this.professionalModel.findOne({ dni: createProfessionalDto.dni });
-    if (professionalExists) throw new HttpException(PROF_CONFIG.response.error.duplicatedKey, HttpStatus.BAD_REQUEST);
+    if (professionalExists) throw new HttpException(this.i18nService.t('exception.professionals.alreadyExists'), HttpStatus.CONFLICT);
 
     const professional: Professional = await this.professionalModel.create(createProfessionalDto);
-    if (!professional) throw new HttpException(PROF_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
+    if (!professional) throw new HttpException(this.i18nService.t('exception.professionals.failedCreate'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.created, data: professional };
+    return {
+      data: professional,
+      message: PROF_CONFIG.response.success.created,
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  // CHECKED:
-  // Used on service ProfessionalApiService.searchProfessionalsBy()
-  // Used on component ProfessionalsDataTable.tsx
+  // CHECKED: used on Frontend
   // TODO: create interface for data
   async findBySpecialization(id: string, limit: string, skip: string, sortingKey: string, sortingValue: string): Promise<IResponse<any>> {
     if (sortingKey === 'area' || sortingKey === 'specialization') sortingKey = sortingKey + '.name';
@@ -52,13 +52,18 @@ export class ProfessionalsService {
       .limit(Number(limit))
       .skip(Number(skip));
 
-    if (!professionals || professionals.length === 0) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(this.i18nService.t('exception.professionals.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (professionals === undefined || professionals === null) throw new HttpException(this.i18nService.t('exception.professionals.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     const count: number = await this.professionalModel.find({ specialization: id }).countDocuments();
 
     const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: { total: pageTotal, count: count, data: professionals } };
+    return {
+      data: { total: pageTotal, count: count, data: professionals },
+      message: PROF_CONFIG.response.success.foundPlural,
+      statusCode: HttpStatus.OK,
+    };
   }
 
   // CHECKED: used on Professionals.tsx
