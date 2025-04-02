@@ -81,6 +81,13 @@
   "email": {
     "notSent": "Error al enviar el email"
   },
+  "professionals": {
+    "alreadyExists": "El DNI ya se encuentra registrado como profesional",
+    "emptyPlural": "No se encontraron profesionales",
+    "failedCreate": "No se pudo crear el profesional",
+    "notFound": "Error al buscar el profesional",
+    "notFoundPlural": "Error al buscar los profesionales"
+  },
   "specializations": {
     "emptyPlural": "No se encontraron especialidades",
     "failedCreate": "No se pudo crear la especialización",

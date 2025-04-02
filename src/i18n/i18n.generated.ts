@@ -107,6 +107,13 @@ export type I18nTranslations = {
             "notFound": string;
             "notFoundPlural": string;
         };
+        "professionals": {
+            "alreadyExists": string;
+            "emptyPlural": string;
+            "failedCreate": string;
+            "notFound": string;
+            "notFoundPlural": string;
+        };
     };
     "response": {
         "admin": {
