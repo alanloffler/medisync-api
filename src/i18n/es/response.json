@@ -52,9 +52,11 @@
   },
   "professionals": {
     "created": "Profesional creado exitosamente",
+    "databaseCount": "Recuento de profesionales obtenido exitosamente",
     "found": "Profesional encontrado exitosamente",
     "foundPlural": "Profesionales encontrados exitosamente",
     "removed": "Profesional eliminado exitosamente",
+    "updateAvailability": "Disponibilidad actualizada exitosamente",
     "updated": "Profesional actualizado exitosamente"
   },
   "specializations": {

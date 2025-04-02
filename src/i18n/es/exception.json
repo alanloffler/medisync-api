@@ -89,8 +89,10 @@
     "failedCreate": "No se pudo crear el profesional",
     "failedRemove": "No se pudo eliminar el profesional",
     "failedUpdate": "No se pudo actualizar el profesional",
+    "notDatabaseCount": "Error en el recuento de profesionales",
     "notFound": "Error al buscar el profesional",
-    "notFoundPlural": "Error al buscar los profesionales"
+    "notFoundPlural": "Error al buscar los profesionales",
+    "notUpdateAvailability": "Error al actualizar la disponibilidad"
   },
   "specializations": {
     "emptyPlural": "No se encontraron especialidades",

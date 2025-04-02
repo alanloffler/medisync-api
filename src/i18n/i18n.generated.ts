@@ -115,8 +115,10 @@ export type I18nTranslations = {
             "failedCreate": string;
             "failedRemove": string;
             "failedUpdate": string;
+            "notDatabaseCount": string;
             "notFound": string;
             "notFoundPlural": string;
+            "notUpdateAvailability": string;
         };
     };
     "response": {
@@ -190,9 +192,11 @@ export type I18nTranslations = {
         };
         "professionals": {
             "created": string;
+            "databaseCount": string;
             "found": string;
             "foundPlural": string;
             "removed": string;
+            "updateAvailability": string;
             "updated": string;
         };
     };
