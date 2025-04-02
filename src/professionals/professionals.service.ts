@@ -147,6 +147,7 @@ export class ProfessionalsService {
     };
   }
 
+  // CHECKED: Used on Frontend (maybe needs pagination?)
   async findAllActive(): Promise<IResponse<Professional[]>> {
     const professionals = await this.professionalModel
       .find({ available: true })
@@ -156,20 +157,22 @@ export class ProfessionalsService {
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
-    if (professionals.length === 0) throw new HttpException(PROF_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
-    if (!professionals) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.NOT_FOUND);
+    if (professionals.length === 0) throw new HttpException(this.i18nService.t('exception.professionals.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (!professionals) throw new HttpException(this.i18nService.t('exception.professionals.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: professionals };
+    return {
+      data: professionals,
+      message: this.i18nService.t('response.professionals.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  // CHECKED:
-  // Used on service ProfessionalApiService.findAllAvailableForChange()
-  // Used on component ProfessionalsSelect.tsx
+  // CHECKED: used on Frontend
   async findAllAvailableForChange(day: string, hour: string): Promise<IResponse<Professional[]>> {
     const dayRegex: RegExp = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
     const hourRegex: RegExp = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-    if (!dayRegex.test(day)) throw new HttpException(PROF_CONFIG.validation.arguments.day, HttpStatus.BAD_REQUEST);
-    if (!hourRegex.test(hour)) throw new HttpException(PROF_CONFIG.validation.arguments.hour, HttpStatus.BAD_REQUEST);
+    if (!dayRegex.test(day)) throw new HttpException(this.i18nService.t('exception.professionals.invalidDay'), HttpStatus.BAD_REQUEST);
+    if (!hourRegex.test(hour)) throw new HttpException(this.i18nService.t('exception.professionals.invalidHour'), HttpStatus.BAD_REQUEST);
 
     const dayOfWeek: number = parse(day, 'YYYY-MM-DD').getDay();
 
@@ -187,8 +190,8 @@ export class ProfessionalsService {
       .sort({ lastName: 'asc' })
       .exec();
 
-    if (professionalsOnWorkingDays.length === 0) throw new HttpException(PROF_CONFIG.response.success.empty, HttpStatus.NOT_FOUND);
-    if (!professionalsOnWorkingDays) throw new HttpException(PROF_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (professionalsOnWorkingDays.length === 0) throw new HttpException(this.i18nService.t('exception.professionals.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (!professionalsOnWorkingDays) throw new HttpException(this.i18nService.t('exception.professionals.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     const appointmentsInSlot: Appointment[] = await this.appointmentModel.find({ day: day, hour: hour }).exec();
     if (appointmentsInSlot.length === 0) throw new HttpException(this.i18nService.t('exception.appointments.emptyDatabase'), HttpStatus.NOT_FOUND);
@@ -197,12 +200,17 @@ export class ProfessionalsService {
     const appointmentProfessionalIds: string[] = appointmentsInSlot.map((appointment) => appointment.professional.toString());
     const filteredProfessionals: Professional[] = professionalsOnWorkingDays.filter((professional) => !appointmentProfessionalIds.includes(professional._id.toString()));
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundPlural, data: filteredProfessionals };
+    return {
+      data: filteredProfessionals,
+      message: this.i18nService.t('response.professionals.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async findOne(id: string): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
+  // CHECKED
+  async findOne(id: string): Promise<IResponse<Professional>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const professional = await this.professionalModel
       .findById(id)
@@ -211,9 +219,13 @@ export class ProfessionalsService {
       .populate({ path: 'title', select: '_id name abbreviation', strictPopulate: false })
       .exec();
 
-    if (!professional) throw new HttpException(PROF_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
+    if (!professional) throw new HttpException(this.i18nService.t('exception.professionals.notFound'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.foundSingular, data: professional };
+    return {
+      data: professional,
+      message: this.i18nService.t('response.professionals.found'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
