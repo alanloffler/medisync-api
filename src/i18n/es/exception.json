@@ -84,6 +84,8 @@
   "professionals": {
     "alreadyExists": "El DNI ya se encuentra registrado como profesional",
     "emptyPlural": "No se encontraron profesionales",
+    "invalidDay": "Formato o valor inválido del día (YYYY-MM-DD)",
+    "invalidHour": "Formato o valor inválido de la hora (hh:mm)",
     "failedCreate": "No se pudo crear el profesional",
     "notFound": "Error al buscar el profesional",
     "notFoundPlural": "Error al buscar los profesionales"

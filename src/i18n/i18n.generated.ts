@@ -110,6 +110,8 @@ export type I18nTranslations = {
         "professionals": {
             "alreadyExists": string;
             "emptyPlural": string;
+            "invalidDay": string;
+            "invalidHour": string;
             "failedCreate": string;
             "notFound": string;
             "notFoundPlural": string;
