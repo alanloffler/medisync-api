@@ -1,102 +1,103 @@
 import { ArrayMaxSize, ArrayNotEmpty, IsBoolean, IsEmail, IsInt, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsPositive, IsString, Max, Min, MinLength, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { i18nValidationMessage } from 'nestjs-i18n';
+import type { I18nTranslations } from '@i18n/i18n.generated';
 import type { IWorkingDay } from '@professionals/interfaces/working-day.interface';
-import { PROFESSIONALS_CONFIG } from '@config/professionals.config';
 
 class WorkingDayDto {
-  @IsInt({ message: PROFESSIONALS_CONFIG.validation.workingDays.day.isInt })
-  @Min(0, { message: PROFESSIONALS_CONFIG.validation.workingDays.day.min })
-  @Max(6, { message: PROFESSIONALS_CONFIG.validation.workingDays.day.max })
+  @IsInt({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.workingDay.day.isInt') })
+  @Min(0, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.workingDay.day.min') })
+  @Max(6, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.workingDay.day.max') })
   day: number;
 
-  @IsBoolean({ message: PROFESSIONALS_CONFIG.validation.workingDays.value.isBoolean })
+  @IsBoolean({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.workingDay.value.isBoolean') })
   value: boolean;
 }
 
 class Configuration {
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeInit.isString })
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeInit.isNotEmpty })
-  @MinLength(5, { message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeInit.minLength })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeInit.isString') })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeInit.isNotEmpty') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeInit.minLength') })
   scheduleTimeInit: string;
 
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeEnd.isString })
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeEnd.isNotEmpty })
-  @MinLength(5, { message: PROFESSIONALS_CONFIG.validation.configuration.scheduleTimeEnd.minLength })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeEnd.isString') })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeEnd.isNotEmpty') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeEnd.minLength') })
   scheduleTimeEnd: string;
 
-  @IsInt({ message: PROFESSIONALS_CONFIG.validation.configuration.slotDuration.isInt })
-  @IsPositive({ message: PROFESSIONALS_CONFIG.validation.configuration.slotDuration.isPositive })
+  @IsInt({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.slotDuration.isInt') })
+  @IsPositive({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.slotDuration.isPositive') })
   slotDuration: number;
 
   @IsOptional()
   @ValidateIf((object, value) => value !== null)
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.configuration.timeSlotUnavailableInit.isString })
-  @MinLength(5, { message: PROFESSIONALS_CONFIG.validation.configuration.timeSlotUnavailableInit.minLength })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.isString') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.minLength') })
   timeSlotUnavailableInit?: string;
 
   @IsOptional()
   @ValidateIf((object, value) => value !== null)
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.configuration.timeSlotUnavailableEnd.isString })
-  @MinLength(5, { message: PROFESSIONALS_CONFIG.validation.configuration.timeSlotUnavailableEnd.minLength })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.isString') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.minLength') })
   timeSlotUnavailableEnd?: string;
 
-  @ArrayNotEmpty({ message: PROFESSIONALS_CONFIG.validation.workingDays.arrayNotEmpty })
+  @ArrayNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.workingDays.arrayNotEmpty') })
   @ValidateNested({ each: true })
-  @ArrayMaxSize(7, { message: PROFESSIONALS_CONFIG.validation.workingDays.minLength })
+  @ArrayMaxSize(7, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.workingDays.arrayMaxSize') })
   @Type(() => WorkingDayDto)
   workingDays: IWorkingDay[];
 }
 
 export class CreateProfessionalDto {
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.area })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.area })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.area.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.area.isString') })
   area: string;
 
-  @IsInt({ message: PROFESSIONALS_CONFIG.validation.dto.isInt.areaCode })
-  @Min(1, { message: PROFESSIONALS_CONFIG.validation.dto.min.areaCode }) // 1
-  @Max(999, { message: PROFESSIONALS_CONFIG.validation.dto.max.areaCode }) // 000
+  @IsInt({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.areaCode.isInt') })
+  @Min(1, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.areaCode.min') }) // 1
+  @Max(999, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.areaCode.max') }) // 000
   areaCode: number;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.available })
-  @IsBoolean({ message: PROFESSIONALS_CONFIG.validation.dto.isBoolean.available })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.available.isNotEmpty') })
+  @IsBoolean({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.available.isBoolean') })
   available: boolean;
 
-  @IsNotEmptyObject({}, { message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.configuration })
-  @IsObject({ message: PROFESSIONALS_CONFIG.validation.dto.isObject.configuration })
+  @IsNotEmptyObject({}, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeEnd.isNotEmpty') })
+  @IsObject({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.isObject') })
   @ValidateNested()
   @Type(() => Configuration)
   configuration: Configuration;
 
   @IsOptional()
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.description })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.description.isString') })
   description: string;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.dni })
-  @IsNumber({}, { message: PROFESSIONALS_CONFIG.validation.dto.isNumber.dni })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.dni.isNotEmpty') })
+  @IsNumber({}, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.dni.isNumber') })
   dni: number;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.email })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString .email})
-  @IsEmail({}, { message: PROFESSIONALS_CONFIG.validation.dto.isEmail.email })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.email.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.email.isString') })
+  @IsEmail({}, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.email.isEmail') })
   email: string;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.firstName })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.firstName })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.firstName.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.firstName.isString') })
   firstName: string;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.lastName })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.lastName })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.lastName.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.lastName.isString') })
   lastName: string;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.phone })
-  @IsNumber({}, { message: PROFESSIONALS_CONFIG.validation.dto.isNumber.phone })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.phone.isNotEmpty') })
+  @IsNumber({}, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.phone.isNumber') })
   phone: number;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.specialization })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.specialization })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.specialization.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.specialization.isString') })
   specialization: string;
 
-  @IsNotEmpty({ message: PROFESSIONALS_CONFIG.validation.dto.isNotEmpty.title })
-  @IsString({ message: PROFESSIONALS_CONFIG.validation.dto.isString.title })
+  @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.title.isNotEmpty') })
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.title.isString') })
   title: string;
 }
