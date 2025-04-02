@@ -228,14 +228,19 @@ export class ProfessionalsService {
     };
   }
 
-  async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse> {
-    const isValid = isValidObjectId(id);
-    if (!isValid) throw new HttpException(PROF_CONFIG.response.error.invalidID, HttpStatus.BAD_REQUEST);
+  // CHECKED
+  async update(id: string, updateProfessionalDto: UpdateProfessionalDto): Promise<IResponse<Professional>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const update = await this.professionalModel.findByIdAndUpdate(id, updateProfessionalDto, { new: true });
-    if (!update) throw new HttpException(PROF_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+    if (!update) throw new HttpException(this.i18nService.t('exception.professionals.failedUpdate'), HttpStatus.BAD_REQUEST);
 
-    return { statusCode: 200, message: PROF_CONFIG.response.success.updated, data: update };
+    return {
+      data: update,
+      message: this.i18nService.t('response.professionals.updated'),
+      statusCode: HttpStatus.OK,
+    };
   }
 
   async updateAvailability(id: string, availability: boolean): Promise<IResponse> {
