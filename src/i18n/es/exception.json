@@ -87,6 +87,7 @@
     "invalidDay": "Formato o valor inválido del día (YYYY-MM-DD)",
     "invalidHour": "Formato o valor inválido de la hora (hh:mm)",
     "failedCreate": "No se pudo crear el profesional",
+    "failedRemove": "No se pudo eliminar el profesional",
     "failedUpdate": "No se pudo actualizar el profesional",
     "notFound": "Error al buscar el profesional",
     "notFoundPlural": "Error al buscar los profesionales"

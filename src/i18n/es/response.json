@@ -54,6 +54,7 @@
     "created": "Profesional creado exitosamente",
     "found": "Profesional encontrado exitosamente",
     "foundPlural": "Profesionales encontrados exitosamente",
+    "removed": "Profesional eliminado exitosamente",
     "updated": "Profesional actualizado exitosamente"
   },
   "specializations": {
