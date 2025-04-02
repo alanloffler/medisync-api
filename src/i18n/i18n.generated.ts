@@ -113,6 +113,7 @@ export type I18nTranslations = {
             "invalidDay": string;
             "invalidHour": string;
             "failedCreate": string;
+            "failedUpdate": string;
             "notFound": string;
             "notFoundPlural": string;
         };
@@ -190,6 +191,7 @@ export type I18nTranslations = {
             "created": string;
             "found": string;
             "foundPlural": string;
+            "updated": string;
         };
     };
     "validation": {

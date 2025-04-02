@@ -53,7 +53,8 @@
   "professionals": {
     "created": "Profesional creado exitosamente",
     "found": "Profesional encontrado exitosamente",
-    "foundPlural": "Profesionales encontrados exitosamente"
+    "foundPlural": "Profesionales encontrados exitosamente",
+    "updated": "Profesional actualizado exitosamente"
   },
   "specializations": {
     "created": "Especialización creada exitosamente",
