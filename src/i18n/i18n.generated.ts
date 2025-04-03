@@ -199,6 +199,11 @@ export type I18nTranslations = {
             "removed": string;
             "updated": string;
         };
+        "users": {
+            "created": string;
+            "found": string;
+            "foundPlural": string;
+        };
     };
     "validation": {
         "admin": {

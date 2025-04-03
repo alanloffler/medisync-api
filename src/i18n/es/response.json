@@ -75,5 +75,10 @@
     "foundPlural": "Títulos encontrados exitosamente",
     "removed": "Título eliminado exitosamente",
     "updated": "Título actualizado exitosamente"
+  },
+  "users": {
+    "created": "Paciente creado exitosamente",
+    "found": "Paciente encontrado exitosamente",
+    "foundPlural": "Pacientes encontrados exitosamente"
   }
 }
