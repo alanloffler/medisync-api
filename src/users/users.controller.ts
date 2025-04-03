@@ -11,8 +11,6 @@ import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
 import { UsersService } from '@users/users.service';
 
-// Checked: all
-// Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles([ERole.Super, ERole.Admin])
 @Controller('users')
