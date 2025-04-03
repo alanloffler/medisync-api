@@ -42,7 +42,7 @@ export class UsersService {
 
     const users: User[] = await this.userModel
       .find({
-        // isDeleted: false,
+        isDeleted: false,
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
       })
       .sort(sorting)
@@ -53,7 +53,12 @@ export class UsersService {
     if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
     if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    const count: number = await this.userModel.countDocuments({ isDeleted: false });
+    const count: number = await this.userModel
+      .find({
+        isDeleted: false,
+        $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
+      })
+      .countDocuments();
     const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
     const data: IUsersData = { total: pageTotal, count: count, data: users };
 
@@ -71,7 +76,7 @@ export class UsersService {
 
     const users: User[] = await this.userModel
       .find({
-        // isDeleted: false,
+        isDeleted: false,
         $expr: {
           $regexMatch: {
             input: { $toString: { $toLong: '$dni' } },
@@ -87,7 +92,17 @@ export class UsersService {
     if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
     if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    const count: number = await this.userModel.countDocuments({ isDeleted: false });
+    const count: number = await this.userModel
+      .find({
+        isDeleted: false,
+        $expr: {
+          $regexMatch: {
+            input: { $toString: { $toLong: '$dni' } },
+            regex: search,
+          },
+        },
+      })
+      .countDocuments();
     const pageTotal: number = count ? Math.floor((count - 1) / parseInt(limit)) + 1 : 0;
     const data: IUsersData = { total: pageTotal, count: count, data: users };
 
