@@ -82,6 +82,7 @@
     "found": "Paciente encontrado exitosamente",
     "foundPlural": "Pacientes encontrados exitosamente",
     "removed": "Paciente eliminado exitosamente",
+    "restored": "Paciente restaurado exitosamente",
     "updated": "Paciente actualizado exitosamente"
   }
 }
