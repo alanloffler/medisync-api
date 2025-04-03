@@ -37,6 +37,17 @@ export class UsersController {
     return this.usersService.newUsersToday();
   }
 
+  @Roles([ERole.Super])
+  @Patch('restore/:id')
+  restore(@Param('id') id: string): Promise<IResponse<User>> {
+    return this.usersService.restore(id);
+  }
+
+  @Patch('remove/:id')
+  remove(@Param('id') id: string): Promise<IResponse<User>> {
+    return this.usersService.remove(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.findOne(id);
@@ -45,10 +56,5 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     return this.usersService.update(id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<IResponse<User>> {
-    return this.usersService.remove(id);
   }
 }
