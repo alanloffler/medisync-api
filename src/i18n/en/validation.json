@@ -228,6 +228,9 @@
       "maxLength": "The first name must not exceed 30 characters",
       "minLength": "The first name must have at least 3 characters"
     },
+    "isDeleted": {
+      "isBoolean": "The delete state is a boolean"
+    },
     "lastName": {
       "isString": "The last name must be a string",
       "maxLength": "The last name must not exceed 30 characters",
