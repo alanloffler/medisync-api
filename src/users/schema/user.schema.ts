@@ -28,6 +28,9 @@ export class User {
 
   @Prop({ lowercase: true, trim: true, unique: false, required: false })
   email?: string;
+
+  @Prop({ default: false })
+  isDeleted: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
