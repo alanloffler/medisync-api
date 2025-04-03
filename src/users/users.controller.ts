@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from './interfaces/user-stats.interface';
+import type { IUsersData } from '@users/interfaces/users-data.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
 import { ERole } from '@common/enums/role.enum';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
@@ -13,7 +14,7 @@ import { UsersService } from '@users/users.service';
 // Checked: all
 // Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles([ERole.Admin, ERole.Super])
+@Roles([ERole.Super, ERole.Admin])
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -24,12 +25,12 @@ export class UsersController {
   }
 
   @Get()
-  findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+  findAll(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse<IUsersData>> {
     return this.usersService.findAll(search, limit, skip, sortingKey, sortingValue);
   }
 
   @Get('byIdentityNumber')
-  findAllByIdentityNumber(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse> {
+  findAllByIdentityNumber(@Query('search') search: string, @Query('limit') limit: string, @Query('skip') skip: string, @Query('sk') sortingKey: string, @Query('sv') sortingValue: string): Promise<IResponse<IUsersData>> {
     return this.usersService.findAllByIdentityNumber(search, limit, skip, sortingKey, sortingValue);
   }
 
