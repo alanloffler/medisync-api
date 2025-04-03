@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import type { I18nTranslations } from '@i18n/i18n.generated';
 
@@ -31,4 +31,8 @@ export class CreateUserDto {
   @IsOptional()
   @IsEmail({}, { message: i18nValidationMessage<I18nTranslations>('validation.users.email.isEmail') })
   email?: string;
+
+  @IsOptional()
+  @IsBoolean({ message: i18nValidationMessage<I18nTranslations>('validation.users.isDeleted.isBoolean') })
+  isDeleted?: boolean;
 }
