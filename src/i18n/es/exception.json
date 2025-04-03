@@ -112,5 +112,16 @@
     "failedUpdate": "No se pudo crear el título",
     "notFound": "Error al buscar el título",
     "notFoundPlural": "Error al buscar los títulos"
+  },
+  "users": {
+    "alreadyExists": "El DNI ya se encuentra registrado como paciente",
+    "emptyPlural": "No se encontraron pacientes",
+    "failedCreate": "No se pudo crear el paciente",
+    "failedRemove": "No se pudo eliminar el paciente",
+    "failedUpdate": "No se pudo actualizar el paciente",
+    "notFound": "Error al buscar el paciente",
+    "notFoundNewUsers": "Error al contar los pacientes nuevos de hoy",
+    "notFoundPlural": "Error al buscar los pacientes",
+    "notFoundUsers": "Error al contar el total de los pacientes"
   }
 }

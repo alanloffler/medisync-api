@@ -112,5 +112,16 @@
     "failedUpdate": "Failed to update title",
     "notFound": "Title not found",
     "notFoundPlural": "Titles not found"
+  },
+  "users": {
+    "alreadyExists": "The ID number is already registered as a patient",
+    "emptyPlural": "No patients were found",
+    "failedCreate": "Failed to create the patient",
+    "failedRemove": "Failed to delete the patient",
+    "failedUpdate": "Failed to update the patient",
+    "notFound": "Error finding the patient",
+    "notFoundNewUsers": "Error counting today's new patients",
+    "notFoundPlural": "Error finding the patients",
+    "notFoundUsers": "Error counting the total patients"
   }
 }
