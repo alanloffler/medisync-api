@@ -142,7 +142,7 @@ export class UsersService {
 
     return {
       data: user,
-      message: USERS_CONFIG.response.success.updated,
+      message: this.i18nService.t('response.users.updated'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -160,7 +160,7 @@ export class UsersService {
 
     return {
       data: user,
-      message: USERS_CONFIG.response.success.removed,
+      message: this.i18nService.t('response.users.removed'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -180,7 +180,7 @@ export class UsersService {
 
     return {
       data: data,
-      message: USERS_CONFIG.response.success.databaseCount,
+      message: this.i18nService.t('response.users.databaseCount'),
       statusCode: HttpStatus.OK,
     };
   }
