@@ -75,5 +75,13 @@
     "foundPlural": "Titles found successfully",
     "removed": "Title removed successfully",
     "updated": "Title updated successfully"
+  },
+  "users": {
+    "created": "Patient successfully created",
+    "databaseCount": "Patients count retrieved successfully",
+    "found": "Patient found successfully",
+    "foundPlural": "Patients found successfully",
+    "removed": "Patient successfully deleted",
+    "updated": "Patient successfully updated"
   }
 }

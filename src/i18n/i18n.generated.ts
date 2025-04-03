@@ -201,8 +201,11 @@ export type I18nTranslations = {
         };
         "users": {
             "created": string;
+            "databaseCount": string;
             "found": string;
             "foundPlural": string;
+            "removed": string;
+            "updated": string;
         };
     };
     "validation": {

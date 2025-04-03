@@ -78,7 +78,10 @@
   },
   "users": {
     "created": "Paciente creado exitosamente",
+    "databaseCount": "Recuento de usuarios obtenido exitosamente",
     "found": "Paciente encontrado exitosamente",
-    "foundPlural": "Pacientes encontrados exitosamente"
+    "foundPlural": "Pacientes encontrados exitosamente",
+    "removed": "Paciente eliminado exitosamente",
+    "updated": "Paciente actualizado exitosamente"
   }
 }
