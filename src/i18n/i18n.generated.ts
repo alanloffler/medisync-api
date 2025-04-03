@@ -216,6 +216,7 @@ export type I18nTranslations = {
             "found": string;
             "foundPlural": string;
             "removed": string;
+            "restored": string;
             "updated": string;
         };
     };
@@ -448,6 +449,9 @@ export type I18nTranslations = {
                 "isString": string;
                 "maxLength": string;
                 "minLength": string;
+            };
+            "isDeleted": {
+                "isBoolean": string;
             };
             "lastName": {
                 "isString": string;
