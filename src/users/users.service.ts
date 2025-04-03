@@ -8,12 +8,9 @@ import type { IResponse } from '@common/interfaces/response.interface';
 import type { IUserStats } from '@users/interfaces/user-stats.interface';
 import type { IUsersData } from '@users/interfaces/users-data.interface';
 import { CreateUserDto } from '@users/dto/create-user.dto';
-import { USERS_CONFIG } from '@config/users.config';
 import { UpdateUserDto } from '@users/dto/update-user.dto';
 import { User } from '@users/schema/user.schema';
 
-// Checked: all
-// Typed response: todo findAll and findAllByIdentityNumber (reformulate type of response, then check in frontend)
 @Injectable()
 export class UsersService {
   constructor(
@@ -23,12 +20,12 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<IResponse<User>> {
     if (createUserDto.dni !== undefined) {
-      const findUser = await this.userModel.findOne({ dni: createUserDto.dni });
-      if (findUser) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
+      const findUser: User = await this.userModel.findOne({ dni: createUserDto.dni });
+      if (findUser) throw new HttpException(this.i18nService.t('exception.users.alreadyExists'), HttpStatus.BAD_REQUEST);
     }
 
-    const user = await this.userModel.create(createUserDto);
-    if (!user) throw new HttpException(USERS_CONFIG.response.error.notCreated, HttpStatus.BAD_REQUEST);
+    const user: User = await this.userModel.create(createUserDto);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedCreate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
@@ -42,7 +39,7 @@ export class UsersService {
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
 
-    const users = await this.userModel
+    const users: User[] = await this.userModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
       })
@@ -51,17 +48,17 @@ export class UsersService {
       .limit(parseInt(limit))
       .exec();
 
-    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
-    if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    const count = await this.userModel
+    const count: number = await this.userModel
       .find({
         $or: [{ firstName: { $regex: search, $options: 'i' } }, { lastName: { $regex: search, $options: 'i' } }],
       })
       .countDocuments();
 
-    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
-    const data = { total: pageTotal, count: count, data: users };
+    const pageTotal: number = Math.floor((count - 1) / parseInt(limit)) + 1;
+    const data: IUsersData = { total: pageTotal, count: count, data: users };
 
     return {
       data: data,
@@ -75,7 +72,7 @@ export class UsersService {
     if (sortingValue === 'asc') sorting = { [sortingKey]: 1 };
     if (sortingValue === 'desc') sorting = { [sortingKey]: -1 };
 
-    const users = await this.userModel
+    const users: User[] = await this.userModel
       .find({
         $expr: {
           $regexMatch: {
@@ -89,10 +86,10 @@ export class UsersService {
       .limit(parseInt(limit))
       .exec();
 
-    if (users.length === 0) throw new HttpException(USERS_CONFIG.response.success.foundEmptyPlural, HttpStatus.NOT_FOUND);
-    if (!users) throw new HttpException(USERS_CONFIG.response.error.notFoundPlural, HttpStatus.BAD_REQUEST);
+    if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
-    const count = await this.userModel
+    const count: number = await this.userModel
       .find({
         $expr: {
           $regexMatch: {
@@ -103,8 +100,8 @@ export class UsersService {
       })
       .countDocuments();
 
-    const pageTotal = Math.floor((count - 1) / parseInt(limit)) + 1;
-    const data = { total: pageTotal, count: count, data: users };
+    const pageTotal: number = count ? Math.floor((count - 1) / parseInt(limit)) + 1 : 0;
+    const data: IUsersData = { total: pageTotal, count: count, data: users };
 
     return {
       data: data,
@@ -118,7 +115,7 @@ export class UsersService {
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const user: User = await this.userModel.findById(id);
-    if (!user) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.BAD_REQUEST);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.notFound'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
@@ -131,14 +128,11 @@ export class UsersService {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
-    const findDni = await this.userModel.findOne({ dni: updateUserDto.dni });
-    if (findDni && findDni._id.toString() !== id) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
+    const findDni: User = await this.userModel.findOne({ dni: updateUserDto.dni });
+    if (findDni && findDni._id.toString() !== id) throw new HttpException(this.i18nService.t('exception.users.alreadyExists'), HttpStatus.BAD_REQUEST);
 
-    // const findUser = await this.userModel.findById(id);
-    // if (!findUser) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
-
-    const user = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
-    if (!user) throw new HttpException(USERS_CONFIG.response.error.notUpdated, HttpStatus.BAD_REQUEST);
+    const user: User = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedUpdate'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
@@ -152,11 +146,8 @@ export class UsersService {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
-    // const findUser: User = await this.userModel.findById(id);
-    // if (!findUser) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
-
     const user: User = await this.userModel.findByIdAndDelete(id);
-    if (!user) throw new HttpException(USERS_CONFIG.response.error.notRemoved, HttpStatus.BAD_REQUEST);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedRemove'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
@@ -166,11 +157,12 @@ export class UsersService {
   }
 
   async newUsersToday(): Promise<IResponse<IUserStats>> {
-    const countAll = await this.userModel.countDocuments();
-    if (!countAll) throw new HttpException(USERS_CONFIG.response.error.databaseCount, HttpStatus.BAD_REQUEST);
+    const countAll: number = await this.userModel.countDocuments();
+    if (!countAll) throw new HttpException(this.i18nService.t('exception.users.notFoundUsers'), HttpStatus.BAD_REQUEST);
 
     const today: string = format(new Date(), 'YYYY-MM-DD');
     const countToday: number = await this.userModel.countDocuments({ createdAt: { $gte: today } });
+    if (!countToday) throw new HttpException(this.i18nService.t('exception.users.notFoundNewUsers'), HttpStatus.BAD_REQUEST);
 
     const data = {
       percentage: countToday ? (countToday * 100) / countAll : 0,
