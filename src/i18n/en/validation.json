@@ -208,5 +208,35 @@
       "isNotEmpty": "Name is required",
       "isString": "Name must be a text string"
     }
+  },
+  "users": {
+    "areaCode": {
+      "isInt": "The area code must be an integer",
+      "max": "The area code must not exceed 3 digits",
+      "min": "The area code must have at least 1 digit"
+    },
+    "dni": {
+      "isInt": "The ID must be an integer",
+      "max": "The ID must not exceed 8 digits",
+      "min": "The ID must have at least 7 digits"
+    },
+    "email": {
+      "isEmail": "The email must have a valid format"
+    },
+    "firstName": {
+      "isString": "The first name must be a string",
+      "maxLength": "The first name must not exceed 30 characters",
+      "minLength": "The first name must have at least 3 characters"
+    },
+    "lastName": {
+      "isString": "The last name must be a string",
+      "maxLength": "The last name must not exceed 30 characters",
+      "minLength": "The last name must have at least 3 characters"
+    },
+    "phone": {
+      "isInt": "The phone number must be an integer",
+      "max": "The phone number must have exactly 10 digits (exceeded)",
+      "min": "The phone number must have exactly 10 digits (missing)"
+    }
   }
 }

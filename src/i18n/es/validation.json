@@ -208,5 +208,35 @@
       "isNotEmpty": "El nombre es obligatorio",
       "isString": "El nombre debe ser una cadena de texto"
     }
+  },
+  "users": {
+    "areaCode": {
+      "isInt": "El código de area debe ser un número entero",
+      "max": "El código de area no debe superar los 3 dígitos",
+      "min": "El código de area debe poseer al menos 1 dígito"
+    },
+    "dni": {
+      "isInt": "El DNI debe ser un número entero",
+      "max": "El DNI no debe superar los 8 dígitos",
+      "min": "El DNI debe poseer al menos 7 dígitos"
+    },
+    "email": {
+      "isEmail": "El email debe tener un formato válido"
+    },
+    "firstName": {
+      "isString": "El nombre debe ser una cadena de texto",
+      "maxLength": "El nombre no debe superar los 30 caracteres",
+      "minLength": "El nombre debe poseer al menos 3 caracteres"
+    },
+    "lastName": {
+      "isString": "El apellido debe ser una cadena de texto",
+      "maxLength": "El apellido no debe superar los 30 caracteres",
+      "minLength": "El apellido debe poseer al menos 3 caracteres"
+    },
+    "phone": {
+      "isInt": "El teléfono debe ser un número entero",
+      "max": "El teléfono debe poseer 10 dígitos (excedido)",
+      "min": "El teléfono debe poseer 10 dígitos (faltante)"
+    }
   }
 }

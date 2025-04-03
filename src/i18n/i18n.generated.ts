@@ -411,6 +411,36 @@ export type I18nTranslations = {
                 "isString": string;
             };
         };
+        "users": {
+            "areaCode": {
+                "isInt": string;
+                "max": string;
+                "min": string;
+            };
+            "dni": {
+                "isInt": string;
+                "max": string;
+                "min": string;
+            };
+            "email": {
+                "isEmail": string;
+            };
+            "firstName": {
+                "isString": string;
+                "maxLength": string;
+                "minLength": string;
+            };
+            "lastName": {
+                "isString": string;
+                "maxLength": string;
+                "minLength": string;
+            };
+            "phone": {
+                "isInt": string;
+                "max": string;
+                "min": string;
+            };
+        };
     };
 };
 /* prettier-ignore */
