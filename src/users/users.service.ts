@@ -115,7 +115,7 @@ export class UsersService {
 
   async findOne(id: string): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
-    if (!isValidId) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const user: User = await this.userModel.findById(id);
     if (!user) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.BAD_REQUEST);
@@ -129,7 +129,7 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
-    if (!isValidId) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const findDni = await this.userModel.findOne({ dni: updateUserDto.dni });
     if (findDni && findDni._id.toString() !== id) throw new HttpException(USERS_CONFIG.response.error.alreadyExist, HttpStatus.BAD_REQUEST);
@@ -150,7 +150,7 @@ export class UsersService {
   // TODO: remove appointments associated to the user
   async remove(id: string): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
-    if (!isValidId) throw new HttpException(USERS_CONFIG.response.error.invalidId, HttpStatus.BAD_REQUEST);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     // const findUser: User = await this.userModel.findById(id);
     // if (!findUser) throw new HttpException(USERS_CONFIG.response.error.notFoundSingular, HttpStatus.NOT_FOUND);
