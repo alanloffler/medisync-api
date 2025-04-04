@@ -37,6 +37,11 @@ export class UsersController {
     return this.usersService.newUsersToday();
   }
 
+  @Get('removedUsers')
+  findRemovedUsers(): Promise<IResponse<User[]>> {
+    return this.usersService.findRemovedUsers();
+  }
+
   @Roles([ERole.Super])
   @Patch('restore/:id')
   restore(@Param('id') id: string): Promise<IResponse<User>> {
