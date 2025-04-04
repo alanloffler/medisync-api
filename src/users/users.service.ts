@@ -160,6 +160,18 @@ export class UsersService {
   // }
   //
 
+  async findRemovedUsers(): Promise<IResponse<User[]>> {
+    const users: User[] = await this.userModel.find({ isDeleted: true }).exec();
+    if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
+
+    return {
+      data: users,
+      message: this.i18nService.t('response.users.foundPlural'),
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async remove(id: string): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
