@@ -64,7 +64,7 @@ export class DashboardService {
       },
     ]);
 
-    if (appointments.length === 0) throw new HttpException(this.i18nService.t('exception.dashboard.emptyDaysCount'), HttpStatus.NOT_FOUND);
+    if (appointments.length === 0) return { data: [], message: this.i18nService.t('exception.dashboard.emptyDaysCount'), statusCode: HttpStatus.NOT_FOUND };
     if (appointments === undefined || appointments === null) throw new HttpException(this.i18nService.t('exception.dashboard.notFoundDaysCount'), HttpStatus.BAD_REQUEST);
 
     return {
