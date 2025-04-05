@@ -37,6 +37,7 @@ export class UsersController {
     return this.usersService.newUsersToday();
   }
 
+  @Roles([ERole.Super])
   @Get('removedUsers')
   findRemovedUsers(): Promise<IResponse<User[]>> {
     return this.usersService.findRemovedUsers();
