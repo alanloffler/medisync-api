@@ -145,20 +145,19 @@ export class UsersService {
   }
 
   // TODO: remove appointments associated to the user
-  // async remove(id: string): Promise<IResponse<User>> {
-  //   const isValidId: boolean = isValidObjectId(id);
-  //   if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
+  async delete(id: string): Promise<IResponse<User>> {
+    const isValidId: boolean = isValidObjectId(id);
+    if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
-  //   const user: User = await this.userModel.findByIdAndDelete(id);
-  //   if (!user) throw new HttpException(this.i18nService.t('exception.users.failedRemove'), HttpStatus.BAD_REQUEST);
+    const user: User = await this.userModel.findByIdAndDelete(id);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedDelete'), HttpStatus.BAD_REQUEST);
 
-  //   return {
-  //     data: user,
-  //     message: this.i18nService.t('response.users.removed'),
-  //     statusCode: HttpStatus.OK,
-  //   };
-  // }
-  //
+    return {
+      data: user,
+      message: this.i18nService.t('response.users.deleted'),
+      statusCode: HttpStatus.OK,
+    };
+  }
 
   async findRemovedUsers(): Promise<IResponse<User[]>> {
     const users: User[] = await this.userModel.find({ isDeleted: true }).exec();
