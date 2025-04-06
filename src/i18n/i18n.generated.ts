@@ -124,6 +124,7 @@ export type I18nTranslations = {
             "alreadyExists": string;
             "emptyPlural": string;
             "failedCreate": string;
+            "failedDelete": string;
             "failedRemove": string;
             "failedUpdate": string;
             "notFound": string;
@@ -213,6 +214,7 @@ export type I18nTranslations = {
         "users": {
             "created": string;
             "databaseCount": string;
+            "deleted": string;
             "found": string;
             "foundPlural": string;
             "removed": string;
