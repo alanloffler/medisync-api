@@ -162,7 +162,7 @@ export class UsersService {
 
   async findRemovedUsers(): Promise<IResponse<User[]>> {
     const users: User[] = await this.userModel.find({ isDeleted: true }).exec();
-    if (users.length === 0) throw new HttpException(this.i18nService.t('exception.users.emptyPlural'), HttpStatus.NOT_FOUND);
+    if (users.length === 0) return { data: [], message: this.i18nService.t('exception.users.emptyPlural'), statusCode: HttpStatus.NOT_FOUND };
     if (!users) throw new HttpException(this.i18nService.t('exception.users.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
