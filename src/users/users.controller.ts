@@ -54,6 +54,12 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
+  @Roles([ERole.Super])
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<IResponse<User>> {
+    return this.usersService.delete(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.findOne(id);
