@@ -79,6 +79,7 @@
   "users": {
     "created": "Patient successfully created",
     "databaseCount": "Patients count retrieved successfully",
+    "deleted": "Patient successfully deleted (irreversible)",
     "found": "Patient found successfully",
     "foundPlural": "Patients found successfully",
     "removed": "Patient successfully deleted",
