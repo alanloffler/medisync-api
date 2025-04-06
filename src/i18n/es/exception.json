@@ -117,6 +117,7 @@
     "alreadyExists": "El DNI ya se encuentra registrado como paciente",
     "emptyPlural": "No se encontraron pacientes",
     "failedCreate": "No se pudo crear el paciente",
+    "failedDelete": "No se pudo eliminar el paciente (irreversible)",
     "failedRemove": "No se pudo eliminar el paciente",
     "failedUpdate": "No se pudo actualizar el paciente",
     "notFound": "Error al buscar el paciente",
