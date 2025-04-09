@@ -145,16 +145,16 @@ export class UsersService {
   }
 
   // TODO: remove appointments associated to the user
-  async delete(id: string): Promise<IResponse<User>> {
+  async remove(id: string): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const user: User = await this.userModel.findByIdAndDelete(id);
-    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedDelete'), HttpStatus.BAD_REQUEST);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedRemove'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
-      message: this.i18nService.t('response.users.deleted'),
+      message: this.i18nService.t('response.users.removed'),
       statusCode: HttpStatus.OK,
     };
   }
@@ -171,16 +171,16 @@ export class UsersService {
     };
   }
 
-  async remove(id: string): Promise<IResponse<User>> {
+  async delete(id: string): Promise<IResponse<User>> {
     const isValidId: boolean = isValidObjectId(id);
     if (!isValidId) throw new HttpException(this.i18nService.t('exception.common.invalidId'), HttpStatus.BAD_REQUEST);
 
     const user: User = await this.userModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
-    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedRemove'), HttpStatus.BAD_REQUEST);
+    if (!user) throw new HttpException(this.i18nService.t('exception.users.failedDelete'), HttpStatus.BAD_REQUEST);
 
     return {
       data: user,
-      message: this.i18nService.t('response.users.removed'),
+      message: this.i18nService.t('response.users.deleted'),
       statusCode: HttpStatus.OK,
     };
   }
