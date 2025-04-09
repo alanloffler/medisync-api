@@ -28,7 +28,7 @@ export class TitlesService {
 
   async findAll(): Promise<IResponse<Title[]>> {
     const titles = await this.titleModel.find().sort({ name: 'asc' });
-    if (titles.length === 0) throw new HttpException('exception.titles.emptyPlural', HttpStatus.NOT_FOUND);
+    if (titles.length === 0) throw new HttpException(this.i18nService.t('exception.titles.emptyPlural'), HttpStatus.NOT_FOUND);
     if (titles === undefined || titles === null) throw new HttpException(this.i18nService.t('exception.titles.notFoundPlural'), HttpStatus.BAD_REQUEST);
 
     return {
