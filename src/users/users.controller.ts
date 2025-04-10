@@ -43,21 +43,21 @@ export class UsersController {
     return this.usersService.findRemovedUsers();
   }
 
+  @Patch('delete/:id')
+  delete(@Param('id') id: string): Promise<IResponse<User>> {
+    return this.usersService.delete(id);
+  }
+
   @Roles([ERole.Super])
   @Patch('restore/:id')
   restore(@Param('id') id: string): Promise<IResponse<User>> {
     return this.usersService.restore(id);
   }
 
-  @Patch('remove/:id')
-  remove(@Param('id') id: string): Promise<IResponse<User>> {
-    return this.usersService.remove(id);
-  }
-
   @Roles([ERole.Super])
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<IResponse<User>> {
-    return this.usersService.delete(id);
+  remove(@Param('id') id: string): Promise<IResponse<User>> {
+    return this.usersService.remove(id);
   }
 
   @Get(':id')
