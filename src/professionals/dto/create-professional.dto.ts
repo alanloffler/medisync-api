@@ -14,6 +14,21 @@ class WorkingDayDto {
   value: boolean;
 }
 
+// Create a new DTO for unavailable time slots
+class UnavailableTimeSlotDto {
+  @IsOptional()
+  @ValidateIf((object, value) => value !== null)
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.isString') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.minLength') })
+  timeSlotUnavailableInit?: string;
+
+  @IsOptional()
+  @ValidateIf((object, value) => value !== null)
+  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.isString') })
+  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.minLength') })
+  timeSlotUnavailableEnd?: string;
+}
+
 class Configuration {
   @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeInit.isString') })
   @IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.scheduleTimeInit.isNotEmpty') })
@@ -29,17 +44,12 @@ class Configuration {
   @IsPositive({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.slotDuration.isPositive') })
   slotDuration: number;
 
+  // Changed from direct properties to nested object
   @IsOptional()
-  @ValidateIf((object, value) => value !== null)
-  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.isString') })
-  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableInit.minLength') })
-  timeSlotUnavailableInit?: string;
-
-  @IsOptional()
-  @ValidateIf((object, value) => value !== null)
-  @IsString({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.isString') })
-  @MinLength(5, { message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.timeSlotUnavailableEnd.minLength') })
-  timeSlotUnavailableEnd?: string;
+  @IsObject({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.unavailableTimeSlot.isObject') })
+  @ValidateNested()
+  @Type(() => UnavailableTimeSlotDto)
+  unavailableTimeSlot?: UnavailableTimeSlotDto;
 
   @ArrayNotEmpty({ message: i18nValidationMessage<I18nTranslations>('validation.professionals.configuration.workingDays.arrayNotEmpty') })
   @ValidateNested({ each: true })
