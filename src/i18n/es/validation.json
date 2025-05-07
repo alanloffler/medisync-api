@@ -117,6 +117,9 @@
         "isInt": "La duración de los turnos debe ser un número entero",
         "isPositive": "La duración de los turnos debe ser un número positivo"
       },
+      "unavailableTimeSlot": {
+        "isObject": "Rango de tiempo no disponible debe ser un objeto"
+      },
       "timeSlotUnavailableEnd": {
         "isString": "El fin de los turnos no disponibles debe ser hh:mm",
         "minLength": "El fin de los turnos no disponibles debe poseer 5 caracteres"

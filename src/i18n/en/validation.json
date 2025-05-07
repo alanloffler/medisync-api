@@ -117,6 +117,9 @@
         "isInt": "Slot duration must be an integer number",
         "isPositive": "Slot duration must be a positive number"
       },
+      "unavailableTimeSlot": {
+        "isObject": "Unavailable time slot must be an object"
+      },
       "timeSlotUnavailableEnd": {
         "isString": "Unavailable slot end time must be in hh:mm format",
         "minLength": "Unavailable slot end time must be 5 characters long"

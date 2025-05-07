@@ -341,6 +341,9 @@ export type I18nTranslations = {
                     "isInt": string;
                     "isPositive": string;
                 };
+                "unavailableTimeSlot": {
+                    "isObject": string;
+                };
                 "timeSlotUnavailableEnd": {
                     "isString": string;
                     "minLength": string;
